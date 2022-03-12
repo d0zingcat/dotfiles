@@ -1,0 +1,5 @@
+nvim/plugin/
+nvim/.netrwhist
+*.env
+.git/
+.DS_Store

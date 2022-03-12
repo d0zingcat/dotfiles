@@ -1,0 +1,20 @@
+format = '$directory$git_branch$git_commit$git_state$git_status$golang$helm$java$nodejs$python$red$ruby$rust$kubernetes$custom$cmd_duration$lua$line_break$jobs$time$status$shell$character'
+
+[git_commit]
+tag_disabled = true
+only_detached = false
+disabled = false
+commit_hash_length = 8
+
+[kubernetes]
+disabled = false
+symbol = '⎈ '
+format = '[$symbol$context \($namespace\)]($style) '
+
+[python]
+pyenv_version_name = false
+
+[golang]
+symbol = 'ʕ◔ϖ◔ʔ '
+
+[rust]
