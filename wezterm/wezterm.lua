@@ -1,5 +1,6 @@
 local wezterm = require('wezterm')
 return {
+    default_cwd = wezterm.home_dir .. '/work',
     font_size = 14,
     font = wezterm.font_with_fallback({
         'JetBrains Mono',

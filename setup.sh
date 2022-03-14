@@ -91,7 +91,7 @@ function recover() {
 
 	# others
 	git config --global core.excludesfile ~/.config/git/.gitignore
-     git config --global init.defaultBranch main
+	git config --global init.defaultBranch main
 	$(brew --prefix)/opt/fzf/install
 }
 
