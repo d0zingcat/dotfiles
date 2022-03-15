@@ -106,6 +106,7 @@ alias jumper='ssh tangli@10.1.4.14 -p 32200'
 alias wol_xps8940="host root.pi.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 30009 'FC:44:82:13:BA:0F'"
 alias nerdctl='lima nerdctl'
 alias docker='lima docker'
+alias batc='bat --paging=never'
 
 
 function workup() {
