@@ -4,7 +4,7 @@ return {
         yaml = {
             schemas = {
                 ['https://json.schemastore.org/github-workflow.json'] = '/.github/workflows/*',
-                Kubernetes = '/*k8s.yaml',
+                Kubernetes = { '/*k8s.yaml', '/*k8s.yml' },
             },
         },
     },
