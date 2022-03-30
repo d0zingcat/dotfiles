@@ -107,6 +107,7 @@ alias wol_xps8940="host root.pi.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I
 #alias nerdctl='lima nerdctl'
 #alias docker='lima docker'
 alias batc='bat --paging=never'
+alias batcp='bat --plain --paging=never'
 
 
 function workup() {
