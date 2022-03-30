@@ -153,8 +153,6 @@ map('i', '<F1>', '<nop>')
 -- map('n', '<leader>e', '1<c-w>w')
 -- map('n', '<leader>p', ':wincmd p<CR>')
 
---" Plug 'airblade/vim-gitgutter'
-
 map('i', '<C-e>', 'copilot#Accept()', { expr = true })
 vim.g.copilot_no_tab_map = 1
 vim.g.copilot_no_maps = 1
@@ -162,22 +160,10 @@ vim.g.copilot_assume_mapped = 1
 
 require('plugins')
 
--- Plug settings
-
--- map("n", "<space>e", ":NvimTreeToggle<CR>", {noremap = false})
--- map("n", "<space>R", ":NvimTreeRefresh<CR>", {noremap = false})
-
 -- Neoformat
 if not fn.executable('luafmt') then
     cmd([[ :!npm install -g lua-fmt]])
 end
-
--- todo-comments
--- require("todo-comments").setup {}
-
--- spaceline
-g['spaceline_seperate_style'] = 'arrow'
-g['spaceline_colorscheme'] = 'one'
 
 -- barbar
 local opts = { noremap = true, silent = true }
