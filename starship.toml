@@ -15,6 +15,6 @@ format = '[$symbol$context \($namespace\)]($style) '
 pyenv_version_name = false
 
 [golang]
-symbol = 'ʕ◔ϖ◔ʔ '
+#symbol = 'ʕ◔ϖ◔ʔ '
 
 [rust]
