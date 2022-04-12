@@ -56,7 +56,7 @@ require('nvim-tree').setup({
     filters = {
         custom = { '.git' }, -- ignore .git
     },
-    auto_close = true,
+    --auto_close = true,
     hijack_netrw = true,
     update_cwd = true,
     focus_tree = false,
@@ -66,6 +66,7 @@ require('nvim-tree').setup({
 map('n', '<leader>te', ':NvimTreeToggle<CR>')
 
 vim.cmd([[
+autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
 augroup nvimtree
   autocmd VimEnter * lua require('nvim-tree').toggle(false, true)
 augroup END

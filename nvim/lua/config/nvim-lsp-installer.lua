@@ -3,7 +3,28 @@ local api = vim.api
 local cmd = vim.cmd
 
 local lsp_installer = require('nvim-lsp-installer')
-local lsp_installer_servers = require('nvim-lsp-installer.servers')
+-- Include the servers you want to have installed by default below
+local servers = {
+    'bashls',
+    'pylsp',
+    'yamlls',
+    'eslint',
+    'jsonls',
+    'sumneko_lua',
+    'rust_analyzer',
+    'clangd',
+    'gopls',
+    'tsserver',
+    'prosemd_lsp',
+}
+
+for _, name in pairs(servers) do
+    local server_is_found, server = lsp_installer.get_server(name)
+    if server_is_found and not server:is_installed() then
+        print('Installing ' .. name)
+        server:install()
+    end
+end
 
 -- lspconfig && lspinstaller
 local on_attach = function(client, bufnr)
@@ -16,11 +37,10 @@ local on_attach = function(client, bufnr)
     --require "lsp_signature".on_attach()
 
     -- Enable completion triggered by <c-x><c-o>
-    buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+    --buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
     -- Mappings.
     local opts = { noremap = true, silent = true }
-
     -- See `:help vim.lsp.*` for documentation on any of the below functions
     buf_set_keymap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<CR>', opts)
     buf_set_keymap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
@@ -43,6 +63,7 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
     buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
     buf_set_keymap('n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+    --buf_set_keymap('i', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
 
     if client.resolved_capabilities.document_formatting then
         vim.cmd([[
@@ -103,14 +124,28 @@ lsp_installer.on_server_ready(function(server)
         local conf = require(string.format('config.lsp_servers.%s', server.name))
         opts = vim.tbl_deep_extend('force', opts, conf)
     end
-    -- (optional) Customize the options passed to the server
-    -- if server.name == "tsserver" then
-    --     opts.root_dir = function() ... end
-    -- end
+    if server.name == 'rust_analyzer' then
+        -- Initialize the LSP via rust-tools instead
+        require('rust-tools').setup({
+            -- The "server" property provided in rust-tools setup function are the
+            -- settings rust-tools will provide to lspconfig during init.            --
+            -- We merge the necessary settings from nvim-lsp-installer (server:get_default_options())
+            -- with the user's own settings (opts).
+            server = vim.tbl_deep_extend('force', server:get_default_options(), opts),
+        })
+        server:attach_buffers()
+        -- Only if standalone support is needed
+        --require('rust-tools').start_standalone_if_required()
+    else
+        -- (optional) Customize the options passed to the server
+        -- if server.name == "tsserver" then
+        --     opts.root_dir = function() ... end
+        -- end
 
-    -- This setup() function is exactly the same as lspconfig's setup function.
-    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    server:setup(opts)
+        -- This setup() function is exactly the same as lspconfig's setup function.
+        -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
+        server:setup(opts)
+    end
 end)
 
 local null_ls = require('null-ls')

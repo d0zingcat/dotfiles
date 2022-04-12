@@ -35,7 +35,17 @@ return {
         'zsh',
         'fzf',
     },
+    ssh_domains = {
+        {
+            name = 'debian',
+            remote_address = 'debian01',
+            username = 'd0zingcat',
+            multiplexing = 'None',
+        },
+    },
     keys = {
-        { key = 'w', mods = 'CMD', action = wezterm.action({ CloseCurrentTab = { confirm = false } }) },
+        --{ key = 'l', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|DOMAINS' } }) },
+        --{ key = 's', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }) },
+        { key = 'w', mods = 'CMD', action = wezterm.action({ CloseCurrentPane = { confirm = false } }) },
     },
 }

@@ -15,13 +15,13 @@ end
 return require('packer').startup(function(use)
     use('wbthomason/packer.nvim')
     use('folke/lua-dev.nvim')
+    use('nvim-lua/plenary.nvim')
 
     use('folke/tokyonight.nvim')
     use('kyazdani42/nvim-web-devicons')
     use('tpope/vim-fugitive') -- git fugitive
     use({
         'lewis6991/gitsigns.nvim',
-        requires = { 'nvim-lua/plenary.nvim' },
         config = function()
             require('config.gitsigns')
         end,
@@ -36,31 +36,24 @@ return require('packer').startup(function(use)
             })
         end,
     })
-    use({
-        'folke/trouble.nvim',
-        config = function()
-            require('trouble').setup({})
-        end,
-    })
     --use({
-    --'TimUntersberger/neogit',
-    --requires = 'nvim-lua/plenary.nvim',
+    --'folke/trouble.nvim',
     --config = function()
-    --local neogit = require('neogit')
-    --neogit.setup({
-    --integrations = {
-    --diffview = true,
-    --},
-    --})
+    --require('trouble').setup({})
     --end,
     --})
     --use({
     --'sindrets/diffview.nvim',
-    --requires = 'nvim-lua/plenary.nvim',
     --config = function()
     --require('diffview').setup({})
     --end,
     --})
+    use({
+        'lukas-reineke/indent-blankline.nvim',
+        config = function()
+            require('config.indent-blankline')
+        end,
+    })
     use({
         'MattesGroeger/vim-bookmarks',
         requires = 'tom-anders/telescope-vim-bookmarks.nvim',
@@ -72,13 +65,6 @@ return require('packer').startup(function(use)
     use({
         't9md/vim-choosewin',
     })
-    -- use "easymotion/vim-easymotion"
-    --use {
-    --"voldikss/vim-floaterm",
-    --config = function()
-    --require "config.nvim_floaterm"
-    --end
-    --}
     use({
         'akinsho/toggleterm.nvim',
         config = function()
@@ -101,21 +87,14 @@ return require('packer').startup(function(use)
         end,
     })
     use({
-        'preservim/nerdtree',
+        'kyazdani42/nvim-tree.lua',
+        requires = 'kyazdani42/nvim-web-devicons',
         config = function()
-            require('config.nerdtree')
+            require('config.nvim-tree')
         end,
     })
-    --use({
-    --'kyazdani42/nvim-tree.lua',
-    --requires = 'kyazdani42/nvim-web-devicons',
-    --config = function()
-    --require('config.nvim-tree')
-    --end,
-    --})
     use({
         'nvim-telescope/telescope.nvim',
-        requires = 'nvim-lua/plenary.nvim',
         config = function()
             require('config.nvim_telescope')
         end,
@@ -134,13 +113,24 @@ return require('packer').startup(function(use)
     use('hrsh7th/cmp-buffer')
     use('hrsh7th/cmp-nvim-lsp')
     use({
+        'folke/lsp-colors.nvim',
+        config = function()
+            require('lsp-colors').setup({})
+        end,
+    })
+    use({
+        'RishabhRD/nvim-lsputils',
+        config = function()
+            require('config.nvim-lsputils')
+        end,
+    })
+    use({
         'github/copilot.vim',
         setup = function() end,
         config = function()
             require('config.copilot')
         end,
     })
-    --use('sbdchd/neoformat')
     use({
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
@@ -153,7 +143,6 @@ return require('packer').startup(function(use)
         run = 'cd app && yarn install',
         cmd = { 'MarkdownPreview', 'MarkdownPreviewStop' },
     })
-    --use {"glepnir/spaceline.vim", requires = "kyazdani42/nvim-web-devicons"}
     use({
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true },
@@ -174,7 +163,6 @@ return require('packer').startup(function(use)
     })
     use({
         'folke/todo-comments.nvim',
-        requires = 'nvim-lua/plenary.nvim',
         config = function()
             require('todo-comments').setup({})
         end,
@@ -220,9 +208,13 @@ return require('packer').startup(function(use)
     use({
         'williamboman/nvim-lsp-installer',
         config = function()
-            require('config.lspconfig')
+            require('config.nvim-lsp-installer')
         end,
     })
+    -- k8s
+    use('andrewstuart/vim-kubernetes')
+
+    -- go
     use({
         'fatih/vim-go',
         run = ':GoUpdateBinaries',
@@ -241,7 +233,8 @@ return require('packer').startup(function(use)
     use('Vimjas/vim-python-pep8-indent')
     -- rust
     use('rust-lang/rust.vim')
-    use('andrewstuart/vim-kubernetes')
+    use('simrat39/rust-tools.nvim')
+    use('mfussenegger/nvim-dap')
 end)
 
 -- require("todo-comments").setup {}
