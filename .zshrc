@@ -57,7 +57,6 @@ CPPFLAGS="-I$brew_opt/zlib/include -I$brew_opt/openssl@3/include"
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
 
-
 autoload -Uz compinit
 compinit
 
@@ -127,13 +126,12 @@ function s_kill() {
          ps -ef | grep $key | head -n 1 | awk '{print $2}' | xargs kill
 }
 
-macnst (){
+function macnst (){
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
 # proxy by clashx
 function clashproxy() {
-    # shadowsocksx-r
     local proxy=http://127.0.0.1:7890
     export https_proxy=$proxy http_proxy=$proxy all_proxy=socks5://127.0.0.1:7891;
     echo "proxy all set!"
@@ -155,8 +153,6 @@ function klogs() {
     k get pods --sort-by=.metadata.creationTimestamp | grep "$keyword" | head -n 1 | awk '{print $1}' | xargs kubectl logs -f
 }
 
-
-
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
 if [ $(uname -m) = 'arm64' ]; then
@@ -164,7 +160,6 @@ if [ $(uname -m) = 'arm64' ]; then
 fi
 
 #neofetch
-
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
