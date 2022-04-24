@@ -36,18 +36,6 @@ return require('packer').startup(function(use)
             })
         end,
     })
-    --use({
-    --'folke/trouble.nvim',
-    --config = function()
-    --require('trouble').setup({})
-    --end,
-    --})
-    --use({
-    --'sindrets/diffview.nvim',
-    --config = function()
-    --require('diffview').setup({})
-    --end,
-    --})
     use({
         'lukas-reineke/indent-blankline.nvim',
         config = function()
@@ -175,42 +163,36 @@ return require('packer').startup(function(use)
             require('config.nvim_hop')
         end,
     })
-    --use {
-    --"ray-x/lsp_signature.nvim",
-    --config = function()
-    --require "lsp_signature".setup {
-    --transpancy = 10,
-    --hint_prefix = "😼",
-    ---- zindex = 50,
-    --}
-    --end
-    --}
     use({
         'preservim/tagbar',
         config = function()
             require('config.tagbar')
         end,
     })
-    --use {
-    --"liuchengxu/vista.vim",
-    --config = function()
-    --require "config.vista"
-    --end
-    --}
 
     -- LANGUAGES
     use({
-        'neovim/nvim-lspconfig',
+        'Junnplus/nvim-lsp-setup',
+        config = function()
+            require('config.nvim-lsp-setup')
+        end,
+        requires = {
+            'neovim/nvim-lspconfig',
+            'williamboman/nvim-lsp-installer',
+        },
     })
     use({
         'jose-elias-alvarez/null-ls.nvim',
     })
-    use({
-        'williamboman/nvim-lsp-installer',
-        config = function()
-            require('config.nvim-lsp-installer')
-        end,
-    })
+    --use({
+    --'neovim/nvim-lspconfig',
+    --})
+    --use({
+    --'williamboman/nvim-lsp-installer',
+    --config = function()
+    --require('config.nvim-lsp-installer')
+    --end,
+    --})
     -- k8s
     use('andrewstuart/vim-kubernetes')
 

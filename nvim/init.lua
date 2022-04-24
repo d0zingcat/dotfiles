@@ -137,10 +137,10 @@ map('n', '<Leader>v', '"+p')
 map('n', '<leader>rv', ':source $MYVIMRC<CR>')
 
 -- insert mode mapping
-map('i', '<c-b>', '<c-o>b')
-map('i', '<c-f>', '<c-o>l')
-map('i', '<c-j>', '<c-o>j')
-map('i', '<c-k>', '<c-o>k')
+--map('i', '<c-b>', '<c-o>b')
+--map('i', '<c-f>', '<c-o>l')
+--map('i', '<c-j>', '<c-o>j')
+--map('i', '<c-k>', '<c-o>k')
 
 map('n', '<F1>', '<nop>')
 map('i', '<F1>', '<nop>')
