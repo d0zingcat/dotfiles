@@ -23,8 +23,8 @@ require('nvim-lsp-setup').setup({
     -- Global on_attach
     -- on_attach = function(client, bufnr) {
     --     utils.format_on_save(client)
-    -- },
-    servers = {
+    -- }, 
+     servers = {
         -- Automatically install lsp server
         -- LSP server configuration please see: https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
         bashls = {},
@@ -42,7 +42,6 @@ require('nvim-lsp-setup').setup({
         },
         eslint = {},
         jsonls = {},
-        sumneko_lua = {},
         clangd = {},
         gopls = {},
         tsserver = {},
@@ -50,13 +49,15 @@ require('nvim-lsp-setup').setup({
 
         pylsp = {},
         rust_analyzer = {
-            settings = {
-                ['rust-analyzer'] = {
-                    cargo = {
-                        loadOutDirsFromCheck = true,
-                    },
-                    procMacro = {
-                        enable = true,
+            server = {
+                settings = {
+                    ['rust-analyzer'] = {
+                        cargo = {
+                            loadOutDirsFromCheck = true,
+                        },
+                        procMacro = {
+                            enable = true,
+                        },
                     },
                 },
             },
