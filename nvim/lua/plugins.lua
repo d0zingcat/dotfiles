@@ -14,7 +14,6 @@ end
 
 return require('packer').startup(function(use)
     use('wbthomason/packer.nvim')
-    use('folke/lua-dev.nvim')
     use('nvim-lua/plenary.nvim')
 
     use('folke/tokyonight.nvim')
@@ -179,10 +178,14 @@ return require('packer').startup(function(use)
         requires = {
             'neovim/nvim-lspconfig',
             'williamboman/nvim-lsp-installer',
+            'folke/lsp-colors.nvim',
+            'folke/lua-dev.nvim',
+            'ray-x/lsp_signature.nvim',            
+            'jose-elias-alvarez/null-ls.nvim',
+            'RRethy/vim-illuminate',
+            'simrat39/rust-tools.nvim',
+            'p00f/clangd_extensions.nvim',
         },
-    })
-    use({
-        'jose-elias-alvarez/null-ls.nvim',
     })
     --use({
     --'neovim/nvim-lspconfig',
@@ -215,7 +218,6 @@ return require('packer').startup(function(use)
     use('Vimjas/vim-python-pep8-indent')
     -- rust
     use('rust-lang/rust.vim')
-    use('simrat39/rust-tools.nvim')
     use('mfussenegger/nvim-dap')
 end)
 

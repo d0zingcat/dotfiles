@@ -37,6 +37,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 
 export LC_ALL=en_US.UTF-8  
+export EDITOR=vim
 export LANG=en_US.UTF-8
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
@@ -155,8 +156,9 @@ function klogs() {
 
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
-if [ $(uname -m) = 'arm64' ]; then
+if [ $arch = 'arm64' ]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
+    . /opt/homebrew/opt/asdf/libexec/asdf.sh
 fi
 
 #neofetch
