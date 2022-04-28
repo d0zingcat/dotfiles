@@ -17,7 +17,6 @@ return require('packer').startup(function(use)
     use('nvim-lua/plenary.nvim')
 
     use('folke/tokyonight.nvim')
-    use('kyazdani42/nvim-web-devicons')
     use('tpope/vim-fugitive') -- git fugitive
     use({
         'lewis6991/gitsigns.nvim',
@@ -113,10 +112,15 @@ return require('packer').startup(function(use)
     })
     use({
         'github/copilot.vim',
-        setup = function() end,
-        config = function()
-            require('config.copilot')
+        setup = function()
+            vim.g.copilot_no_tab_map = 1
+            vim.g.copilot_no_maps = 1
+            vim.g.copilot_assume_mapped = 1
         end,
+        config = function()
+            local map = require('utils').map
+            map('i', '<C-e>', 'copilot#Accept()', { expr = true })
+        end
     })
     use({
         'nvim-treesitter/nvim-treesitter',
@@ -127,8 +131,7 @@ return require('packer').startup(function(use)
     })
     use({
         'iamcco/markdown-preview.nvim',
-        run = 'cd app && yarn install',
-        cmd = { 'MarkdownPreview', 'MarkdownPreviewStop' },
+        run = 'cd app && yarn install'
     })
     use({
         'nvim-lualine/lualine.nvim',
@@ -180,7 +183,7 @@ return require('packer').startup(function(use)
             'williamboman/nvim-lsp-installer',
             'folke/lsp-colors.nvim',
             'folke/lua-dev.nvim',
-            'ray-x/lsp_signature.nvim',            
+            'ray-x/lsp_signature.nvim',
             'jose-elias-alvarez/null-ls.nvim',
             'RRethy/vim-illuminate',
             'simrat39/rust-tools.nvim',
@@ -209,9 +212,7 @@ return require('packer').startup(function(use)
     })
     -- erlang
     use('vim-erlang/vim-erlang-tags')
-    -- markdown
     use('iamcco/mathjax-support-for-mkdp')
-    use('iamcco/markdown-preview.vim')
     --beancount
     use('nathangrigg/vim-beancount')
     -- python

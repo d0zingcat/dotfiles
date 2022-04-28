@@ -10,6 +10,8 @@ FILES=(
 	.tmux.conf
 	.ideavimrc
 
+    .npmrc
+
 )
 
 CONFIG_FILES=(
