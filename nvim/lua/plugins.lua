@@ -47,6 +47,12 @@ return require('packer').startup(function(use)
             require('config.nvim_bookmarks')
         end,
     })
+    use({
+        'ojroques/vim-oscyank',
+        config = function()
+            require('config.vim-oscyank')
+        end,
+    })
     use('junegunn/vim-easy-align') -- 可以快速对齐的插件
     use({
         't9md/vim-choosewin',
@@ -120,7 +126,7 @@ return require('packer').startup(function(use)
         config = function()
             local map = require('utils').map
             map('i', '<C-e>', 'copilot#Accept()', { expr = true })
-        end
+        end,
     })
     use({
         'nvim-treesitter/nvim-treesitter',
@@ -131,7 +137,7 @@ return require('packer').startup(function(use)
     })
     use({
         'iamcco/markdown-preview.nvim',
-        run = 'cd app && yarn install'
+        run = 'cd app && yarn install',
     })
     use({
         'nvim-lualine/lualine.nvim',
