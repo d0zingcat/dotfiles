@@ -1,5 +1,6 @@
 nvim/plugin/
 nvim/.netrwhist
+raycast/extensions
 *.env
 .git/
 .DS_Store
