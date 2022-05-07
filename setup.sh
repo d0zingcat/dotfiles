@@ -77,6 +77,9 @@ function recover() {
 		ln -svfn $WORKING_DIR/$i $HOME_DIR/.config/$i
 	done
 
+    echo 'Linking others'
+    ln -svfn $WORKING_DIR/.ssh_config $HOME_DIR/.ssh/config
+
 	# submodules
 	echo 'Syncing Submodules...'
 	git submodule init

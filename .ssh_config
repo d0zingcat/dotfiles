@@ -1,0 +1,49 @@
+Host centos.htilil
+  HostName 10.1.4.28
+  User root
+  Port 22
+
+Host ubuntu.htilil
+  HostName 10.1.8.134
+  User ubuntu
+  Port 22
+
+Host jumper.htilil
+  HostName 10.1.4.14
+  User tangli
+  Port 32200
+
+Host raspberry.lan
+  HostName 192.168.2.16
+  User d0zingcat
+  Port 22
+
+Host r2s.lan
+  HostName 192.168.2.1
+  User root
+  Port 30022
+
+Host bwh
+  HostName gt.bwg.d0zingcat.xyz
+  User d0zingcat
+  Port 22
+
+Host sh.cvm.qcloud
+  HostName sh.cvm.qcloud.d0zingcat.xyz
+  User d0zingcat
+  Port 22
+
+Host sh.lh.qcloud
+  HostName sh.lh.qcloud.d0zingcat.xyz
+  User d0zingcat
+  Port 22
+
+Host sanjose.oracle
+  HostName sanjose.oracle.d0zingcat.xyz
+  User ubuntu
+  Port 22
+
+Host cd2.wangxu
+    HostName 1.14.72.143
+    User gh0stcat
+    Port 29508
