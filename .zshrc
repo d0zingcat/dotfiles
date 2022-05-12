@@ -1,9 +1,6 @@
 export GOPATH=$HOME/.go
 export GOPROXY=https://goproxy.cn,direct
 
-export PYENV_ROOT="$HOME/.pyenv"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
 export CARGO_PATH=$HOME/.cargo
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -15,19 +12,16 @@ source $HOME/.antigen/antigen.zsh
 antigen use oh-my-zsh
 
 antigen bundle git
-antigen bundle pip
 antigen bundle kubectl
-antigen bundle pyenv
 antigen bundle vi-mode
 antigen bundle autojump
+antigen bundle pipenv
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
-
-#antigen theme spaceship-prompt/spaceship-prompt
 
 antigen apply
 
@@ -103,14 +97,14 @@ alias kk='kubectl krew'
 alias vim='nvim'
 alias vi='nvim'
 alias jumper='ssh tangli@10.1.4.14 -p 32200'
-alias wol_xps8940="host root.pi.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
+alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 #alias nerdctl='lima nerdctl'
 #alias docker='lima docker'
 alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 
 
-function workup() {
+function m() {
     if [[ -n "$TMUX" ]]; then
         return 0
     fi
@@ -171,4 +165,6 @@ fi
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
 compdef __start_kubectl k
+#autoload -U +X compinit && compinit
+#autoload -U +X bashcompinit && bashcompinit
 
