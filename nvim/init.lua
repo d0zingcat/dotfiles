@@ -159,6 +159,7 @@ vim.g.copilot_no_maps = 1
 vim.g.copilot_assume_mapped = 1
 
 require('plugins')
+require('funcs')
 
 -- Neoformat
 if not fn.executable('luafmt') then

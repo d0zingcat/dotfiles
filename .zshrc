@@ -15,6 +15,7 @@ antigen bundle git
 antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
+antigen bundle pip
 antigen bundle pipenv
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
