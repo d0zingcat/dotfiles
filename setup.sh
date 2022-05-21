@@ -149,3 +149,5 @@ while getopts ":m:" opt; do
 		;;
 	esac
 done
+
+recover
