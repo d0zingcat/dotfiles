@@ -31,6 +31,8 @@ HOME_DIR="$HOME"
 function init() {
 	sudo xcode-select --install
 	sudo xcodebuild -license accept
+    echo 'Installing asdf-vm'
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 	if [[ $(command -v brew) = "" ]]; then
 		echo "Installing brew"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"

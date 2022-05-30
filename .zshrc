@@ -18,6 +18,7 @@ antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
 antigen bundle pipenv
+antigen bundle asdf
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
 
@@ -163,11 +164,12 @@ fi
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
-
+[ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 compdef __start_kubectl k
 #autoload -U +X compinit && compinit
 #autoload -U +X bashcompinit && bashcompinit
