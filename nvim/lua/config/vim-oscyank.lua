@@ -1,4 +1,4 @@
 local map = require('utils').map
 
-map('v', '<leader>cy', ':OSCYank<CR>')
+map('v', '<leader>yy', ':OSCYank<CR>')
 map('n', '<leader>o', '<Plug>OSCYank')
