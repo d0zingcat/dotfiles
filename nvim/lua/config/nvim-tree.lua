@@ -1,26 +1,6 @@
 local g = vim.g
 local map = require('utils').map
 
-g.nvim_tree_highlight_opened_files = 1
-g.nvim_tree_icons = {
-    symlink = '',
-    git = {
-        untracked = '?',
-    },
-    folder = {
-        arrow_open = '',
-        arrow_closed = '',
-        default = '',
-        open = '',
-    },
-}
-g.nvim_tree_show_icons = {
-    git = 1,
-    folders = 1,
-    files = 1,
-    folder_arrows = 1,
-}
-
 local tree_cb = require('nvim-tree.config').nvim_tree_callback
 require('nvim-tree').setup({
     view = {
@@ -36,6 +16,9 @@ require('nvim-tree').setup({
                 { key = '<C-t>', cb = ':ToggleTerm<cr>' },
             },
         },
+    },
+    renderer = {
+        highlight_opened_files = 1,
     },
     diagnostics = {
         enable = true,
