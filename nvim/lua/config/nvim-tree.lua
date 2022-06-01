@@ -18,7 +18,7 @@ require('nvim-tree').setup({
         },
     },
     renderer = {
-        highlight_opened_files = 1,
+        highlight_opened_files = '1',
     },
     diagnostics = {
         enable = true,
