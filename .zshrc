@@ -19,6 +19,7 @@ antigen bundle autojump
 antigen bundle pip
 antigen bundle pipenv
 antigen bundle asdf
+antigen bundle dotenv
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
 

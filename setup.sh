@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
-# this is a script to setup dotfiles for myself.
+#!/usr/bin/env zsh
+# Working environment: macOS/ArchLinux
+
 set -x
 FILES=(
 	.gitignore
@@ -28,11 +29,36 @@ CONFIG_FILES=(
 WORKING_DIR=$(pwd)
 HOME_DIR="$HOME"
 
+UNAME_LINUX="Linux"
+UNAME_MACOS="Darwin"
+
+RELEASE_ARCH="Arch Linux"
+RELEASE_UBUNTU="Ubuntu"
+RELEASE_DEBIAN="Debian"
+RELEASE_MANJARO="Manjaro Linux"
+RELEASE_MACOS="macOS"
+
+
+release_name=$(cat /etc/*release| egrep '^NAME=' | sed -E 's/.*"(.*)"/\1/')
+is_brew_installed="$+commands[brew]"
+_uname=`uname`
+is_linux=0
+is_macos=0
+
+if [ $_uname = $UNAME_LINUX ]
+then
+    is_linux=1
+fi
+
+if [ $_uname = $UNAME_MACOS ]
+then
+    is_macos=1
+fi
+
 function init() {
 	sudo xcode-select --install
 	sudo xcodebuild -license accept
-    echo 'Installing asdf-vm'
-    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
+k   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 	if [[ $(command -v brew) = "" ]]; then
 		echo "Installing brew"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -90,11 +116,20 @@ function recover() {
 	git submodule foreach git merge origin master
 
 	# brew bundle
-	echo "Installing by brew..."
-	suffix="$OS."$(echo $(hostname) | cut -d '.' -f 1)
-	mv .Brewfile.$suffix Brewfile
-	brew bundle -v
-	mv Brewfile .Brewfile.$suffix
+    if (( $is_brew_installed ))
+    then
+        echo "Installing by brew..."
+        suffix="$OS."$(echo $(hostname) | cut -d '.' -f 1)
+        mv .Brewfile.$suffix Brewfile
+        brew bundle -v
+        mv Brewfile .Brewfile.$suffix
+    fi
+
+    # if it is arch
+    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
+    then
+        sudo pacman -S - < pkglist.txt
+    fi
 
 	# others
 	git config --global core.excludesfile ~/.config/git/.gitignore
@@ -109,10 +144,17 @@ function manual_install() {
 }
 
 function backup() {
-	# brew backup
-	brew tap Homebrew/bundle
-	brew bundle dump -f
-	mv Brewfile .Brewfile."$(uname)."$(echo $(hostname) | cut -d '.' -f 1)
+    if (( $is_brew_installed ))
+    then
+        # brew backup
+        brew tap Homebrew/bundle
+        brew bundle dump -f
+        mv Brewfile .Brewfile."$(uname)."$(echo $(hostname) | cut -d '.' -f 1)
+    fi
+    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
+    then
+        pacman -Qqe > pkglist.txt
+    fi
 }
 
 function purge() {
@@ -125,31 +167,14 @@ function purge() {
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
 }
 
-function usage() {
-	echo "Try to backup/recover my dotfiles"
-	echo " "
-	echo "options:"
-	echo "-m             mode, accept recover/backup/purge"
-}
+option=$1
+case $option in 
+"")
+    recover
+    ;;
+*)
+    backup
+    ;;
+esac
 
-while getopts ":m:" opt; do
-	case ${opt} in
-	m)
-		echo $OPTARG
-		if [ "$OPTARG"x == "recover"x ]; then
-			recover
-		elif [ "$OPTARG"x == "backup"x ]; then
-			backup
-		else
-			echo "Invalid option: -$OPTARG" >&2
-		fi
-		exit 0
-		;;
-	\?)
-		usage
-		exit 0
-		;;
-	esac
-done
-
-recover
+exit 0
