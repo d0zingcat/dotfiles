@@ -1,3 +1,43 @@
+Host *
+ TCPKeepAlive yes
+ ServerAliveInterval 10
+ ServerAliveCountMax 3
+
+#Host jumper
+    #Hostname jumper.dbkops.com
+    #User tangli
+    #IdentityFile ~/.ssh/id_rsa
+
+Host *
+    TCPKeepAlive yes
+    ServerAliveInterval 10
+    ServerAliveCountMax 3
+
+Host speedy
+    Hostname speedy.dbkops.com
+    # Port 22
+    Port 2022
+    User tangli
+    IdentityFile ~/.ssh/id_rsa
+
+Host jumper
+    ProxyCommand ssh speedy -W %h:%p
+    Hostname jumper.dbkops.com
+    User tangli
+    IdentityFile ~/.ssh/id_rsa
+
+Host aws-optimus-1
+    ProxyCommand ssh jumper -W %h:%p
+    Hostname 172.21.7.29
+    User tangli
+    IdentityFile ~/.ssh/id_rsa
+
+Host aws-optimus-2
+    ProxyCommand ssh jumper -W %h:%p
+    Hostname 172.21.9.172
+    User tangli
+    IdentityFile ~/.ssh/id_rsa
+
 Host centos.htilil
   HostName 10.1.4.28
   User root

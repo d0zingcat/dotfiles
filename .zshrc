@@ -2,11 +2,11 @@ export GOPATH=$HOME/.go
 export GOPROXY=https://goproxy.cn,direct
 
 export CARGO_PATH=$HOME/.cargo
-
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
 export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
+
 
 source $HOME/.antigen/antigen.zsh
 
@@ -31,7 +31,6 @@ antigen apply
 eval "$(starship init zsh)"
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
@@ -99,7 +98,6 @@ alias kd='kubectl debug'
 alias kk='kubectl krew'
 alias vim='nvim'
 alias vi='nvim'
-alias jumper='ssh tangli@10.1.4.14 -p 32200'
 alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 #alias nerdctl='lima nerdctl'
 #alias docker='lima docker'
@@ -158,7 +156,6 @@ if [ $arch = 'arm64' ]; then
     . /opt/homebrew/opt/asdf/libexec/asdf.sh
 fi
 
-#neofetch
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
@@ -174,3 +171,8 @@ compdef __start_kubectl k
 #autoload -U +X compinit && compinit
 #autoload -U +X bashcompinit && bashcompinit
 
+# work
+remote_debank="aws-optimus-2:/home/tangli/DeBankCore"
+rsync_exclude="$local_debank/rsync_exclude.txt"
+local_debank="$HOME/Documents/work/employment/debank/DeBankCore"
+alias rsyncDebankCore="rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank"
