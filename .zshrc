@@ -7,6 +7,27 @@ export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PAT
 export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 
+export LC_ALL=en_US.UTF-8  
+export EDITOR=vim
+export LANG=en_US.UTF-8
+export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
+    -c 'nnoremap i <nop>' \
+    -c 'nnoremap <Space> <C-f>' \
+    -c 'noremap q :quit<CR>' -\""
+export KUBECONFIG=$(echo `ls ~/.kube/*config*` | sed 's/ /:/g')
+export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
+
+arch=$(uname -m)
+if [ $arch = "x86_64" ]; then
+    brew_opt="/usr/local/opt"
+elif [ $arch = "arm64" ]; then
+    brew_opt="/opt/homebrew/opt"
+fi
+LDFLAGS="-L$brew_opt/zlib/lib -L$brew_opt/openssl@3/lib"
+CPPFLAGS="-I$brew_opt/zlib/include -I$brew_opt/openssl@3/include"
+export LDFLAGS=$LDFLAGS
+export CPPFLAGS=$CPPFLAGS
+
 
 DISABLE_MAGIC_FUNCTIONS=true
 source $HOME/.antigen/antigen.zsh
@@ -30,40 +51,27 @@ antigen bundle zsh-users/zsh-completions
 
 antigen apply
 
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 eval "$(starship init zsh)"
 
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-
-export LC_ALL=en_US.UTF-8  
-export EDITOR=vim
-export LANG=en_US.UTF-8
-export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
-    -c 'nnoremap i <nop>' \
-    -c 'nnoremap <Space> <C-f>' \
-    -c 'noremap q :quit<CR>' -\""
-export KUBECONFIG=$(echo `ls ~/.kube/*config*` | sed 's/ /:/g')
-export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
-
-arch=$(uname -m)
-if [ $arch = "x86_64" ]; then
-    brew_opt="/usr/local/opt"
-elif [ $arch = "arm64" ]; then
-    brew_opt="/opt/homebrew/opt"
-fi
-LDFLAGS="-L$brew_opt/zlib/lib -L$brew_opt/openssl@3/lib"
-CPPFLAGS="-I$brew_opt/zlib/include -I$brew_opt/openssl@3/include"
-
-export LDFLAGS=$LDFLAGS
-export CPPFLAGS=$CPPFLAGS
-
-autoload -Uz compinit
-compinit
-
-source <(kubectl completion zsh)
-source <(helm completion zsh)
-
-
 alias ta='tmux a'
+alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias kns='kubens'
+alias kctx='kubectx'
+alias kd='kubectl debug'
+alias kk='kubectl krew'
+alias vim='nvim'
+alias vi='nvim'
+alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
+#alias nerdctl='lima nerdctl'
+#alias docker='lima docker'
+alias batc='bat --paging=never'
+alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
 alias urldecode='python3 -c "import sys, urllib.parse as ul; \
     print(ul.unquote_plus(sys.argv[1]))"'
@@ -88,25 +96,18 @@ alias ts_fmt='python3 -c "import datetime, subprocess; \
     "'
 alias leetcode_today='curl -sL "https://leetcode-cn.com/graphql" -H "content-type: application/json" -d '\''{"operationName":"questionOfToday","variables":{},"query":"query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId\n      questionTitleSlug\n      __typename\n    }\n    lastSubmission {\n      id\n      __typename\n    }\n    date\n    userStatus\n    __typename\n  }\n}\n"}'\'' | jq '\''.data.todayRecord[0].question'\'''
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
-alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
-alias ls='lsd'
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-alias kns='kubens'
-alias kctx='kubectx'
-alias kd='kubectl debug'
-alias kk='kubectl krew'
-alias vim='nvim'
-alias vi='nvim'
-alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
-#alias nerdctl='lima nerdctl'
-#alias docker='lima docker'
-alias batc='bat --paging=never'
-alias batcp='bat --plain --paging=never'
 
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
+[ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
+
+
+# menu
 function m() {
     if [[ -n "$TMUX" ]]; then
         return 0
@@ -114,16 +115,7 @@ function m() {
     tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query |xargs echo | read session  && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
 }
 
-
-# kill porcess according to keyword
-function s_kill() {
-         key=$1
-         if [ -z "$key" ]; then
-               echo "plz specify at least one keyword"
-         fi
-         ps -ef | grep $key | head -n 1 | awk '{print $2}' | xargs kill
-}
-
+# find network ports
 function macnst (){
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
@@ -142,6 +134,7 @@ function clashproxy_unset() {
     unset all_proxy
     echo "proxy all unset!"
 }
+
 function flush-input() {
     sudo killall -9 PAH_Extension TextInputMenuAgent TextInputSwitcher
 }
@@ -162,16 +155,13 @@ fi
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
-[ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
-compdef __start_kubectl k
 #autoload -U +X compinit && compinit
 #autoload -U +X bashcompinit && bashcompinit
+
+source <(kubectl completion zsh)
+source <(helm completion zsh)
+
+#compdef __start_kubectl k
 
 # work
 remote_debank="aws-optimus-2:/home/tangli/DeBankCore"
