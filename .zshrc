@@ -164,7 +164,7 @@ source <(helm completion zsh)
 #compdef __start_kubectl k
 
 # work
-remote_debank="aws-optimus-2:/home/tangli/DeBankCore"
+remote_debank="aws-optimus-1:/home/tangli/DeBankCore"
 local_debank="$HOME/Documents/work/employment/debank/DeBankCore"
 rsync_exclude="$local_debank/rsync_exclude.txt"
 alias rsyncDebankCore="rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank"
