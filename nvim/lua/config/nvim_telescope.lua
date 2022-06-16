@@ -13,8 +13,8 @@ require('telescope').setup({
         mappings = {
             i = {
                 ['<esc>'] = actions.close,
-                ['<C-j>'] = actions.move_selection_previous,
-                ['<C-k>'] = actions.move_selection_next,
+                ['<C-k>'] = actions.move_selection_previous,
+                ['<C-j>'] = actions.move_selection_next,
                 ['<C-l>'] = { '<Right>', type = 'command' },
                 ['<C-h>'] = { '<Left>', type = 'command' },
                 ['<C-f>'] = actions.preview_scrolling_down,
