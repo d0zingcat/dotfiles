@@ -26,6 +26,10 @@ CONFIG_FILES=(
 	stylua.toml
 )
 
+CUSTOM_FILES=(
+    "ssh/config .ssh/config"
+)
+
 WORKING_DIR=$(pwd)
 HOME_DIR="$HOME"
 
@@ -73,49 +77,53 @@ k   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 }
 
 function recover() {
-	OS="$(uname)"
+    OS="$(uname)"
 
-	# Homebrew
-	if [ ! $(which brew) ]; then
-		echo "Installing homebrew..."
-		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-	fi
-	if [ "$OS" = 'Darwin' ]; then
-		export PATH=/usr/local/bin/:$PATH
-	elif [ "$OS" = 'Linux' ]; then
-		export PATH=/home/linuxbrew/.linuxbrew/bin/:$PATH
-	fi
+    # Homebrew
+    if [ ! $(which brew) ]; then
+        echo "Installing homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    if [ "$OS" = 'Darwin' ]; then
+        export PATH=/usr/local/bin/:$PATH
+    elif [ "$OS" = 'Linux' ]; then
+        export PATH=/home/linuxbrew/.linuxbrew/bin/:$PATH
+    fi
 
-	# antigen
-	if [ ! -f $HOME/.antigen/antigen.zsh ]; then
-		mkdir -p $HOME/.antigen/
-		curl -L git.io/antigen >$HOME/.antigen/antigen.zsh
-	fi
+    # antigen
+    if [ ! -f $HOME/.antigen/antigen.zsh ]; then
+        mkdir -p $HOME/.antigen/
+        curl -L git.io/antigen >$HOME/.antigen/antigen.zsh
+    fi
 
 	mkdir -p $HOME/.kube/
+    mkdir $HOME/.ssh
 
 	# dotfiles
-	echo "Linking files..."
-	for i in ${FILES[@]}; do
-		ln -svfn $WORKING_DIR/$i $HOME_DIR/$i
-	done
+    echo "Linking files..."
+    for i in ${FILES[@]}; do
+        ln -svfn $WORKING_DIR/$i $HOME_DIR/$i
+    done
 
-	echo "Linking config files..."
-	for i in ${CONFIG_FILES[@]}; do
-		ln -svfn $WORKING_DIR/$i $HOME_DIR/.config/$i
-	done
+    echo "Linking config files..."
+    for i in ${CONFIG_FILES[@]}; do
+        ln -svfn $WORKING_DIR/$i $HOME_DIR/.config/$i
+    done
 
-    	echo 'Linking others'
-    	ln -svfn $WORKING_DIR/.ssh_config $HOME_DIR/.ssh/config
+    echo 'Linking customized files'
+    for row in ${CUSTOM_FILES[@]}; do
+        IFS=' ' read -r from to <<< "$row"
+        ln -svfn $WORKING_DIR/$from $HOME_DIR/$to
+    done
 
-	# submodules
-	echo 'Syncing Submodules...'
-	git submodule init
-	git submodule update --init --recursive
-	git submodule foreach --recursive git fetch
-	git submodule foreach git merge origin master
+    # submodules
+    echo 'Syncing Submodules...'
+    git submodule init
+    git submodule update --init --recursive
+    git submodule foreach --recursive git fetch
+    git submodule foreach git merge origin master
 
-	# brew bundle
+    # brew bundle
     if (( $is_brew_installed ))
     then
         echo "Installing by brew..."
@@ -131,10 +139,10 @@ function recover() {
         sudo pacman -S - < pkglist.txt
     fi
 
-	# others
-	git config --global core.excludesfile ~/.config/git/.gitignore
-	git config --global init.defaultBranch main
-	$(brew --prefix)/opt/fzf/install
+    # others
+    git config --global core.excludesfile ~/.config/git/.gitignore
+    git config --global init.defaultBranch main
+    $(brew --prefix)/opt/fzf/install
 }
 
 function manual_install() {
