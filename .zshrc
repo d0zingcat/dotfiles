@@ -1,5 +1,6 @@
 export GOPATH=$HOME/.go
 export GOPROXY=https://goproxy.cn,direct
+export PYENV_ROOT="$HOME/.pyenv"
 
 export CARGO_PATH=$HOME/.cargo
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
