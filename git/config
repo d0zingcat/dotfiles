@@ -1,0 +1,7 @@
+[init]
+        defaultBranch = main
+[user]
+        email = leewtang@gmail.com
+        name = d0zingcat
+[url "ssh://git@github.com/"]
+        insteadOf = https://github.com/

@@ -28,6 +28,7 @@ CONFIG_FILES=(
 
 CUSTOM_FILES=(
     "ssh/config .ssh/config"
+    "git/config .gitconfig"
 )
 
 WORKING_DIR=$(pwd)
@@ -96,8 +97,9 @@ function recover() {
         curl -L git.io/antigen >$HOME/.antigen/antigen.zsh
     fi
 
-	mkdir -p $HOME/.kube/
+    mkdir -p $HOME/.kube/
     mkdir $HOME/.ssh
+    mkdir $HOME/.config/
 
 	# dotfiles
     echo "Linking files..."
