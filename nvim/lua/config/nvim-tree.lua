@@ -29,10 +29,6 @@ require('nvim-tree').setup({
             hint = '',
         },
     },
-    update_to_buf_dir = {
-        enable = true,
-        auto_update = true,
-    },
     update_focused_file = {
         enable = true,
     },
@@ -42,7 +38,6 @@ require('nvim-tree').setup({
     --auto_close = true,
     hijack_netrw = true,
     update_cwd = true,
-    focus_tree = false,
     open_on_setup = true,
 })
 

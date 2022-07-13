@@ -9,8 +9,7 @@ export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 
 export LC_ALL=en_US.UTF-8  
-export EDITOR=vim
-export LANG=en_US.UTF-8
+export EDITOR=vim export LANG=en_US.UTF-8
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
     -c 'nnoremap <Space> <C-f>' \
@@ -28,6 +27,7 @@ LDFLAGS="-L$brew_opt/zlib/lib -L$brew_opt/openssl@3/lib"
 CPPFLAGS="-I$brew_opt/zlib/include -I$brew_opt/openssl@3/include"
 export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
+export ZSH_HIGHLIGHT_MAXLENGTH=60
 
 
 DISABLE_MAGIC_FUNCTIONS=true
@@ -74,27 +74,9 @@ alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {}
 alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
-alias urldecode='python3 -c "import sys, urllib.parse as ul; \
-    print(ul.unquote_plus(sys.argv[1]))"'
-alias urlencode='python3 -c "import sys, urllib.parse as ul; \
-    print (ul.quote_plus(sys.argv[1]))"'
 alias zerotier_reload='sudo launchctl unload /Library/LaunchDaemons/com.zerotier.one.plist && sudo launchctl load /Library/LaunchDaemons/com.zerotier.one.plist'
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias git_clean="git branch --merged | grep -v 'master' | grep -v 'main' | cat | xargs git branch -d"
-#alias pyjson_decode='python3 -c "import sys, json; \
-#print(json.dumps(eval(sys.argv[1])))"'
-alias pyjson_decode_stdout='python3 -c "import sys, json, subprocess; \
-    print(json.dumps(eval(subprocess.check_output( \
-        \"pbpaste\", env={\"LANG\": \"en_US.UTF-8\"}).decode(\"utf-8\"))))"'
-alias pyjson_decode='python3 -c "import json, subprocess; \
-    output=json.dumps(eval(subprocess.check_output(\
-        \"pbpaste\", env={\"LANG\": \"en_US.UTF-8\"}).decode(\"utf-8\"))).encode(\"utf-8\"); \
-    process=subprocess.Popen(\"pbcopy\", env={\"LANG\": \"en_US.UTF-8\"}, stdin=subprocess.PIPE); \
-    process.communicate(output)"'
-alias ts_fmt='python3 -c "import datetime, subprocess; \
-    print(\"UTC+800:\", datetime.datetime.fromtimestamp(int(subprocess.check_output(\"pbpaste\", env={\"LANG\": \"en_US.UTF-8\"}).decode(\"utf-8\")))); \
-    print(\"UTC+000:\", datetime.datetime.fromtimestamp(int(subprocess.check_output(\"pbpaste\", env={\"LANG\": \"en_US.UTF-8\"}).decode(\"utf-8\"))-8*3600)); \
-    "'
 alias leetcode_today='curl -sL "https://leetcode-cn.com/graphql" -H "content-type: application/json" -d '\''{"operationName":"questionOfToday","variables":{},"query":"query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId\n      questionTitleSlug\n      __typename\n    }\n    lastSubmission {\n      id\n      __typename\n    }\n    date\n    userStatus\n    __typename\n  }\n}\n"}'\'' | jq '\''.data.todayRecord[0].question'\'''
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 

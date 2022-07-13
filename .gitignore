@@ -1,6 +1,7 @@
 nvim/plugin/
 nvim/.netrwhist
 raycast/extensions
+raycast/config.json
 *.env
 .git/
 .DS_Store
