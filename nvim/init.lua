@@ -33,7 +33,6 @@ end
 
 -- Shcemas and colors
 set('termguicolors', true) -- 开启24bit的颜色，开启这个颜色会更漂亮一些
---cmd [[ colorscheme onebuddy ]]
 cmd([[ colorscheme tokyonight ]])
 --set('background', 'dark') -- 主题背景 dark-深色; light-浅色
 

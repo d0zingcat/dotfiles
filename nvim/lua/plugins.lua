@@ -70,7 +70,7 @@ return require('packer').startup(function(use)
         end,
     })
     use('wakatime/vim-wakatime')
-    use('psf/black')
+    --use('psf/black')
     use({
         'preservim/nerdcommenter',
         config = function()
@@ -122,18 +122,18 @@ return require('packer').startup(function(use)
             require('config.nvim-lsputils')
         end,
     })
-    use({
-        'github/copilot.vim',
-        setup = function()
-            vim.g.copilot_no_tab_map = 1
-            vim.g.copilot_no_maps = 1
-            vim.g.copilot_assume_mapped = 1
-        end,
-        config = function()
-            local map = require('utils').map
-            map('i', '<C-e>', 'copilot#Accept()', { expr = true })
-        end,
-    })
+    --use({
+    --'github/copilot.vim',
+    --setup = function()
+    --vim.g.copilot_no_tab_map = 1
+    --vim.g.copilot_no_maps = 1
+    --vim.g.copilot_assume_mapped = 1
+    --end,
+    --config = function()
+    --local map = require('utils').map
+    --map('i', '<C-e>', 'copilot#Accept()', { expr = true })
+    --end,
+    --})
     use({
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
