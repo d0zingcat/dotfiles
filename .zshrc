@@ -16,6 +16,7 @@ export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'noremap q :quit<CR>' -\""
 export KUBECONFIG=$(echo `ls ~/.kube/*config*` | sed 's/ /:/g')
 export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
+export GPG_TTY=$(tty)
 
 arch=$(uname -m)
 if [ $arch = "x86_64" ]; then
@@ -43,6 +44,7 @@ antigen bundle pip
 antigen bundle pipenv
 antigen bundle asdf
 antigen bundle dotenv
+antigen bundle nvim
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
 
@@ -148,6 +150,6 @@ source <(helm completion zsh)
 
 # work
 remote_debank="aws-optimus-1:/home/tangli/DeBankCore"
-local_debank="$HOME/Documents/work/employment/debank/DeBankCore"
+local_debank="$HOME/Workspace/employment/debank/DeBankCore"
 rsync_exclude="$local_debank/rsync_exclude.txt"
 alias rsyncDebankCore="rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank"
