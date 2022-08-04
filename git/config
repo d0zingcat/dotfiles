@@ -1,7 +1,10 @@
 [init]
-        defaultBranch = main
+	defaultBranch = main
 [user]
         email = leewtang@gmail.com
         name = d0zingcat
+	signingkey = 6185322F
 [url "ssh://git@github.com/"]
         insteadOf = https://github.com/
+[core]
+	excludesfile = /Users/d0zingcat/.config/git/.gitignore

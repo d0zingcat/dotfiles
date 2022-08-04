@@ -11,8 +11,6 @@ FILES=(
 	.tmux.conf
 	.ideavimrc
 
-    .npmrc
-
 )
 
 CONFIG_FILES=(
@@ -39,6 +37,8 @@ UNAME_MACOS="Darwin"
 
 RELEASE_ARCH="Arch Linux"
 RELEASE_UBUNTU="Ubuntu"
+# install golang rustc cargo 
+# cargo install lsd
 RELEASE_DEBIAN="Debian"
 RELEASE_MANJARO="Manjaro Linux"
 RELEASE_MACOS="macOS"
@@ -77,7 +77,39 @@ k   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 	fi
 }
 
+function purge() {
+	uninstall_oh_my_zsh
+	brew remove $(brew list --formula)
+	for i in ${FILE_OR_DIRS[@]}; do
+		rm -rf $WORKING_DIR/$i $HOME_DIR/$i
+	done
+
+	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
+}
+
+function manual_install() {
+	wget -qO- http://stevenygard.com/download/class-dump-3.5.tar.gz | tar xvz - -C /usr/local/bin && chmod u+x /usr/local/bin/class-dump
+	wget -O /usr/local/bin/class-dump https://github.com/AloneMonkey/MonkeyDev/raw/master/bin/class-dump && chmod u+x /usr/local/bin/class-dump
+	pip install --user frida-tools
+}
+
+function backup() {
+    if (( $is_brew_installed ))
+    then
+        # brew backup
+        brew tap Homebrew/bundle
+        brew bundle dump -f
+        mv Brewfile .Brewfile."$(uname)."$(echo $(hostname) | cut -d '.' -f 1)
+    fi
+    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
+    then
+        pacman -Qqe > pkglist.txt
+    fi
+}
+
 function recover() {
+#    sudo xcode-select --install
+#    sudo softwareupdate --install-rosetta
     OS="$(uname)"
 
     # Homebrew
@@ -147,44 +179,17 @@ function recover() {
     $(brew --prefix)/opt/fzf/install
 }
 
-function manual_install() {
-	wget -qO- http://stevenygard.com/download/class-dump-3.5.tar.gz | tar xvz - -C /usr/local/bin && chmod u+x /usr/local/bin/class-dump
-	wget -O /usr/local/bin/class-dump https://github.com/AloneMonkey/MonkeyDev/raw/master/bin/class-dump && chmod u+x /usr/local/bin/class-dump
-	pip install --user frida-tools
-}
-
-function backup() {
-    if (( $is_brew_installed ))
-    then
-        # brew backup
-        brew tap Homebrew/bundle
-        brew bundle dump -f
-        mv Brewfile .Brewfile."$(uname)."$(echo $(hostname) | cut -d '.' -f 1)
-    fi
-    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
-    then
-        pacman -Qqe > pkglist.txt
-    fi
-}
-
-function purge() {
-	uninstall_oh_my_zsh
-	brew remove $(brew list --formula)
-	for i in ${FILE_OR_DIRS[@]}; do
-		rm -rf $WORKING_DIR/$i $HOME_DIR/$i
-	done
-
-	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/uninstall.sh)"
-}
-
 option=$1
 case $option in 
-"")
-    recover
-    ;;
-*)
-    backup
-    ;;
+    "")
+        recover
+        ;;
+    uninstall)
+        uninstall
+        ;;
+    *)
+        backup
+        ;;
 esac
 
 exit 0
