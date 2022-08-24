@@ -41,18 +41,22 @@ antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
-antigen bundle pipenv
+#antigen bundle pipenv
 antigen bundle asdf
-antigen bundle dotenv
+#antigen bundle dotenv
 antigen bundle nvim
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
+antigen bundle darvid/zsh-poetry
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 
 antigen apply
+
+source <(kubectl completion zsh)
+source <(helm completion zsh)
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 eval "$(starship init zsh)"
@@ -143,8 +147,6 @@ fi
 #autoload -U +X compinit && compinit
 #autoload -U +X bashcompinit && bashcompinit
 
-source <(kubectl completion zsh)
-source <(helm completion zsh)
 
 #compdef __start_kubectl k
 

@@ -109,7 +109,6 @@ return require('packer').startup(function(use)
         },
     })
     use('hrsh7th/cmp-buffer')
-    use('hrsh7th/cmp-nvim-lsp')
     use({
         'folke/lsp-colors.nvim',
         config = function()
@@ -149,7 +148,11 @@ return require('packer').startup(function(use)
     })
     use({
         'iamcco/markdown-preview.nvim',
-        run = 'cd app && yarn install',
+        run = 'cd app && npm install',
+        setup = function()
+            vim.g.mkdp_filetypes = { 'markdown' }
+        end,
+        ft = { 'markdown' },
     })
     use({
         'nvim-lualine/lualine.nvim',
@@ -192,17 +195,19 @@ return require('packer').startup(function(use)
 
     -- LANGUAGES
     use({
-        'Junnplus/nvim-lsp-setup',
+        'Junnplus/lsp-setup.nvim',
         config = function()
-            require('config.nvim-lsp-setup')
+            require('config.lsp-setup')
         end,
         requires = {
             'neovim/nvim-lspconfig',
-            'williamboman/nvim-lsp-installer',
+            'hrsh7th/cmp-nvim-lsp',
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
             'folke/lsp-colors.nvim',
             'folke/lua-dev.nvim',
             'ray-x/lsp_signature.nvim',
-            'jose-elias-alvarez/null-ls.nvim',
+
             'RRethy/vim-illuminate',
             'simrat39/rust-tools.nvim',
             'p00f/clangd_extensions.nvim',
