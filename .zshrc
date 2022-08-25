@@ -133,6 +133,19 @@ function klogs() {
     k get pods --sort-by=.metadata.creationTimestamp | grep "$keyword" | head -n 1 | awk '{print $1}' | xargs kubectl logs -f
 }
 
+function rsync_debank() {
+    if [ $# -eq 0 ]; then 
+        remote_debank="aws-optimus-1:/home/tangli/DeBankCore"
+    elif [ $# -eq 1 ]; then
+        remote_debank="aws-optimus-$1:/home/tangli/DeBankCore"
+    else
+        echo 'error!'
+    fi
+    local_debank="$HOME/Workspace/employment/debank/DeBankCore"
+    rsync_exclude="$local_debank/rsync_exclude.txt"
+    rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+}
+
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
 if [ $arch = 'arm64' ]; then
@@ -150,8 +163,3 @@ fi
 
 #compdef __start_kubectl k
 
-# work
-remote_debank="aws-optimus-1:/home/tangli/DeBankCore"
-local_debank="$HOME/Workspace/employment/debank/DeBankCore"
-rsync_exclude="$local_debank/rsync_exclude.txt"
-alias rsyncDebankCore="rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank"
