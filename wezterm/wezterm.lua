@@ -48,14 +48,14 @@ return {
         --{ key = 's', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }) },
         { key = 'w', mods = 'CMD', action = wezterm.action({ CloseCurrentPane = { confirm = false } }) },
     },
-    hyperlink_rules = {
-        {
-            regex = [[\b(https|http)://\S*\b]],
-            format = '$0',
-        },
-        {
-            regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
-            format = 'https://www.github.com/$1/$3',
-        }
-    }
+    -- hyperlink_rules = {
+    --     {
+    --         regex = [[\b(https|http)://\S*\b]],
+    --         format = '$0',
+    --     },
+    --     {
+    --         regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
+    --         format = 'https://www.github.com/$1/$3',
+    --     }
+    -- }
 }

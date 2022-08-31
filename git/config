@@ -2,7 +2,7 @@
 	defaultBranch = main
 [user]
 	email = i@d0zingcat.dev
-	name = d0zingcat
+	name = Lee Tang
 	signingkey = 39E301C2
 [url "https://"]
     insteadOf = git://
@@ -22,7 +22,8 @@
     cmd = difft "$LOCAL" "$REMOTE"
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-    pr = pull --rebase origin master
+    pr = pull --rebase origin 
+    unstage = reset HEAD --
     p = push
     st = status
     co = checkout

@@ -72,11 +72,11 @@ return require('packer').startup(function(use)
     use('wakatime/vim-wakatime')
     --use('psf/black')
     use({
-        'preservim/nerdcommenter',
+        'numToStr/Comment.nvim',
         config = function()
-            require('config.nvim_vimgo')
+            require('Comment').setup()
         end,
-    })
+        })
     use({
         'windwp/nvim-autopairs',
         config = function()
