@@ -134,16 +134,22 @@ function klogs() {
 }
 
 function rsync_debank() {
+    local_debank=`pwd`
+    local_dir=${PWD##*/}
+    local_dir=${local_dir:-/}
     if [ $# -eq 0 ]; then 
-        remote_debank="aws-optimus-1:/home/tangli/DeBankCore"
+        remote_debank="aws-optimus-1:/home/tangli/$local_dir"
     elif [ $# -eq 1 ]; then
-        remote_debank="aws-optimus-$1:/home/tangli/DeBankCore"
+        remote_debank="aws-optimus-$1:/home/tangli/$local_dir"
     else
         echo 'error!'
     fi
-    local_debank="$HOME/Workspace/employment/debank/DeBankCore"
     rsync_exclude="$local_debank/rsync_exclude.txt"
-    rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+    if [ -f $rsync_exclude ]; then
+        rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+    else
+        rsync -r -h -v --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+    fi
 }
 
 #export LESS_TERMCAP_so=$'\E[30;43m'
