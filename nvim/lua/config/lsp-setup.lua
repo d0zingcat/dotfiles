@@ -1,10 +1,10 @@
 local utils = require('lsp-setup.utils')
 local mappings = {
     -- Example mappings for telescope pickers
-    gd = 'lua require"telescope.builtin".lsp_definitions()',
-    gi = 'lua require"telescope.builtin".lsp_implementations()',
-    gr = 'lua require"telescope.builtin".lsp_references()',
-    go = 'lua require"telescope.builtin".lsp_document_symbols()'
+    gd = 'lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})',
+    gi = 'lua require"telescope.builtin".lsp_implementations({jump_type="vsplit"})',
+    gr = 'lua require"telescope.builtin".lsp_references({jump_type="vsplit"})',
+    go = 'lua require"telescope.builtin".lsp_document_symbols({jump_type="vsplit"})'
 }
 
 local servers = {

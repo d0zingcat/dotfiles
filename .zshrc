@@ -44,6 +44,7 @@ antigen bundle pip
 #antigen bundle pipenv
 antigen bundle asdf
 #antigen bundle dotenv
+antigen bundle poetry
 antigen bundle nvim
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
@@ -82,7 +83,7 @@ alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
 alias zerotier_reload='sudo launchctl unload /Library/LaunchDaemons/com.zerotier.one.plist && sudo launchctl load /Library/LaunchDaemons/com.zerotier.one.plist'
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
-alias git_clean="git branch --merged | grep -v 'master' | grep -v 'main' | cat | xargs git branch -d"
+alias git_clean="(git checkout main || git checkout master) && git branch --merged | grep -v 'master' | grep -v 'main' | cat | xargs git branch -d"
 alias leetcode_today='curl -sL "https://leetcode-cn.com/graphql" -H "content-type: application/json" -d '\''{"operationName":"questionOfToday","variables":{},"query":"query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId\n      questionTitleSlug\n      __typename\n    }\n    lastSubmission {\n      id\n      __typename\n    }\n    date\n    userStatus\n    __typename\n  }\n}\n"}'\'' | jq '\''.data.todayRecord[0].question'\'''
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 
@@ -99,7 +100,7 @@ alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm
 # menu
 function m() {
     if [[ -n "$TMUX" ]]; then
-        return 0
+        exit 0
     fi
     tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query |xargs echo | read session  && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
 }
@@ -162,10 +163,6 @@ fi
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
-
-#autoload -U +X compinit && compinit
-#autoload -U +X bashcompinit && bashcompinit
-
 
 #compdef __start_kubectl k
 

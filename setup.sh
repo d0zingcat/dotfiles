@@ -91,6 +91,8 @@ function manual_install() {
 	wget -qO- http://stevenygard.com/download/class-dump-3.5.tar.gz | tar xvz - -C /usr/local/bin && chmod u+x /usr/local/bin/class-dump
 	wget -O /usr/local/bin/class-dump https://github.com/AloneMonkey/MonkeyDev/raw/master/bin/class-dump && chmod u+x /usr/local/bin/class-dump
 	pip install --user frida-tools
+    # mkdir -p $ZSH/custom/plugins/poetry
+    # poetry completions zsh > $ZSH/custom/plugins/poetry/_poetry
 }
 
 function backup() {
