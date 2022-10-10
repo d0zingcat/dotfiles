@@ -4,4 +4,5 @@ raycast/extensions
 raycast/config.json
 *.env
 .git/
+ssh/
 .DS_Store
