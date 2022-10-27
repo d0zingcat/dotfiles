@@ -182,7 +182,7 @@ function recover() {
 }
 
 function post_recover() {
-    mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
+    mkdir -p ~/.1password && ln -s /Users/d0zingcat/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock /Users/d0zingcat/.1password/agent.sock
 }
 
 option=$1

@@ -41,15 +41,13 @@ local servers = {
 
     pylsp = {},
     rust_analyzer = {
-        server = {
-            settings = {
-                ['rust-analyzer'] = {
-                    cargo = {
-                        loadOutDirsFromCheck = true,
-                    },
-                    procMacro = {
-                        enable = true,
-                    },
+        settings = {
+            ['rust-analyzer'] = {
+                cargo = {
+                    loadOutDirsFromCheck = true,
+                },
+                procMacro = {
+                    enable = true,
                 },
             },
         },
@@ -61,6 +59,11 @@ local servers = {
             end,
         },
     }),
+    beancount = {
+        init_options = {
+            journal_file = "",
+        }
+    }
 }
 
 local settings = {

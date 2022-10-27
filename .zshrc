@@ -73,7 +73,6 @@ alias kns='kubens'
 alias kctx='kubectx'
 alias kd='kubectl debug'
 alias kk='kubectl krew'
-alias vim='nvim'
 alias vi='nvim'
 alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 #alias nerdctl='lima nerdctl'
@@ -134,22 +133,35 @@ function klogs() {
     k get pods --sort-by=.metadata.creationTimestamp | grep "$keyword" | head -n 1 | awk '{print $1}' | xargs kubectl logs -f
 }
 
-function rsync_debank() {
-    local_debank=`pwd`
+function rsync_work() {
+    remote_dir="/home/tangli"
+    local_work=`pwd`
     local_dir=${PWD##*/}
     local_dir=${local_dir:-/}
     if [ $# -eq 0 ]; then 
-        remote_debank="aws-optimus-1:/home/tangli/$local_dir"
+        remote_work="aws-optimus-1:$remote_dir/$local_dir"
     elif [ $# -eq 1 ]; then
-        remote_debank="aws-optimus-$1:/home/tangli/$local_dir"
+        remote_work="aws-optimus-$1:$remote_dir/$local_dir"
+    elif [ $# -eq 2 ]; then
+        remote_work="aws-optimus-$1:$remote_dir/$local_dir"
+        if [ "$2" = "back" ]; then
+            # swap local and remote
+            t=$local_work 
+            local_work=$remote_work
+            remote_work=$t
+        else
+            echo "Invalid argument! should be 'back'"
+            exit(1)
+        fi
     else
-        echo 'error!'
+        echo "invalid argument!"
+        exit(1)
     fi
-    rsync_exclude="$local_debank/rsync_exclude.txt"
+    rsync_exclude="$local_work/rsync_exclude.txt"
     if [ -f $rsync_exclude ]; then
-        rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+        rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     else
-        rsync -r -h -v --exclude=/venv --exclude=/.vscode --exclude=/.git $local_debank/ $remote_debank
+        rsync -r -h -v --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     fi
 }
 
