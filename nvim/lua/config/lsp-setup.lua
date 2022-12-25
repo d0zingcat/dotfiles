@@ -4,7 +4,8 @@ local mappings = {
     gd = 'lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})',
     gi = 'lua require"telescope.builtin".lsp_implementations({jump_type="vsplit"})',
     gr = 'lua require"telescope.builtin".lsp_references({jump_type="vsplit"})',
-    go = 'lua require"telescope.builtin".lsp_document_symbols({jump_type="vsplit"})'
+    go = 'lua require"telescope.builtin".lsp_document_symbols({jump_type="vsplit"})',
+    ['<space>f'] = 'lua vim.lsp.buf.format({async=true})',
 }
 
 local servers = {
@@ -23,7 +24,7 @@ local servers = {
     },
     eslint = {},
     jsonls = {},
-    clangd = require('nvim-lsp-setup.clangd_extensions').setup(),
+    clangd = {},
     gopls = {
         settings = {
             golsp = {

@@ -53,6 +53,7 @@ cmd(
 )
 
 cmd([[iabbrev pdb import pdb; pdb.set_trace()<ESC>]])
+cmd([[iabbrev ipdb import ipdb; ipdb.set_trace()<ESC>]])
 -- auto compile packer
 cmd([[
 augroup packer_user_config

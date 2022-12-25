@@ -44,7 +44,8 @@ antigen bundle pip
 #antigen bundle pipenv
 antigen bundle asdf
 #antigen bundle dotenv
-antigen bundle poetry
+# antigen bundle poetry
+antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
 antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
@@ -159,9 +160,9 @@ function rsync_work() {
     fi
     rsync_exclude="$local_work/rsync_exclude.txt"
     if [ -f $rsync_exclude ]; then
-        rsync -r -h -v --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
+        rsync -rvht --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     else
-        rsync -r -h -v --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
+        rsync -rvht --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     fi
 }
 
