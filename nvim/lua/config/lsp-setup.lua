@@ -8,7 +8,12 @@ local mappings = {
     ['<space>f'] = 'lua vim.lsp.buf.format({async=true})',
 }
 
+require("neodev").setup({
+    -- add any options here, or leave empty to use the default settings
+})
+
 local servers = {
+    sumneko_lua = {},
     bashls = {},
     yamlls = {
         filetypes = { 'yaml', 'yml' },
@@ -53,13 +58,6 @@ local servers = {
             },
         },
     },
-    sumneko_lua = require('lua-dev').setup({
-        lspconfig = {
-            on_attach = function(client, _)
-                utils.disable_formatting(client)
-            end,
-        },
-    }),
     beancount = {
         init_options = {
             journal_file = "",

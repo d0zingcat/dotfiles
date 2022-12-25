@@ -76,7 +76,7 @@ return require('packer').startup(function(use)
         config = function()
             require('Comment').setup()
         end,
-        })
+    })
     use({
         'windwp/nvim-autopairs',
         config = function()
@@ -205,7 +205,7 @@ return require('packer').startup(function(use)
             'williamboman/mason.nvim',
             'williamboman/mason-lspconfig.nvim',
             'folke/lsp-colors.nvim',
-            'folke/lua-dev.nvim',
+            'folke/neodev.nvim',
             'ray-x/lsp_signature.nvim',
 
             'RRethy/vim-illuminate',
