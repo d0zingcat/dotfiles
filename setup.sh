@@ -25,7 +25,7 @@ CONFIG_FILES=(
 )
 
 CUSTOM_FILES=(
-    "ssh/config .ssh/config"
+#    "ssh/config .ssh/config"
     "git/config .gitconfig"
 )
 
@@ -110,8 +110,7 @@ function backup() {
 }
 
 function recover() {
-#    sudo xcode-select --install
-#    sudo softwareupdate --install-rosetta
+    #softwareupdate --install-rosetta
     OS="$(uname)"
 
     # Homebrew
@@ -121,6 +120,7 @@ function recover() {
     fi
     if [ "$OS" = 'Darwin' ]; then
         export PATH=/usr/local/bin/:$PATH
+        xcode-select --install
     elif [ "$OS" = 'Linux' ]; then
         export PATH=/home/linuxbrew/.linuxbrew/bin/:$PATH
     fi

@@ -31,8 +31,11 @@ export CPPFLAGS=$CPPFLAGS
 export ZSH_HIGHLIGHT_MAXLENGTH=60
 
 
+FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
 source $HOME/.antigen/antigen.zsh
+
+
 
 antigen use oh-my-zsh
 
@@ -89,12 +92,10 @@ alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f ~/.asdf/asdf.sh ] && source ~/.asdf/asdf.sh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
-[ -f /opt/asdf-vm/asdf.sh ] && source /opt/asdf-vm/asdf.sh
 
 
 # menu
@@ -168,10 +169,6 @@ function rsync_work() {
 
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
-if [ $arch = 'arm64' ]; then
-    eval "$(/opt/homebrew/bin/brew shellenv)"
-    . /opt/homebrew/opt/asdf/libexec/asdf.sh
-fi
 
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
