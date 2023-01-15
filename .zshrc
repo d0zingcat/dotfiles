@@ -78,9 +78,7 @@ alias kctx='kubectx'
 alias kd='kubectl debug'
 alias kk='kubectl krew'
 alias vi='nvim'
-alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
-#alias nerdctl='lima nerdctl'
-#alias docker='lima docker'
+#alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
@@ -111,20 +109,21 @@ function macnst (){
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
+# As clash for windows provides TUN mode/ClashX provides enhance mode, there's no necessity to set proxy munally(which proxy all traffix transparently)
 # proxy by clashx
-function clashproxy() {
-    local proxy=http://127.0.0.1:7890
-    export https_proxy=$proxy http_proxy=$proxy all_proxy=socks5://127.0.0.1:7891;
-    echo "proxy all set!"
-}
-
-# unset proxy
-function clashproxy_unset() {
-    unset http_proxy
-    unset https_proxy
-    unset all_proxy
-    echo "proxy all unset!"
-}
+#function clashproxy() {
+#    local proxy=http://127.0.0.1:7890
+#    export https_proxy=$proxy http_proxy=$proxy all_proxy=socks5://127.0.0.1:7891;
+#    echo "proxy all set!"
+#}
+#
+## unset proxy
+#function clashproxy_unset() {
+#    unset http_proxy
+#    unset https_proxy
+#    unset all_proxy
+#    echo "proxy all unset!"
+#}
 
 function flush-input() {
     sudo killall -9 PAH_Extension TextInputMenuAgent TextInputSwitcher
@@ -133,6 +132,29 @@ function flush-input() {
 function klogs() {
     keyword=$1
     k get pods --sort-by=.metadata.creationTimestamp | grep "$keyword" | head -n 1 | awk '{print $1}' | xargs kubectl logs -f
+}
+
+function replace_remote() {
+    if (( $# != 1 ));
+    then
+        echo 'Invalid parameter!'
+    else
+        url=$(git remote -v | head -n 1  | cut -d $'\t' -f 2 | cut -d ' ' -f 1)
+        suffix=$(echo $url | cut -d ':' -f 2)
+        case $1 in 
+            work)
+                new_url=workgit:$suffix
+                git remote set-url origin $new_url
+                ;;
+            play)
+                new_url=personalgit:$suffix
+                git remote set-url origin $new_url
+                ;;
+            *)
+                echo 'Invalid parameter'
+                ;;
+        esac
+    fi
 }
 
 function rsync_work() {
@@ -168,7 +190,6 @@ function rsync_work() {
 }
 
 #export LESS_TERMCAP_so=$'\E[30;43m'
-
 
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
