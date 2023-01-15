@@ -6,7 +6,6 @@ FILES=(
 	.gitignore
 
 	.zshrc
-	.zlogin
 
 	.tmux.conf
 	.ideavimrc
@@ -25,7 +24,7 @@ CONFIG_FILES=(
 )
 
 CUSTOM_FILES=(
-#    "ssh/config .ssh/config"
+    "ssh/config .ssh/config"
     "git/config .gitconfig"
 )
 
@@ -121,6 +120,7 @@ function recover() {
     if [ "$OS" = 'Darwin' ]; then
         export PATH=/usr/local/bin/:$PATH
         xcode-select --install
+        defaults write -g ApplePressAndHoldEnabled -bool false
     elif [ "$OS" = 'Linux' ]; then
         export PATH=/home/linuxbrew/.linuxbrew/bin/:$PATH
     fi
@@ -173,6 +173,9 @@ function recover() {
     if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
     then
         sudo pacman -S - < pkglist.txt
+    elif [ $is_macos -eq 1 ]
+    then
+        mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
     fi
 
     # others

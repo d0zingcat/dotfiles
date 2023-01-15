@@ -1,0 +1,24 @@
+Host *
+    IdentityAgent "~/.1password/agent.sock"
+    ServerAliveInterval 60
+
+Host github.com
+    Hostname ssh.github.com
+    Port 443
+    User git
+
+# Personal GitHub
+Host personalgit
+    Hostname ssh.github.com
+    Port 443
+    User git
+    IdentityFile ~/.ssh/personal_git.pub
+    IdentitiesOnly yes
+
+# Work GitHub
+Host workgit
+    Hostname ssh.github.com
+    Port 443
+    User git
+    IdentityFile ~/.ssh/work_git.pub
+    IdentitiesOnly yes

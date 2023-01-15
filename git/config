@@ -1,31 +1,40 @@
 [init]
-	defaultBranch = main
+    defaultBranch = main
+
 [user]
-	email = i@d0zingcat.dev
-	name = Lee Tang
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICWNAdF4p781cI/fIyHAEw+JgRxnoKX5BBk+xyr6r09W
-[url "https://"]
-    insteadOf = git://
-[core]
-    editor = nvim
-	excludesfile = /Users/d0zingcat/.config/git/.gitignore
+    email = i@d0zingcat.dev
+    name = Lee Tang
+    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
+
 [commit]
-	gpgsign = true
+    gpgsign = true
+
 [gpg]
-  format = ssh
+    format = ssh
 
 [gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+    program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+
+[url "https://"]
+    insteadOf = git://
+
+[core]
+    editor = nvim
+    excludesfile = /Users/d0zingcat/.config/git/.gitignore
 
 [pager]
     difftool = true
+
 [diff]
     external = difft
     tool = difftastic
+
 [difftool]
     prompt = false
+
 [difftool "difftastic"]
     cmd = difft "$LOCAL" "$REMOTE"
+
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
     pr = pull --rebase origin 
