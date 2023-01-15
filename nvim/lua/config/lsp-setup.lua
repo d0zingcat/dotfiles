@@ -28,6 +28,7 @@ local servers = {
         },
     },
     eslint = {},
+    tsserver = {},
     jsonls = {},
     clangd = {},
     gopls = {
