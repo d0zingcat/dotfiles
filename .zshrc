@@ -44,6 +44,7 @@ antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
+antigen bundle unixorn/fzf-zsh-plugin@main
 #antigen bundle pipenv
 antigen bundle asdf
 #antigen bundle dotenv
@@ -89,7 +90,6 @@ alias leetcode_today='curl -sL "https://leetcode-cn.com/graphql" -H "content-typ
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
