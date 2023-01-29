@@ -3,6 +3,7 @@ tap "homebrew/cask"
 tap "homebrew/cask-drivers"
 tap "homebrew/core"
 tap "homebrew/services"
+tap "mongodb/brew"
 brew "coreutils"
 brew "openssl@3"
 brew "readline"
@@ -30,7 +31,7 @@ brew "lima"
 brew "lsd"
 brew "mas"
 brew "zlib"
-brew "mysql"
+brew "mysql", restart_service: true
 brew "neovim"
 brew "node"
 brew "pinentry-mac"
@@ -52,6 +53,7 @@ brew "trzsz-go"
 brew "wakeonlan"
 brew "wget"
 brew "wireguard-tools"
+brew "mongodb/brew/mongodb-community"
 cask "1password"
 cask "bartender"
 cask "brave-browser"
@@ -61,6 +63,7 @@ cask "datagrip"
 cask "discord"
 cask "docker"
 cask "google-drive"
+cask "lark"
 cask "logi-options-plus"
 cask "notion"
 cask "raycast"
@@ -71,12 +74,12 @@ cask "tencent-meeting"
 cask "visual-studio-code"
 cask "wezterm"
 mas "1Password for Safari", id: 1569813296
+mas "Bob", id: 1630034110
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft Word", id: 462054704
 mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
 mas "Twitter", id: 1482454543
-mas "WireGuard", id: 1451685025
 mas "Xcode", id: 497799835
 mas "微信", id: 836500024
 mas "欧路词典", id: 434350458

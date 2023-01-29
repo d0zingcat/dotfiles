@@ -157,6 +157,7 @@ function replace_remote() {
     fi
 }
 
+
 function rsync_work() {
     remote_dir="/home/tangli"
     local_work=`pwd`
