@@ -20,7 +20,7 @@
 
 [core]
     editor = nvim
-    excludesfile = /Users/d0zingcat/.config/git/.gitignore
+	excludesfile = /Users/d0zingcat/.config/git/.gitignore
 
 [pager]
     difftool = true
@@ -33,6 +33,7 @@
     prompt = false
 
 [difftool "difftastic"]
+    prompt = false
     cmd = difft "$LOCAL" "$REMOTE"
 
 [alias]
@@ -49,3 +50,11 @@
     d = diff
     ds = diff --staged
     dc = diff --cached
+
+#[difftool "sourcetree"]
+#	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+#	path = 
+#
+#[mergetool "sourcetree"]
+#	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+#	trustExitCode = true

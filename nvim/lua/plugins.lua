@@ -192,6 +192,19 @@ return require('packer').startup(function(use)
             require('config.tagbar')
         end,
     })
+    -- BETTER editor
+    use({
+        'vinnymeller/swagger-preview.nvim',
+        run = "npm install -g swagger-ui-watcher",
+        config = function()
+            require("swagger-preview").setup({
+                -- The port to run the preview server on
+                port = 9000,
+                -- The host to run the preview server on
+                host = "localhost",
+            })
+        end,
+    })
 
     -- LANGUAGES
     use({

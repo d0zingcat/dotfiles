@@ -67,6 +67,7 @@ cask "lark"
 cask "logi-options-plus"
 cask "notion"
 cask "raycast"
+cask "sourcetree"
 cask "spotify"
 cask "stats"
 cask "telegram"
@@ -77,6 +78,7 @@ mas "1Password for Safari", id: 1569813296
 mas "Bob", id: 1630034110
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft Word", id: 462054704
+mas "Notion Web Clipper", id: 1559269364
 mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
 mas "Twitter", id: 1482454543
