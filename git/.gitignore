@@ -3,3 +3,4 @@
 .DS_Store
 .python-version
 .mypy_cache/
+.tool-versions
