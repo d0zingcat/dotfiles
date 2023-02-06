@@ -26,6 +26,7 @@ CONFIG_FILES=(
 CUSTOM_FILES=(
     "ssh/config .ssh/config"
     "git/config .gitconfig"
+    #"logseq .logseq"
 )
 
 WORKING_DIR=$(pwd)

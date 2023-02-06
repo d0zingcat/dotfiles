@@ -9,7 +9,8 @@ export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 
 export LC_ALL=en_US.UTF-8  
-export EDITOR=vim export LANG=en_US.UTF-8
+export EDITOR=vim
+export LANG=en_US.UTF-8
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
     -c 'nnoremap <Space> <C-f>' \
