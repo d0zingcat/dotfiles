@@ -85,7 +85,6 @@ alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
-alias git_clean="(git checkout main || git checkout master) && git branch --merged | grep -v 'master' | grep -v 'main' | cat | xargs git branch -d"
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 alias pn='pnpm'
 
@@ -109,8 +108,7 @@ function macnst (){
 }
 
 # As clash for windows provides TUN mode/ClashX provides enhance mode, there's no necessity to set proxy munally(which proxy all traffix transparently)
-# proxy by clashx
-#function clashproxy() {
+# proxy by clashx function clashproxy() {
 #    local proxy=http://127.0.0.1:7890
 #    export https_proxy=$proxy http_proxy=$proxy all_proxy=socks5://127.0.0.1:7891;
 #    echo "proxy all set!"
@@ -186,6 +184,15 @@ function rsync_work() {
         rsync -rvht --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     else
         rsync -rvht --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
+    fi
+}
+
+function git_clean() {
+    if [[ $# != 1 || ! $1 =~ 'main|master|develop' ]]
+    then 
+        echo 'Invalid parameter, should based on develop/main/master' 
+    else
+        g checkout $1 && g branch --merged | grep -v $1 | cat | xargs git branch -d
     fi
 }
 

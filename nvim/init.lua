@@ -44,6 +44,10 @@ cmd([[ autocmd FileType php setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwi
 cmd([[ autocmd FileType python setlocal tabstop=4 shiftwidth=4 softtabstop=4 ]])
 cmd([[ autocmd FileType json setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab ]])
 cmd([[ autocmd FileType go setlocal tabstop=8 shiftwidth=8 softtabstop=8 textwidth=120 noexpandtab ]])
+-- in makefiles, don't expand tabs to spaces, since actual tab characters are
+-- needed, and have indentation at 8 chars to be sure that all indents are tabs
+-- (despite the mappings later):
+cmd([[ autocmd FileType make set noexpandtab shiftwidth=8 softtabstop=0]])
 cmd([[ autocmd FileType html,htmldjango,xhtml,haml setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=0 ]])
 cmd([[ autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=0 expandtab ]])
 cmd([[ autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=120 ]])
@@ -182,6 +186,6 @@ api.nvim_exec(
 "endfunction
 "
 "set statusline+=%{NearestMethodOrFunction()}
-]],
+]]   ,
     false
 )

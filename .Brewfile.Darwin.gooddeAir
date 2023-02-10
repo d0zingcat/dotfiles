@@ -4,6 +4,7 @@ tap "homebrew/cask-drivers"
 tap "homebrew/core"
 tap "homebrew/services"
 tap "mongodb/brew"
+brew "argocd"
 brew "coreutils"
 brew "openssl@3"
 brew "readline"
@@ -24,7 +25,7 @@ brew "git"
 brew "gnupg"
 brew "go"
 brew "helm"
-brew "zookeeper", restart_service: true
+brew "zookeeper"
 brew "kafka"
 brew "kubernetes-cli"
 brew "kubectx"
@@ -57,6 +58,7 @@ brew "wget"
 brew "wireguard-tools"
 brew "mongodb/brew/mongodb-community"
 cask "1password"
+cask "apifox"
 cask "bartender"
 cask "brave-browser"
 cask "charles"
@@ -69,6 +71,7 @@ cask "google-drive"
 cask "lark"
 cask "logi-options-plus"
 cask "logseq"
+cask "ngrok"
 cask "notion"
 cask "rapidapi"
 cask "raycast"
@@ -81,7 +84,9 @@ cask "visual-studio-code"
 cask "warp"
 cask "wezterm"
 mas "1Password for Safari", id: 1569813296
+mas "Best Trace", id: 1037779758
 mas "Bob", id: 1630034110
+mas "EuDic", id: 434350458
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft Word", id: 462054704
 mas "Notion Web Clipper", id: 1559269364
@@ -89,6 +94,5 @@ mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
 mas "Twitter", id: 1482454543
 mas "Vimari", id: 1480933944
+mas "WeChat", id: 836500024
 mas "Xcode", id: 497799835
-mas "微信", id: 836500024
-mas "欧路词典", id: 434350458
