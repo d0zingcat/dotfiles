@@ -7,6 +7,9 @@ Host github.com
     Hostname ssh.github.com
     Port 443
     User git
+    # set to personal_git by default
+    IdentityFile ~/.ssh/personal_git.pub
+    IdentitiesOnly yes
 
 # Personal GitHub
 Host personalgit
