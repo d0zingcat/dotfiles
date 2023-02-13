@@ -127,18 +127,18 @@ return require('packer').startup(function(use)
             require('config.lsp_lines')
         end,
     })
-    --use({
-    --'github/copilot.vim',
-    --setup = function()
-    --vim.g.copilot_no_tab_map = 1
-    --vim.g.copilot_no_maps = 1
-    --vim.g.copilot_assume_mapped = 1
-    --end,
-    --config = function()
-    --local map = require('utils').map
-    --map('i', '<C-e>', 'copilot#Accept()', { expr = true })
-    --end,
-    --})
+    use({
+        'github/copilot.vim',
+        setup = function()
+            vim.g.copilot_no_tab_map = 1
+            vim.g.copilot_no_maps = 1
+            vim.g.copilot_assume_mapped = 1
+        end,
+        config = function()
+            local map = require('utils').map
+            map('i', '<C-e>', 'copilot#Accept()', { expr = true })
+        end,
+    })
     use({
         'nvim-treesitter/nvim-treesitter',
         run = ':TSUpdate',
