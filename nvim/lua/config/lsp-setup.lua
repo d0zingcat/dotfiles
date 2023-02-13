@@ -21,7 +21,22 @@ local servers = {
             yaml = {
                 schemas = {
                     ['https://json.schemastore.org/github-workflow.json'] = '/.github/workflows/*',
-                    Kubernetes = { '/*k8s.yaml', '/*k8s.yml' },
+                    Kubernetes = {
+                        '/*ingress.yaml',
+                        '/*deployment.yaml',
+                        '/*configmap.yaml',
+                        '/*secret.yaml',
+                        '/*kustomization.yaml',
+                        '/*service.yaml',
+
+                        '/*ingress.yml',
+                        '/*deployment.yml',
+                        '/*configmap.yml',
+                        '/*secret.yml',
+                        '/*kustomization.yml',
+                        '/*service.yml',
+
+                    },
                     --['https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json'] = '/*.k8s.yaml',
                 },
             },
