@@ -1,12 +1,14 @@
 export GOPATH=$HOME/.go
 export GOPROXY=https://goproxy.cn,direct
 export PYENV_ROOT="$HOME/.pyenv"
+export PNPM_HOME="$HOME/.pnpm"
 
 export CARGO_PATH=$HOME/.cargo
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
 export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
+export PATH="$PNPM_HOME:$PATH"
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
@@ -203,4 +205,5 @@ function git_clean() {
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 #compdef __start_kubectl k
+
 
