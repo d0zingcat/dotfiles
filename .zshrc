@@ -47,7 +47,8 @@ antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
-antigen bundle unixorn/fzf-zsh-plugin@main
+antigen bundle fzf
+#antigen bundle unixorn/fzf-zsh-plugin
 #antigen bundle pipenv
 antigen bundle asdf
 #antigen bundle dotenv
@@ -94,6 +95,7 @@ alias pn='pnpm'
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 
 # menu
