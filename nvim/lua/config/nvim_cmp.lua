@@ -24,18 +24,18 @@ cmp.setup({
     mapping = cmp.mapping.preset.insert({
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<C-e>'] = cmp.mapping.complete(),
+        -- ['<C-e>'] = cmp.mapping.complete(),
         --["<C-e>"] = cmp.mapping.close(),
-        -- ['<C-e>'] = function(fallback)
-        --     fallback()
-        -- end,
+        ['<C-e>'] = function(fallback)
+            fallback()
+        end,
         ['<CR>'] = cmp.mapping.confirm({
             behavior = cmp.ConfirmBehavior.Replace,
             select = true,
         }),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-    -- ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- ['<C-p>'] = cmp.mapping.select_prev_item(),
+        -- ['<C-n>'] = cmp.mapping.select_next_item(),
+        -- ['<C-p>'] = cmp.mapping.select_prev_item(),
         --},
     }),
     sources = {

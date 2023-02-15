@@ -10,6 +10,7 @@ local o, wo, bo = vim.o, vim.wo, vim.bo
 local buffer = { o, bo }
 local window = { o, wo }
 
+
 local utils = require('utils')
 local map = utils.map
 local set = utils.set
@@ -157,10 +158,11 @@ map('i', '<F1>', '<nop>')
 -- map('n', '<leader>e', '1<c-w>w')
 -- map('n', '<leader>p', ':wincmd p<CR>')
 
--- map('i', '<C-e>', 'copilot#Accept()', { expr = true })
--- vim.g.copilot_no_tab_map = 1
--- vim.g.copilot_no_maps = 1
--- vim.g.copilot_assume_mapped = 1
+map('i', '<C-e>', 'copilot#Accept()', { expr = true })
+vim.g.copilot_no_tab_map = 1
+vim.g.copilot_no_maps = 1
+vim.g.copilot_assume_mapped = 1
+
 
 require('plugins')
 require('funcs')
