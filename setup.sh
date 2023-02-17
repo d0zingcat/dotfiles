@@ -21,6 +21,7 @@ CONFIG_FILES=(
 	pycodestyle
 	starship.toml
 	stylua.toml
+	direnv
 )
 
 CUSTOM_FILES=(

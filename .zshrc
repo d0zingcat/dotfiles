@@ -51,7 +51,7 @@ antigen bundle fzf
 #antigen bundle unixorn/fzf-zsh-plugin
 #antigen bundle pipenv
 antigen bundle asdf
-#antigen bundle dotenv
+antigen bundle dotenv
 # antigen bundle poetry
 antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
@@ -70,6 +70,7 @@ source <(helm completion zsh)
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
 
 alias ta='tmux a'
 alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
