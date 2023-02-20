@@ -47,17 +47,17 @@ antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
-antigen bundle fzf
-#antigen bundle unixorn/fzf-zsh-plugin
-#antigen bundle pipenv
 antigen bundle asdf
-antigen bundle dotenv
-# antigen bundle poetry
 antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
-antigen bundle Aloxaf/fzf-tab
 antigen bundle wbingli/zsh-wakatime
 antigen bundle darvid/zsh-poetry
+antigen bundle Aloxaf/fzf-tab
+antigen bundle fzf
+#antigen bundle dotenv
+#antigen bundle pipenv
+#antigen bundle poetry
+#antigen bundle unixorn/fzf-zsh-plugin
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting
