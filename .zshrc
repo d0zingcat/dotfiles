@@ -197,7 +197,7 @@ function git_clean() {
     then 
         echo 'Invalid parameter, should based on develop/main/master' 
     else
-        g checkout $1 && g branch --merged | grep -v $1 | cat | xargs git branch -d
+        git checkout $1 && git branch --merged | grep -v $1 | cat | xargs git branch -d
     fi
 }
 
