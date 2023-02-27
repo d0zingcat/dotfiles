@@ -208,5 +208,6 @@ function git_clean() {
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 #compdef __start_kubectl k
+eval "$(op completion zsh)"; compdef _op op
 
 

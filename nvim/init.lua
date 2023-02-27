@@ -179,6 +179,14 @@ map('n', '=', ':BufferPick<CR>', opts)
 -- choosewin
 map('n', '-', '<Plug>(choosewin)', { noremap = false })
 
+-- sort go imports
+-- vim.api.nvim_create_autocmd('BufWritePre', {
+--     pattern = '*.go',
+--     callback = function()
+--         vim.lsp.buf.code_action({ context = { only = { 'source.organizeImports' } }, apply = true })
+--     end
+-- })
+
 -- Some configurations not able to migrate
 api.nvim_exec(
     [[
