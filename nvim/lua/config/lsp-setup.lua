@@ -36,15 +36,14 @@ local servers = {
         },
     },
     eslint = {},
-    tsserver = {},
     jsonls = {},
     clangd = {},
     gopls = {
         settings = {
-            golsp = {
+            gopls = {
                 gofumpt = true,
+                usePlaceholders = true,
                 staticcheck = true,
-                useplaceholders = true,
                 codelenses = {
                     gc_details = true,
                 },
@@ -82,7 +81,7 @@ local settings = {
 
 require('lsp-setup').setup(settings)
 
-require('lsp_signature').setup({})
+-- require('lsp_signature').setup({})
 require('lsp-colors').setup({})
 
 local border = { '╭', '─', '╮', '│', '╯', '─', '╰', '│' }
