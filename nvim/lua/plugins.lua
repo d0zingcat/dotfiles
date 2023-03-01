@@ -192,6 +192,7 @@ return require('packer').startup(function(use)
             require('config.tagbar')
         end,
     })
+
     -- BETTER editor
     use({
         'vinnymeller/swagger-preview.nvim',
@@ -226,17 +227,8 @@ return require('packer').startup(function(use)
             'p00f/clangd_extensions.nvim',
         },
     })
-    --use({
-    --'neovim/nvim-lspconfig',
-    --})
-    --use({
-    --'williamboman/nvim-lsp-installer',
-    --config = function()
-    --require('config.nvim-lsp-installer')
-    --end,
-    --})
     -- k8s
-    use('andrewstuart/vim-kubernetes')
+    -- use('andrewstuart/vim-kubernetes')
 
     -- go
     use({
@@ -250,12 +242,10 @@ return require('packer').startup(function(use)
     use('vim-erlang/vim-erlang-tags')
     use('iamcco/mathjax-support-for-mkdp')
     --beancount
-    use('nathangrigg/vim-beancount')
+    -- use('nathangrigg/vim-beancount')
     -- python
     use('Vimjas/vim-python-pep8-indent')
     -- rust
     use('rust-lang/rust.vim')
     use('mfussenegger/nvim-dap')
 end)
-
--- require("todo-comments").setup {}
