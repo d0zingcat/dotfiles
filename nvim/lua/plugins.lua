@@ -145,6 +145,16 @@ return require('packer').startup(function(use)
         config = function()
             require('config.nvim_treesitter')
         end,
+        requires = {
+            'nvim-treesitter/playground',
+            'nvim-treesitter/nvim-treesitter-refactor',
+            'nvim-treesitter/nvim-treesitter-textobjects',
+            'nvim-treesitter/nvim-treesitter-context',
+            'RRethy/nvim-treesitter-endwise',
+            'andymass/vim-matchup', -- extend % key
+            'yioneko/nvim-yati',
+            'm-demare/hlargs.nvim',
+        },
     })
     use({
         'iamcco/markdown-preview.nvim',
