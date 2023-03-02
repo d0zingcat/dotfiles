@@ -34,7 +34,9 @@ require('nvim-tree').setup({
         update_root = true,
     },
     filters = {
-        custom = { '.git' }, -- ignore .git
+        custom = {
+            '.git$'
+        },
     },
     --auto_close = true,
     hijack_netrw = true,

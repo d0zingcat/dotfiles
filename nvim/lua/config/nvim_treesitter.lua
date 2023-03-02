@@ -1,7 +1,8 @@
 local ncmd = vim.api.nvim_command
 
 require('nvim-treesitter.configs').setup({
-    ensure_installed = { 'c', 'lua', 'rust', 'go', 'python', 'zig', 'markdown', 'solidity', 'jsonnet', 'vim' },
+    ensure_installed = { 'c', 'lua', 'rust', 'go', 'python', 'zig', 'markdown', 'solidity', 'jsonnet', 'vim',
+        'javascript', 'typescript' },
     highlight = {
         enable = true,
     },
