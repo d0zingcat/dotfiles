@@ -50,14 +50,9 @@ antigen bundle pip
 antigen bundle asdf
 antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
-antigen bundle wbingli/zsh-wakatime
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
 antigen bundle fzf
-#antigen bundle dotenv
-#antigen bundle pipenv
-#antigen bundle poetry
-#antigen bundle unixorn/fzf-zsh-plugin
 
 antigen bundle zsh-users/zsh-autosuggestions
 antigen bundle zsh-users/zsh-syntax-highlighting

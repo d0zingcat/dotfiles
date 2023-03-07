@@ -21,6 +21,10 @@ local servers = {
             yaml = {
                 schemas = {
                     ['https://json.schemastore.org/github-workflow.json'] = '/.github/workflows/*',
+                    ['https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.json'] = {
+                        '/*swagger.yaml',
+                        '/*swagger.yml',
+                    },
                     Kubernetes = {
                         '/*ingress.yaml',
                         '/*deployment.yaml',
