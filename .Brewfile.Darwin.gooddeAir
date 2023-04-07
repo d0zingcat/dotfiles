@@ -25,11 +25,13 @@ brew "fzf"
 brew "git"
 brew "gnupg"
 brew "go"
+brew "gojq"
 brew "node"
 brew "graphql-cli"
 brew "helm"
-brew "zookeeper"
-brew "kafka"
+brew "helmfile"
+brew "zookeeper", restart_service: true
+brew "kafka", restart_service: true
 brew "kubernetes-cli"
 brew "kubectx"
 brew "qemu"
@@ -50,6 +52,7 @@ brew "rust"
 brew "starship"
 brew "stylua"
 brew "syncthing", restart_service: true
+brew "tailscale"
 brew "teleport"
 brew "telnet"
 brew "terraform"
@@ -60,6 +63,7 @@ brew "wget"
 brew "wireguard-tools"
 brew "mongodb/brew/mongodb-community"
 cask "1password"
+cask "1password-cli"
 cask "apifox"
 cask "bartender"
 cask "brave-browser"
@@ -71,31 +75,38 @@ cask "discord"
 cask "docker"
 cask "google-chrome"
 cask "google-drive"
+cask "keepingyouawake"
 cask "lark"
 cask "logi-options-plus"
 cask "logseq"
 cask "microsoft-edge"
 cask "ngrok"
 cask "notion"
-cask "rapidapi"
+cask "only-switch"
 cask "raycast"
 cask "sourcetree"
 cask "spotify"
 cask "stats"
+cask "tableplus"
 cask "telegram"
 cask "tencent-meeting"
 cask "visual-studio-code"
+cask "vnc-viewer"
 cask "warp"
 cask "wezterm"
 mas "1Password for Safari", id: 1569813296
 mas "Best Trace", id: 1037779758
 mas "Bob", id: 1630034110
 mas "EuDic", id: 434350458
+mas "Keynote", id: 409183694
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft Word", id: 462054704
 mas "Notion Web Clipper", id: 1559269364
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
 mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
+mas "Tailscale", id: 1475387142
 mas "Twitter", id: 1482454543
 mas "Userscripts", id: 1463298887
 mas "Vimari", id: 1480933944
