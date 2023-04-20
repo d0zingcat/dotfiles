@@ -13,7 +13,7 @@ require("neodev").setup({
 })
 
 local servers = {
-    sumneko_lua = {},
+    lua_ls = {},
     bashls = {},
     yamlls = {
         filetypes = { 'yaml', 'yml' },
@@ -70,6 +70,7 @@ local servers = {
             },
         },
     },
+    terraformls = {},
     beancount = {
         init_options = {
             journal_file = "",
