@@ -14,7 +14,10 @@ return {
             },
         },
     },
+    use_fancy_tab_bar = true,
+    -- hide_tab_bar_if_only_one_tab = true,
     color_scheme = 'tokyonight',
+    window_decorations = "INTEGRATED_BUTTONS | RESIZE",
     window_frame = {
         font_size = 14.0,
     },
