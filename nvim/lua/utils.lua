@@ -1,15 +1,9 @@
 local cmd = vim.cmd
 local o_s = vim.o
 local map_key = vim.api.nvim_set_keymap
-local g = vim.g
-local api = vim.api
-local fn = vim.fn
 local ncmd = vim.api.nvim_command
-local lsp = vim.lsp
-local o, wo, bo = vim.o, vim.wo, vim.bo
+local o = vim.o
 
-local buffer = { o, bo }
-local window = { o, wo }
 
 local function opt(o, v, scopes)
     scopes = scopes or { o_s }
