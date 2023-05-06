@@ -47,6 +47,8 @@ brew "lima"
 brew "llvm"
 brew "lsd"
 brew "lua"
+brew "lux"
+brew "mas"
 brew "protobuf"
 brew "mysql", restart_service: true
 brew "neovim"
@@ -62,10 +64,11 @@ brew "qrencode"
 brew "rclone"
 brew "redis", restart_service: true
 brew "ripgrep"
-brew "rust"
+brew "rustup-init"
 brew "starship"
 brew "stylua"
 brew "syncthing", restart_service: true
+brew "tailscale"
 brew "teleport"
 brew "telnet"
 brew "thrift"
@@ -84,25 +87,56 @@ cask "bartender"
 cask "brave-browser"
 cask "charles"
 cask "clash-for-windows"
+cask "dash"
 cask "dbschema"
 cask "discord"
+cask "docker"
+cask "feishu"
 cask "ganache"
 cask "google-chrome"
 cask "google-drive"
+cask "ipfs"
+cask "keepingyouawake"
 cask "logseq"
 cask "microsoft-edge"
 cask "monodraw"
 cask "ngrok"
 cask "notion"
 cask "obsidian"
+cask "only-switch"
 cask "paw"
+cask "playcover-community"
 cask "raycast"
 cask "sketch"
+cask "sourcetree"
 cask "spotify"
 cask "stats"
 cask "telegram"
+cask "temurin"
 cask "tencent-meeting"
 cask "visual-studio-code"
 cask "vnc-viewer"
 cask "warp"
 cask "wezterm"
+mas "Anki Notes", id: 1503902660
+mas "Bob", id: 1630034110
+mas "ChatPDF", id: 1672831757
+mas "EuDic", id: 434350458
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Infuse", id: 1136220934
+mas "iShot", id: 1485844094
+mas "Keynote", id: 409183694
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft Remote Desktop", id: 1295203466
+mas "Microsoft Word", id: 462054704
+mas "Numbers", id: 409203825
+mas "Pages", id: 409201541
+mas "Reeder", id: 1529448980
+mas "Slack", id: 803453959
+mas "Tailscale", id: 1475387142
+mas "Text to Speech", id: 1626767582
+mas "The Unarchiver", id: 425424353
+mas "Tiger Trade", id: 1459728204
+mas "WeChat", id: 836500024
+mas "Xcode", id: 497799835
