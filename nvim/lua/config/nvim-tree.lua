@@ -1,5 +1,3 @@
-local map = require('utils').map
-
 local function open_nvim_tree(data)
     -- buffer is a real file on the disk
     local real_file = vim.fn.filereadable(data.file) == 1
@@ -44,22 +42,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
             layout[3] == nil then vim.cmd("confirm quit") end
     end
 })
---
--- This function has been generated from your
---   view.mappings.list
---   view.mappings.custom_only
---   remove_keymaps
---
--- You should add this function to your configuration and set on_attach = on_attach in the nvim-tree setup call.
---
--- Although care was taken to ensure correctness and completeness, your review is required.
---
--- Please check for the following issues in auto generated content:
---   "Mappings removed" is as you expect
---   "Mappings migrated" are correct
---
--- Please see https://github.com/nvim-tree/nvim-tree.lua/wiki/Migrating-To-on_attach for assistance in migrating.
---
 
 local function on_attach(bufnr)
     local api = require('nvim-tree.api')
@@ -68,13 +50,17 @@ local function on_attach(bufnr)
         return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
     end
 
+    api.config.mappings.default_on_attach(bufnr)
     -- Mappings migrated from view.mappings.list
     -- You will need to insert "your code goes here" for any mappings with a custom action_cb
     vim.keymap.set('n', '<C-v>', api.node.open.vertical, opts('Open: Vertical Split'))
     vim.keymap.set('n', '<C-s>', api.node.open.horizontal, opts('Open: Horizontal Split'))
     vim.keymap.set('n', 'v', api.node.open.vertical, opts('Open: Vertical Split'))
     vim.keymap.set('n', 's', api.node.open.horizontal, opts('Open: Horizontal Split'))
-
+    vim.keymap.set('n', 'P', function()
+        local node = api.tree.get_node_under_cursor()
+        print(node.absolute_path)
+    end, opts('Print Node Path'))
 end
 
 require('nvim-tree').setup({

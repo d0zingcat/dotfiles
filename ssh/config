@@ -1,4 +1,7 @@
 Host *
+    #HostkeyAlgorithms +ssh-rsa
+    #PubkeyAcceptedAlgorithms +ssh-rsa
+    
     IdentityAgent "~/.1password/agent.sock"
     ServerAliveInterval 60
     TCPKeepAlive yes
@@ -7,91 +10,23 @@ Host github.com
     Hostname ssh.github.com
     Port 443
     User git
-    # set to personal_git by default
-    IdentityFile ~/.ssh/personal_git.pub
+    # set to personal by default
+    IdentityFile ~/.ssh/personal.pub
     IdentitiesOnly yes
 
-# Personal GitHub
+# Personal
 Host personalgit
     Hostname ssh.github.com
     Port 443
     User git
-    IdentityFile ~/.ssh/personal_git.pub
+    IdentityFile ~/.ssh/personal.pub
     IdentitiesOnly yes
 
-# Work GitHub
+# Work
 Host workgit
     Hostname ssh.github.com
     Port 443
     User git
-    IdentityFile ~/.ssh/work_git.pub
+    IdentityFile ~/.ssh/work.pub
     IdentitiesOnly yes
 
-Host iplc.inkisp
-    HostName iplc.inkisp.d0zingcat.xyz
-    Port 10347
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-
-Host jppro.inkisp
-    HostName jppro.ink.d0zingcat.xyz
-    Port 11984
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host sh.qcloud
-    HostName 101.43.19.124
-    Port 11984
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host bwh
-    HostName bwh.d0zingcat.xyz
-    Port 28653
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host sanjose.oracle
-    HostName 152.70.127.148
-    Port 11984
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host hk.misaka
-    HostName 194.104.147.94
-    Port 11984
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host myworker
-    HostName 64.176.46.45
-    Port 11984
-    User d0zingcat
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host test.destill
-    HostName 5.9.49.233
-    Port 22
-    User litang
-    IdentityFile ~/.ssh/work_git.pub
-    IdentitiesOnly yes
-
-Host solution.destill
-    HostName 138.201.206.172
-    Port 22
-    User solution
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
-
-Host dev.collie
-    HostName 167.235.247.156
-    Port 20234
-    User litang
-    IdentityFile ~/.ssh/personal_git.pub
-    IdentitiesOnly yes
