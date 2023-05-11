@@ -34,7 +34,11 @@ local function map(modes, lhs, rhs, opts)
         modes = { modes }
     end
     for _, mode in ipairs(modes) do
-        map_key(mode, lhs, rhs, opts)
+        if type(rhs) == "string" then
+            map_key(mode, lhs, rhs, opts)
+        else
+            vim.keymap.set(mode, lhs, rhs, opts)
+        end
     end
 end
 

@@ -24,8 +24,14 @@ require('telescope').setup({
     },
 })
 
-map('n', '<leader>ff', '<cmd>Telescope find_files<cr>')
-map('n', '<leader>fg', '<cmd>Telescope live_grep<cr>')
-map('n', '<leader>fb', '<cmd>Telescope buffers<cr>')
-map('n', '<leader>fh', '<cmd>Telescope help_tags<cr>')
-map('n', '<leader>;', '<cmd>Telescope commands<cr>')
+local builtin = require('telescope.builtin')
+map('n', '<leader>ff', builtin.find_files)
+-- map('n', '<leader>fg', [[:lua require('telescope.builtin').live_grep({additional_args = {'-j8'}})<CR>]])
+map('n', '<leader>fb', builtin.buffers)
+map('n', '<leader>fg', function() builtin.live_grep({ additional_args = { '-j8' } }) end)
+map('n', '<leader>fh', builtin.help_tags)
+map('n', '<leader>;', builtin.commands)
+
+-- To get fzf loaded and working with telescope, you need to call
+-- load_extension, somewhere after setup function:
+require('telescope').load_extension('fzf')

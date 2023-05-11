@@ -96,6 +96,11 @@ return require('packer').startup(function(use)
         config = function()
             require('config.nvim_telescope')
         end,
+        requires = {
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', config = function()
+                require('telescope').load_extension('fzf')
+            end }
+        },
     })
     use({
         'hrsh7th/nvim-cmp',
