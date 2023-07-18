@@ -25,16 +25,16 @@
 [pager]
     difftool = true
 
-[diff]
-    external = difft
-    tool = difftastic
-
-[difftool]
-    prompt = false
-
-[difftool "difftastic"]
-    prompt = false
-    cmd = difft "$LOCAL" "$REMOTE"
+#[diff]
+#    external = difft
+#    tool = difftastic
+#
+#[difftool]
+#    prompt = false
+#
+#[difftool "difftastic"]
+#    prompt = false
+#    cmd = difft "$LOCAL" "$REMOTE"
 
 [alias]
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit

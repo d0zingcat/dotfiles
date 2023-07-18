@@ -29,10 +29,10 @@ cmp.setup({
         ['<C-e>'] = function(fallback)
             fallback()
         end,
-        ['<CR>'] = cmp.mapping.confirm({
-            behavior = cmp.ConfirmBehavior.Replace,
-            select = true,
-        }),
+        -- ['<CR>'] = cmp.mapping.confirm({
+        --     behavior = cmp.ConfirmBehavior.Replace,
+        --     select = true,
+        -- }),
         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
         -- ['<C-n>'] = cmp.mapping.select_next_item(),
         -- ['<C-p>'] = cmp.mapping.select_prev_item(),
