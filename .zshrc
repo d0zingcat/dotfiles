@@ -49,7 +49,7 @@ antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
 antigen bundle asdf
-antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
+#antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
@@ -208,5 +208,4 @@ function git_clean() {
 
 #compdef __start_kubectl k
 eval "$(op completion zsh)"; compdef _op op
-
-
+eval "$(pyenv virtualenv-init -)"

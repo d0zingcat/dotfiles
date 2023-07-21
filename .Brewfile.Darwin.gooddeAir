@@ -36,10 +36,13 @@ brew "helm"
 brew "helmfile"
 brew "hugo"
 brew "jq"
+brew "k9s"
 brew "openjdk"
 brew "zookeeper"
 brew "kafka"
+brew "kind"
 brew "kubernetes-cli"
+brew "kops"
 brew "kubectx"
 brew "qemu"
 brew "lima"
@@ -50,8 +53,9 @@ brew "mysql", restart_service: true
 brew "neovim"
 brew "pinentry-mac"
 brew "pnpm"
-brew "postgresql@14"
+brew "postgresql@14", restart_service: true
 brew "pyenv"
+brew "pyenv-virtualenv"
 brew "qt@5"
 brew "pyqt@5"
 brew "python@3.10"
@@ -113,11 +117,14 @@ mas "1Password for Safari", id: 1569813296
 mas "Best Trace", id: 1037779758
 mas "Bob", id: 1630034110
 mas "EuDic", id: 434350458
+mas "Immersive Translate", id: 6447957425
+mas "Infuse", id: 1136220934
 mas "Keynote", id: 409183694
 mas "Microsoft Remote Desktop", id: 1295203466
 mas "Microsoft Word", id: 462054704
 mas "Notion Web Clipper", id: 1559269364
 mas "Numbers", id: 409203825
+mas "OneTab", id: 1540160809
 mas "Pages", id: 409201541
 mas "Reeder", id: 1529448980
 mas "Slack", id: 803453959
