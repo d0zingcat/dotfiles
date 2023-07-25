@@ -202,8 +202,8 @@ function git_clean() {
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
-#compdef __start_kubectl k
-#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+compdef __start_kubectl k
 #eval "$(op completion zsh)"; compdef _op op
+#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 #eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
