@@ -37,28 +37,24 @@ export GIT_EXTERNAL_DIFF=difft
 
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
+
+
 source $HOME/.antigen/antigen.zsh
-
-
-
 antigen use oh-my-zsh
-
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-completions
 antigen bundle git
 antigen bundle kubectl
 antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
 antigen bundle asdf
-#antigen bundle "MichaelAquilina/zsh-autoswitch-virtualenv"
 antigen bundle nvim
+antigen bundle fzf
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
-antigen bundle fzf
-
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-
+antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
 antigen apply
 
 source <(kubectl completion zsh)
@@ -207,5 +203,7 @@ function git_clean() {
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 #compdef __start_kubectl k
-eval "$(op completion zsh)"; compdef _op op
-eval "$(pyenv virtualenv-init -)"
+#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+#eval "$(op completion zsh)"; compdef _op op
+#eval "$(pyenv init -)"
+#eval "$(pyenv virtualenv-init -)"
