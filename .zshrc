@@ -57,39 +57,6 @@ antigen bundle Aloxaf/fzf-tab
 antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
 antigen apply
 
-source <(kubectl completion zsh)
-source <(helm completion zsh)
-
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
-
-alias ta='tmux a'
-alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
-alias ls='lsd'
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-alias kns='kubens'
-alias kctx='kubectx'
-alias kd='kubectl debug'
-alias kk='kubectl krew'
-alias vi='nvim'
-#alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
-alias batc='bat --paging=never'
-alias batcp='bat --plain --paging=never'
-alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
-alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
-alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
-alias pn='pnpm'
-
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
 
 # menu
 function m() {
@@ -196,13 +163,43 @@ function git_clean() {
     fi
 }
 
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+eval "$(starship init zsh)"
+eval "$(direnv hook zsh)"
+
+alias ta='tmux a'
+alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
+alias ls='lsd'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias kns='kubens'
+alias kctx='kubectx'
+alias kd='kubectl debug'
+alias kk='kubectl krew'
+alias vi='nvim'
+#alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
+alias batc='bat --paging=never'
+alias batcp='bat --plain --paging=never'
+alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
+alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
+alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
+alias pn='pnpm'
+
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
+[[ $commands[helm] ]] && source <(helm completion zsh)
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
 #export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
-compdef __start_kubectl k
 #eval "$(op completion zsh)"; compdef _op op
 #export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 #eval "$(pyenv init -)"
