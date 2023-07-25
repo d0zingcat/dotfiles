@@ -38,7 +38,6 @@ export GIT_EXTERNAL_DIFF=difft
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
 
-
 source $HOME/.antigen/antigen.zsh
 antigen use oh-my-zsh
 antigen bundle zsh-users/zsh-autosuggestions
