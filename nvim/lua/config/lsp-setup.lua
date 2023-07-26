@@ -72,9 +72,7 @@ local servers = {
     },
     terraformls = {},
     beancount = {
-        init_options = {
-            journal_file = "",
-        }
+        filetypes = { 'beancount', 'bean' },
     }
 }
 

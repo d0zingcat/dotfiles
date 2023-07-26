@@ -66,6 +66,7 @@ augroup packer_user_config
     autocmd!
     autocmd BufWritePost plugins.lua source <afile> | PackerCompile
 augroup end
+autocmd BufRead,BufNewFile *.bean,*.beancount set filetype=beancount
 ]])
 
 -- cmd [[command ShowBlank set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣]]
