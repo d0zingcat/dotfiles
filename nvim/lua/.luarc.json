@@ -41,6 +41,7 @@
         "/Users/d0zingcat/.local/share/nvim/site/pack/packer/start/vim-illuminate/lua",
         "/Users/d0zingcat/.local/share/nvim/site/pack/packer/start/which-key.nvim/lua",
         "/Users/d0zingcat/.dotfiles/nvim/lua",
-        "${3rd}/luassert/library"
+        "${3rd}/luassert/library",
+        "${3rd}/luv/library"
     ]
 }

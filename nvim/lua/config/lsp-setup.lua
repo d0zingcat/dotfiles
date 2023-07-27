@@ -1,4 +1,5 @@
 local utils = require('lsp-setup.utils')
+local nvim_lsp = require('lspconfig')
 local mappings = {
     -- Example mappings for telescope pickers
     gd = 'lua require"telescope.builtin".lsp_definitions({jump_type="vsplit"})',
@@ -72,7 +73,14 @@ local servers = {
     },
     terraformls = {},
     beancount = {
-        filetypes = { 'beancount', 'bean' },
+        -- filetypes = { 'beancount', 'bean' },
+        cmd = { "beancount-language-server", "--stdio", },
+        init_options = {
+            journalFile = ""
+        },
+        filetypes = { "beancount", "bean" },
+        root_dir = nvim_lsp.util.root_pattern("main.bean"),
+        single_file_support = true,
     }
 }
 
