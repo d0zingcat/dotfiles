@@ -104,6 +104,7 @@ cask "keepingyouawake"
 cask "logseq"
 cask "microsoft-edge"
 cask "monodraw"
+cask "motrix"
 cask "ngrok"
 cask "notion"
 cask "obsidian"
@@ -124,6 +125,7 @@ cask "vnc-viewer"
 cask "warp"
 cask "wezterm"
 mas "Anki Notes", id: 1503902660
+mas "BeanWise", id: 6446314789
 mas "Bob", id: 1630034110
 mas "ChatPDF", id: 1672831757
 mas "EuDic", id: 434350458
@@ -138,6 +140,7 @@ mas "Microsoft Word", id: 462054704
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Reeder", id: 1529448980
+mas "sing-box", id: 6451272673
 mas "Slack", id: 803453959
 mas "Tailscale", id: 1475387142
 mas "Text to Speech", id: 1626767582
@@ -149,6 +152,7 @@ vscode "42Crunch.vscode-openapi"
 vscode "antfu.browse-lite"
 vscode "antfu.vite"
 vscode "asvetliakov.vscode-neovim"
+vscode "dongfg.vscode-beancount-formatter"
 vscode "eamodio.gitlens"
 vscode "eriklynd.json-tools"
 vscode "fabiospampinato.vscode-diff"
