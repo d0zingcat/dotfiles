@@ -7,7 +7,29 @@ palette = "catppuccin_mocha"
 add_newline = true
 scan_timeout = 10
 
-format = '$directory$git_branch$git_commit$git_state$git_status$golang$helm$java$nodejs$python$red$ruby$rust$kubernetes$custom$cmd_duration$lua$line_break$jobs$time$status$shell$character'
+format = """$directory\
+          $git_branch\
+          $git_commit\
+          $git_state\
+          $git_status\
+          $golang\
+          $helm\
+          $java\
+          $nodejs\
+          $python\
+          $red\
+          $ruby\
+          $rust\
+          $kubernetes\
+          $custom\
+          $cmd_duration\
+          $lua\
+          $time\
+          $line_break\
+          $jobs\
+          $status\
+          $shell\
+          $character"""
 
 # Replace the "❯" symbol in the prompt with "➜"
 [character]                            # The name of the module we are configuring is "character"
@@ -19,10 +41,10 @@ vimcmd_replace_symbol = "[←](bold purple)"
 vimcmd_visual_symbol = "[←](bold yellow)"
 
 [time]
-disabled = true
+disabled = false
 time_format = '%R'
 format = '[\[ $time \]]($style) '
-style = "white dimmed"
+style = "gray"
 
 [username]
 style_user = "purple bold"
