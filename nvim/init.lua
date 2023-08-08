@@ -88,7 +88,7 @@ set('cuc', true, window)
 -- set('noswapfile', true) -- 不设置swap文件
 
 set('showmatch', true) -- 显示括号匹配
-set('mouse', 'a') -- set scroll mode
+set('mouse', 'a')      -- set scroll mode
 set('langmenu', 'zh_CN.UTF-8')
 set('helplang', 'cn')
 set('encoding', 'utf-8')
@@ -110,7 +110,7 @@ set('foldenable', false)
 set('autoread', true)
 set('autowrite', true)
 set('mouse', 'a')
-set('incsearch', true) -- 开启实时搜索
+set('incsearch', true)  -- 开启实时搜索
 set('ignorecase', true) -- 搜索时大小写不敏感
 
 set('number', true, window)
@@ -126,6 +126,7 @@ set('cindent', true, buffer)
 set('shiftwidth', 4, buffer)
 set('softtabstop', 4, buffer)
 set('tabstop', 4, buffer)
+set('synmaxcol', 120)
 
 -- set autowrite
 -- set("backspace", "indent,eol,start")
@@ -198,6 +199,6 @@ api.nvim_exec(
 "endfunction
 "
 "set statusline+=%{NearestMethodOrFunction()}
-]]   ,
+]],
     false
 )
