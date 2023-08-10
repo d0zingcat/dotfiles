@@ -72,16 +72,16 @@ local servers = {
         },
     },
     terraformls = {},
-    beancount = {
-        -- filetypes = { 'beancount', 'bean' },
-        cmd = { "beancount-language-server", "--stdio", },
-        init_options = {
-            journalFile = ""
-        },
-        filetypes = { "beancount", "bean" },
-        root_dir = nvim_lsp.util.root_pattern("main.bean"),
-        single_file_support = true,
-    }
+    -- beancount = {
+    --     -- filetypes = { 'beancount', 'bean' },
+    --     cmd = { "beancount-language-server", "--stdio", },
+    --     init_options = {
+    --         journalFile = ""
+    --     },
+    --     filetypes = { "beancount", "bean" },
+    --     root_dir = nvim_lsp.util.root_pattern("main.bean"),
+    --     single_file_support = true,
+    -- }
 }
 
 local settings = {
