@@ -6,50 +6,205 @@
 " text scroll if you mouse-click near the start or end of the window.
 set scrolloff=5
 
+" enable plugin 开启插件
+set hlsearch                    " highlight searches
+set incsearch                   " do incremental searching, search as you type
+set ignorecase                  " ignore case when searching
+set smartcase                   " no ignorecase if Uppercase char present
+set nu relativenumber
+set which-key
+set clipboard+=unnamedplus
+
+" 设置显示模式
+set showomode
+set showcmd                     " 状态栏展示命令前缀
+set de=on                       "  开启错误提示
+
+
 " Do incremental searching.
 set incsearch
 set easymotion
 
-let mapleader="\<Space>"
-" Don't use Ex mode, use Q for formatting.
-map Q gq
+
+" 设置leader
+" 设置leader为空格
+nnoremap <Space> <Nop>
+let mapleader = " "
+" let mapleader="\<Space>"
 
 
-map <Leader>l <Plug>(easymotion-lineforward)
-map <Leader>j <Plug>(easymotion-j)
-map <Leader>k <Plug>(easymotion-k)
-map <Leader>h <Plug>(easymotion-linebackward)
-map <Leader>w <Plug>(easymotion-w)
-map <Leader>b <Plug>(easymotion-b)
-nmap s <Plug>(easymotion-s2)
-nmap t <Plug>(easymotion-t2)
+imap jj <ESC>
+nnoremap <C-$>
+map <F5> i{<Esc>ea}<Esc>
+"在某个函数名上执行快捷复制某个函数
+nnoremap <leader>c V$%y
 
-let g:EasyMotion_smartcase = 1
-
-" ==== 系统剪切板复制粘贴 ====
-" v 模式下复制内容到系统剪切板
-vmap <Leader>c "+yy
-" n 模式下复制一行到系统剪切板
-nmap <Leader>c "+yy
-" n 模式下粘贴系统剪切板的内容
-nmap <Leader>v "+p
+"设置acejump 快捷键为f
+map f <Action>(AceAction)%
 
 
+"翻页设置
+nnoremap <Leader>d <C-d>
+nnoremap <Leader>u <C-u>
+" 清理高亮 <Leader 表示逗号 也可以直接使用:nohl
+nnoremap <Leader>sc :nohlsearch<CR>
+nnoremap <Leader>sl :close<CR>
 
-"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
-"" Map \r to the Reformat Code action
-"map \r <Action>(ReformatCode)
+" 窗口操作 window operation
+noremap <leader>wv <C-W>v
+nnoremap <leader>ws <C-W>s
+nnoremap <leader>w- <C-W>s
+nnoremap <leader>w\| <C-W>v
 
-"" Map <leader>d to start debug
-"map <leader>d <Action>(Debug)
+nnoremap <leader>ww <C-W>w
+nnoremap <leader>wd <C-W>c
+nnoremap <leader>wj <C-W>j
+nnremap <leader>wk <C-W>k
+nnoremap <leader>wh <C-W>h
+nnoremap <leader>wl <C-W>l
 
-"" Map \b to toggle the breakpoint on the current line
-"map \b <Action>(ToggleLineBreakpoint)
+"开启插件
+set ideajoin
+set NERDTree
+set surround
+"参数选择插件 使用 v i/a + w/s/p 或者[{(<‘"t ,这里的t表示html或者xml的选择
+"这里i/a 的区别是i 是inside,a是souard
+set argtextobj
+"行高亮插件
+set vim-highlightedyank
+
+"粘贴和复制
+nnoremap <Leader>y "*y
+" 将剪贴板内容粘贴
+nnoremap <Leader>p "*p
+nnoremap <Leader>P "*0p
+vnoremap Y "+y
+
+"tab operation tab操作
+nnoremap tn gt
+nnoremap tp gT
 
 
-" Find more examples here: https://jb.gg/share-ideavimrc
+"函数折叠
+"zc	关闭当前打开的折叠
+"zo	打开当前的折叠
+"zm	关闭所有折叠
+"zM	关闭所有折叠及其嵌套的折叠
+"zr	打开所有折叠
+"zR	打开所有折叠及其嵌套的折叠
+"zd	删除当前折叠
+"zE	删除所有折叠
+"zj	移动至下一个折叠
+"zk	移动至上一个折叠
+"zn	禁用折叠
+"zN	启用折叠
 
-map("i", "<c-b>", "<c-o>b")
-map("i", "<c-f>", "<c-o>l")
-map("i", "<c-j>", "<c-o>j")
-map("i", "<c-k>", "<c-o>k")
+" 退出模式
+nnoremap <Space>q :q<CR>
+nnoremap <Space>Q :qa!<CR>
+
+"编辑vimrc
+nnoremap <leader>ve :e ~/.config/ideavim/.ideavimrc<CR>
+nnoremap <leader>vw :w!<CR>
+nnoremap <leader>vs :source ~/.config/ideavim/.ideavimrc<CR>
+
+
+" https://github.com/JetBrains/ideavim/wiki/NERDTree-support
+" NERDTreeFocus 将窗口的光标移动tree 里面
+" o 打开文件，文件夹但是丢失focus
+" go 打开文件但是不丢失focus
+" i 使用分离的window open file
+" gi 打开分离的window,但是不丢失光标：
+" s ,gs 和上面是相同的原理
+" x 关闭当前节点的parent
+" p 跳转到当前节点的root节点，P 跳转到项目的root节点
+" m 展示菜单:
+" A 全局或者缩小窗口
+nnoremap <leader>ntf :NERDTreeFocus<CR>
+nnoremap <C-t> :NERDTreeToggle<CR>
+nnoremap <C-n> :NERDTree<CR>
+nnoremap <C-f> :NERDTreeFind<CR>
+
+" intellij built in key map
+nnoremap <leader>a :action GotoAction<CR>
+nnoremap <leader>b :action Bookmarks<CR>
+"nnoremap <leader>c :action GotoClass<CR>
+nnoremap <leader>e :action SearchEverywhere<CR>
+"nnoremap <leader>f :action FindInPath<CR>
+nnoremap <leader>gc :action Git.CompareWithBranch<CR>
+nnoremap <leader>ga :action Annotate<CR>
+nnoremap <leader>gh :action Vcs.ShowTabbedFileHistory<CR>
+nnoremap <leader>nj :action NewClass<CR>
+nnoremap <leader>nt :action Kotlin.NewFile<CR>
+nnoremap <leader>rf :action RecentFiles<CR>
+nnoremap <leader>rl :action RecentLocations<CR>
+
+"toggle something
+"toggle track vim action Id
+nnoremap ta :action VimFindActionIdAction<CR>
+
+" run and debug
+nnoremap ,d :action Debug<CR>
+nnoremap ,r :action Run<CR>
+nnoremap ,c :action CompileDirty<CR>
+nnoremap ,b :action ToggleLineBreakpoint<CR>
+nnoremap ,v :action ViewBreakpoints<CR>
+nnoremap ,s :action Stop<CR>
+" navigation
+nnoremap gs :action GotoSuperMethod<CR>
+nnoremap gb :action JumpToLastChange<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gd :action GotoDeclaration<CR>
+nnoremap gf :action FileStructurePopup<CR>
+
+" code actions
+nnoremap U :action FindUsages<CR>
+nnoremap R :action RenameElement<CR>
+nnoremap == :action ReformatCode<CR>
+vnoremap = :action ReformatCode<CR>
+nnoremap -- :action OptimizeImports<CR>
+"nnoremap cc :action CommentByLineComment<CR>
+"vnoremap cc :action CommentByLineComment<CR>
+
+" " Don't use Ex mode, use Q for formatting.
+" map Q gq
+"
+"
+" map <Leader>l <Plug>(easymotion-lineforward)
+" map <Leader>j <Plug>(easymotion-j)
+" map <Leader>k <Plug>(easymotion-k)
+" map <Leader>h <Plug>(easymotion-linebackward)
+" map <Leader>w <Plug>(easymotion-w)
+" map <Leader>b <Plug>(easymotion-b)
+" nmap s <Plug>(easymotion-s2)
+" nmap t <Plug>(easymotion-t2)
+"
+" let g:EasyMotion_smartcase = 1
+"
+" " ==== 系统剪切板复制粘贴 ====
+" " v 模式下复制内容到系统剪切板
+" vmap <Leader>c "+yy
+" " n 模式下复制一行到系统剪切板
+" nmap <Leader>c "+yy
+" " n 模式下粘贴系统剪切板的内容
+" nmap <Leader>v "+p
+"
+"
+"
+" "" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+" "" Map \r to the Reformat Code action
+" "map \r <Action>(ReformatCode)
+"
+" "" Map <leader>d to start debug
+" "map <leader>d <Action>(Debug)
+"
+" "" Map \b to toggle the breakpoint on the current line
+" "map \b <Action>(ToggleLineBreakpoint)
+"
+"
+" " Find more examples here: https://jb.gg/share-ideavimrc
+"
+" map("i", "<c-b>", "<c-o>b")
+" map("i", "<c-f>", "<c-o>l")
+" map("i", "<c-j>", "<c-o>j")
+" map("i", "<c-k>", "<c-o>k")
