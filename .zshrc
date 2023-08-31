@@ -1,5 +1,5 @@
 export GOPATH=$HOME/.go
-export GOPROXY=https://goproxy.cn,direct
+#export GOPROXY=https://goproxy.cn,direct
 export PYENV_ROOT="$HOME/.pyenv"
 export PNPM_HOME="$HOME/.pnpm"
 
