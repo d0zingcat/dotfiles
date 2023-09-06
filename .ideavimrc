@@ -121,9 +121,9 @@ nnoremap <leader>vs :source ~/.config/ideavim/.ideavimrc<CR>
 " m 展示菜单:
 " A 全局或者缩小窗口
 nnoremap <leader>ntf :NERDTreeFocus<CR>
-nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <leader><C-t> :NERDTreeToggle<CR>
+nnoremap <leader><C-n> :NERDTree<CR>
+nnoremap <leader><C-f> :NERDTreeFind<CR>
 
 " intellij built in key map
 nnoremap <leader>a :action GotoAction<CR>
