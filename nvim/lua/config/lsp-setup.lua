@@ -16,6 +16,7 @@ require("neodev").setup({
 local servers = {
     lua_ls = {},
     bashls = {},
+    helm_ls = {},
     yamlls = {
         filetypes = { 'yaml', 'yml' },
         settings = {

@@ -2,8 +2,8 @@
     defaultBranch = main
 
 [user]
-    email = i@d0zingcat.dev
-    name = Lee Tang
+    email = leewtang@gmail.com
+	name = d0zingcat
     signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
 
 [commit]
@@ -64,3 +64,8 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/Sourcetree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

@@ -117,7 +117,6 @@ function replace_remote() {
     fi
 }
 
-
 function rsync_work() {
     remote_dir="/home/tangli"
     local_work=`pwd`
@@ -155,10 +154,26 @@ function git_clean() {
     then 
         echo 'Invalid parameter, should based on develop/main/master' 
     else
+        git fetch --all --prune
         git checkout $1 && \
             git config pull.rebase false && \
             git pull && \
             git branch --merged | grep -v $1 | cat | xargs git branch -d
+    fi
+}
+
+function bitnami_seal() {
+    if [[ $# != 2 ]]
+    then 
+        echo 'Invalid parameter, should be like bitnami_seal <namespace> <filename>'
+    else
+        if [[ $2 != *".raw.yaml" ]]; then
+            echo "The variable does not have the .raw.yaml extension"
+            exit 1
+        fi
+        # parse *.raw.yaml to *.yaml
+        newname=${2//.raw/} 
+        kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets -oyaml -n $1 < $2 > $newname
     fi
 }
 
@@ -181,6 +196,8 @@ alias kget='kubectl get'
 alias kdesc='kubectl describe'
 alias klog='kubectl logs'
 alias kapply='kubectl apply'
+alias gce='gh copilot explain'
+alias gcs='gh copilot suggest'
 alias vi='nvim'
 #alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 alias batc='bat --paging=never'
@@ -192,6 +209,8 @@ alias pn='pnpm'
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
 [[ $commands[helm] ]] && source <(helm completion zsh)
+# [[ $commands[gh] ]] && source <(gh completion -s zsh)
+
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
@@ -207,3 +226,19 @@ alias pn='pnpm'
 #export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 #eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh" ]; then
+        . "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh"
+    else
+        export PATH="/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+

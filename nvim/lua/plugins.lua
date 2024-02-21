@@ -97,9 +97,13 @@ return require('packer').startup(function(use)
             require('config.nvim_telescope')
         end,
         requires = {
-            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make', config = function()
-                require('telescope').load_extension('fzf')
-            end }
+            {
+                'nvim-telescope/telescope-fzf-native.nvim',
+                run = 'make',
+                config = function()
+                    require('telescope').load_extension('fzf')
+                end
+            }
         },
     })
     use({
@@ -162,12 +166,15 @@ return require('packer').startup(function(use)
         },
     })
     use({
-        'iamcco/markdown-preview.nvim',
-        run = 'cd app && npm install',
-        setup = function()
-            vim.g.mkdp_filetypes = { 'markdown' }
-        end,
-        ft = { 'markdown' },
+        "iamcco/markdown-preview.nvim",
+        run = function() vim.fn["mkdp#util#install"]() end,
+    })
+
+    use({
+        "iamcco/markdown-preview.nvim",
+        run = "cd app && npm install",
+        setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
+        ft = { "markdown" },
     })
     use({
         'nvim-lualine/lualine.nvim',
