@@ -22,6 +22,7 @@ CONFIG_FILES=(
 	starship.toml
 	stylua.toml
 	direnv
+    zed
 )
 
 CUSTOM_FILES=(

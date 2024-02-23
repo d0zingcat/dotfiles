@@ -167,13 +167,18 @@ function bitnami_seal() {
     then 
         echo 'Invalid parameter, should be like bitnami_seal <namespace> <filename>'
     else
+        if [[ ! -f $2 ]]
+        then
+            echo "The file does not exist"
+            exit 1
+        fi
         if [[ $2 != *".raw.yaml" ]]; then
             echo "The variable does not have the .raw.yaml extension"
             exit 1
         fi
         # parse *.raw.yaml to *.yaml
         newname=${2//.raw/} 
-        kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets -oyaml -n $1 < $2 > $newname
+        kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets -oyaml -n $1 -f $2 > $newname
     fi
 }
 
