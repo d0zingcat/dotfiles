@@ -19,15 +19,15 @@ local set = utils.set
 -- Preset
 -- Prerequisites Must have neovim installed
 if fn.has('nvim') == 0 then
-	return
+    return
 end
 
 
 -- Ensure packer installed
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-	fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-	cmd('packadd packer.nvim')
+    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    cmd('packadd packer.nvim')
 end
 
 -- reopen last position
@@ -55,7 +55,7 @@ cmd([[ autocmd FileType yaml setlocal tabstop=2 shiftwidth=2 softtabstop=2 textw
 cmd([[ autocmd FileType ruby setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=120 ]])
 cmd([[ autocmd FileType less,sass,scss,css setlocal tabstop=2 shiftwidth=2 softtabstop=2 textwidth=120 ]])
 cmd(
-	[[ autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=4 expandtab ]]
+    [[ autocmd FileType javascript,javascript.jsx,javascriptreact,typescript,typescriptreact setlocal tabstop=2 shiftwidth=2 softtabstop=4 expandtab ]]
 )
 
 cmd([[iabbrev pdb import pdb; pdb.set_trace()<ESC>]])
@@ -172,7 +172,7 @@ require('funcs')
 
 -- Neoformat
 if not fn.executable('luafmt') then
-	cmd([[ :!npm install -g lua-fmt]])
+    cmd([[ :!npm install -g lua-fmt]])
 end
 
 -- barbar
@@ -190,9 +190,16 @@ map('n', '-', '<Plug>(choosewin)', { noremap = false })
 --     end
 -- })
 
+vim.api.nvim_set_keymap('n', '<leader>of', ':lua OpenFinder()<CR>', { noremap = true, silent = true })
+
+function OpenFinder()
+    local current_path = vim.fn.expand('%:p:h')
+    vim.cmd('!open ' .. current_path)
+end
+
 -- Some configurations not able to migrate
 api.nvim_exec(
-	[[
+    [[
 " set nocompatible
 "function! NearestMethodOrFunction() abort
 "  return get(b:, 'vista_nearest_method_or_function', '')
@@ -200,5 +207,5 @@ api.nvim_exec(
 "
 "set statusline+=%{NearestMethodOrFunction()}
 ]],
-	false
+    false
 )
