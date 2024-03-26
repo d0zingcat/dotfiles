@@ -6,3 +6,4 @@ raycast/config.json
 .git/
 ssh/config
 .DS_Store
+zed/.tmp*
