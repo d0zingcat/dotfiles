@@ -26,7 +26,7 @@ CONFIG_FILES=(
 )
 
 CUSTOM_FILES=(
-    "ssh/config .ssh/config"
+    #"ssh/config .ssh/config"
     "git/config .gitconfig"
     #"logseq .logseq"
 )
@@ -139,6 +139,7 @@ function recover() {
     mkdir $HOME/.config/
 
 	# dotfiles
+    cp ssh/example .ssh/config
     echo "Linking files..."
     for i in ${FILES[@]}; do
         ln -svfn $WORKING_DIR/$i $HOME_DIR/$i
