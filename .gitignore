@@ -7,3 +7,5 @@ raycast/config.json
 ssh/config
 .DS_Store
 zed/.tmp*
+zed/embeddings
+zed/conversations
