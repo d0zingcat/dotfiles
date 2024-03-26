@@ -4,8 +4,8 @@ raycast/extensions
 raycast/config.json
 *.env
 .git/
-ssh/config
 .DS_Store
 zed/.tmp*
 zed/embeddings
 zed/conversations
+ssh/config
