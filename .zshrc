@@ -34,6 +34,7 @@ export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
 export ZSH_HIGHLIGHT_MAXLENGTH=60
 export GIT_EXTERNAL_DIFF=difft
+export LIMA_INSTANCE=archlinux
 
 
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
