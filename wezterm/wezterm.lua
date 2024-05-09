@@ -1,5 +1,4 @@
 local wezterm = require('wezterm')
-local act = wezterm.action
 return {
     default_cwd = wezterm.home_dir .. '/work',
     font_size = 14,
@@ -15,6 +14,7 @@ return {
             },
         },
     },
+    selection_word_boundary = [[ \t\n{}[]()"'`=]],
     use_fancy_tab_bar = true,
     -- hide_tab_bar_if_only_one_tab = true,
     color_scheme = 'tokyonight',
