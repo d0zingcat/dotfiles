@@ -1,4 +1,5 @@
 local wezterm = require('wezterm')
+local act = wezterm.action
 return {
     default_cwd = wezterm.home_dir .. '/work',
     font_size = 14,
@@ -49,7 +50,36 @@ return {
     keys = {
         --{ key = 'l', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|DOMAINS' } }) },
         --{ key = 's', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }) },
+        { key = 'e', mods = 'CMD', action = wezterm.action({ EmitEvent = 'window-visible-text' }) },
+        { key = 'l', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'DOMAINS' } }) },
         { key = 'w', mods = 'CMD', action = wezterm.action({ CloseCurrentPane = { confirm = false } }) },
+        { key = 'd', mods = 'CMD', action = wezterm.action({ SplitHorizontal = { domain = 'CurrentPaneDomain' } }) },
+        {
+            key = 'd',
+            mods = 'CMD|SHIFT',
+            action = wezterm.action({ SplitVertical = { domain = 'CurrentPaneDomain' } }),
+        },
+        {
+            key = '[',
+            mods = 'CMD',
+            action = wezterm.action({ ActivatePaneDirection = 'Next' }),
+        },
+        {
+            key = ']',
+            mods = 'CMD',
+            action = wezterm.action({ ActivatePaneDirection = 'Prev' }),
+        },
+        {
+            key = '>',
+            mods = 'CMD|SHIFT',
+            action = wezterm.action.MoveTabRelative(1),
+        },
+        {
+            key = '<',
+            mods = 'CMD|SHIFT',
+            action = wezterm.action.MoveTabRelative(-1),
+        },
+        { key = 'Enter', mods = 'CMD', action = 'ToggleFullScreen' },
     },
     -- hyperlink_rules = {
     --     {

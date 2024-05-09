@@ -19,6 +19,7 @@ export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap <Space> <C-f>' \
     -c 'noremap q :quit<CR>' -\""
 export KUBECONFIG=$(echo `ls ~/.kube/*config*` | sed 's/ /:/g')
+export HELM_CACHE_HOME=$HOME/.cache/helm
 export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
 export GPG_TTY=$(tty)
 
