@@ -1,12 +1,13 @@
 export GOPATH=$HOME/.go
-#export GOPROXY=https://goproxy.cn,direct
-export PYENV_ROOT="$HOME/.pyenv"
+# export GOPROXY=https://goproxy.cn,direct
+# export PYENV_ROOT="$HOME/.pyenv"
 export PNPM_HOME="$HOME/.pnpm"
 export CARGO_PATH=$HOME/.cargo
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
-export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PYENV_ROOT/shims:$PATH"
+# $PYENV_ROOT/shims
+export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
@@ -237,16 +238,16 @@ alias pn='pnpm'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh" ]; then
-        . "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh"
-    else
-        export PATH="/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin:$PATH"
-    fi
-fi
-unset __conda_setup
+# __conda_setup="$('/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+# if [ $? -eq 0 ]; then
+#     eval "$__conda_setup"
+# else
+#     if [ -f "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh" ]; then
+#         . "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh"
+#     else
+#         export PATH="/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin:$PATH"
+#     fi
+# fi
+# unset __conda_setup
 # <<< conda initialize <<<
 
