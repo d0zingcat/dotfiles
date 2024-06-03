@@ -30,6 +30,8 @@ return {
             char = '|',
             highlight = highlight,
         },
+        whitespace = {
+        },
         exclude = {
             buftypes = {
                 'terminal', 
