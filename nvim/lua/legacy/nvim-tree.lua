@@ -68,9 +68,9 @@ require('nvim-tree').setup({
         width = 35,
         side = 'left',
     },
-    renderer = {
-        highlight_opened_files = '1',
-    },
+    -- renderer = {
+        -- highlight_opened_files = '1',
+    -- },
     diagnostics = {
         enable = true,
         icons = {

@@ -6,13 +6,12 @@ require('gitsigns').setup({
         topdelete = { hl = 'GitSignsDelete', text = '⇊', numhl = 'GitSignsDeleteNr', linehl = 'GitSignsDeleteLn' },
         changedelete = { hl = 'GitSignsChange', text = '~', numhl = 'GitSignsChangeNr', linehl = 'GitSignsChangeLn' },
     },
-    keymaps = {
-        -- Default keymap options
-        noremap = true,
-
-        ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'" },
-        ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'" },
-    },
+    -- keymaps = {
+    --     -- Default keymap options
+    --     noremap = true,
+    --     ['n ]c'] = { expr = true, "&diff ? ']c' : '<cmd>lua require\"gitsigns.actions\".next_hunk()<CR>'" },
+    --     ['n [c'] = { expr = true, "&diff ? '[c' : '<cmd>lua require\"gitsigns.actions\".prev_hunk()<CR>'" },
+    -- },
     word_diff = false,
     current_line_blame = true,
     linehl = true,

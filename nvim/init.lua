@@ -22,14 +22,30 @@ if fn.has('nvim') == 0 then
     return
 end
 
+vim.g.mapleader = " "       -- Make sure to set `mapleader` before lazy so your mappings are correct
+vim.g.maplocalleader = "\\" -- Same for `maplocalleader`
 
--- Ensure packer installed
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-if fn.empty(fn.glob(install_path)) > 0 then
-    fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
-    cmd('packadd packer.nvim')
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+    vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
+        lazypath,
+    })
 end
+vim.opt.rtp:prepend(lazypath)
 
+require("lazy").setup("plugins")
+-- -- Ensure packer installed
+-- local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
+-- if fn.empty(fn.glob(install_path)) > 0 then
+--     fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+--     cmd('packadd packer.nvim')
+-- end
+--
 -- reopen last position
 -- cmd([[ autocmd BufReadPost * normal! g`" ]])
 
@@ -133,7 +149,7 @@ set('synmaxcol', 120)
 
 -- Key mappings
 -- map Leader key to <space>
-g.mapleader = [[ ]]
+-- g.mapleader = [[ ]]
 
 -- v 模式下复制内容到系统剪切板
 map('v', '<Leader>cp', '"+yy')
@@ -167,7 +183,7 @@ vim.g.copilot_no_maps = 1
 vim.g.copilot_assume_mapped = 1
 
 
-require('plugins')
+-- require('plugins')
 require('funcs')
 
 -- Neoformat

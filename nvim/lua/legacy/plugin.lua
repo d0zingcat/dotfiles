@@ -70,7 +70,6 @@ return require('packer').startup(function(use)
         end,
     })
     use('wakatime/vim-wakatime')
-    --use('psf/black')
     use({
         'numToStr/Comment.nvim',
         config = function()
