@@ -1,9 +1,9 @@
-require('core.prelude')
-require('core.cmd')
-require('core.lazy')
-require('core.filetype')
-require('core.keymap')
-require('core.extension')
+require('config.prelude')
+require('config.cmd')
+require('config.lazy')
+require('config.filetype')
+require('config.keymap')
+require('config.extension')
 --
 -- local cmd = vim.cmd
 -- local o_s = vim.o
