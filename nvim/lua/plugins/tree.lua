@@ -1,6 +1,6 @@
 return {
     'nvim-tree/nvim-tree.lua',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     dependencies = 'nvim-tree/nvim-web-devicons',
     init = function()
         local function open_nvim_tree()
