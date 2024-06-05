@@ -124,16 +124,16 @@ function replace_remote() {
 }
 
 function rsync_work() {
-    remote_dir="/home/tangli"
+    remote_dir="/root"
     local_work=`pwd`
     local_dir=${PWD##*/}
     local_dir=${local_dir:-/}
     if [ $# -eq 0 ]; then 
-        remote_work="aws-optimus-1:$remote_dir/$local_dir"
+        remote_work="devops-cloud-1:$remote_dir/$local_dir"
     elif [ $# -eq 1 ]; then
-        remote_work="aws-optimus-$1:$remote_dir/$local_dir"
+        remote_work="devops-cloud-$1:$remote_dir/$local_dir"
     elif [ $# -eq 2 ]; then
-        remote_work="aws-optimus-$1:$remote_dir/$local_dir"
+        remote_work="devops-cloud-$1:$remote_dir/$local_dir"
         if [ "$2" = "back" ]; then
             # swap local and remote
             t=$local_work 
@@ -149,9 +149,9 @@ function rsync_work() {
     fi
     rsync_exclude="$local_work/rsync_exclude.txt"
     if [ -f $rsync_exclude ]; then
-        rsync -rvht --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
+        rsync -avhti --exclude-from=$rsync_exclude --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     else
-        rsync -rvht --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
+        rsync -avhti --exclude=/venv --exclude=/.vscode --exclude=/.git $local_work/ $remote_work
     fi
 }
 
@@ -214,8 +214,9 @@ alias vi='nvim'
 alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
-alias tf_push='rsync -rvht . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl --exclude=terraform.tfstate'
-alias tf_pull='rsync -rvht devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
+# do not use -r as it skips the non-regular files
+alias tf_push='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl --exclude=terraform.tfstate'
+alias tf_pull='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 alias pn='pnpm'
