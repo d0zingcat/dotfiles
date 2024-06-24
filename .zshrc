@@ -51,7 +51,6 @@ antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle zsh-users/zsh-completions
 antigen bundle git
 antigen bundle kubectl
-antigen bundle vi-mode
 antigen bundle autojump
 antigen bundle pip
 antigen bundle asdf
@@ -60,6 +59,7 @@ antigen bundle fzf
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
 antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
+antigen bundle jeffreytse/zsh-vi-mode
 antigen apply
 
 
@@ -218,7 +218,8 @@ alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
 # do not use -r as it skips the non-regular files
 alias tf_push='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl --exclude=terraform.tfstate'
-alias tf_pull='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
+alias tf_push_state='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl'
+alias tf_pull_state='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 alias pn='pnpm'
