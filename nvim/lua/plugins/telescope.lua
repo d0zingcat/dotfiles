@@ -15,8 +15,8 @@ return {
             mappings = {
                 i = {
                     ['<esc>'] = 'close',
-                    ['<C-j>'] = 'move_selection_previous',
-                    ['<C-k>'] = 'move_selection_next',
+                    ['<C-k>'] = 'move_selection_previous',
+                    ['<C-j>'] = 'move_selection_next',
                     ['<C-l>'] = { '<Right>', type = 'command' },
                     ['<C-h>'] = { '<Left>', type = 'command' },
                     ['<C-f>'] = 'preview_scrolling_down',
