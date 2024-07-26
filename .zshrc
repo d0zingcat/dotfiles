@@ -2,12 +2,15 @@ export GOPATH=$HOME/.go
 # export GOPROXY=https://goproxy.cn,direct
 # export PYENV_ROOT="$HOME/.pyenv"
 export PNPM_HOME="$HOME/.pnpm"
-export CARGO_PATH=$HOME/.cargo
+export CARGO_HOME=$HOME/.cargo
+export RYE_HOME=$HOME/.rye
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/python@3/libexec/bin:$PATH"
+export PATH="$RYE_HOME/shims:$PATH"
 # $PYENV_ROOT/shims
-export PATH="$CARGO_PATH/bin:$GOPATH/bin:$PATH"
+export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
@@ -42,7 +45,6 @@ export LIMA_INSTANCE=archlinux
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
 
-alias python=python3
 
 source $HOME/.antigen/antigen.zsh
 antigen use oh-my-zsh
@@ -58,7 +60,7 @@ antigen bundle nvim
 antigen bundle fzf
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
-antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
+#antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
 antigen bundle jeffreytse/zsh-vi-mode
 antigen apply
 
@@ -108,6 +110,10 @@ function replace_remote() {
         url=$(git remote -v | head -n 1  | cut -d $'\t' -f 2 | cut -d ' ' -f 1)
         suffix=$(echo $url | cut -d ':' -f 2)
         case $1 in 
+            ops)
+                new_url=opsgit:$suffix
+                git remote set-url origin $new_url
+                ;;
             work)
                 new_url=workgit:$suffix
                 git remote set-url origin $new_url
@@ -230,6 +236,9 @@ alias pn='pnpm'
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+
+# bindkey -M viins '^f' vi-backward-char
+# bindkey -M viins '^b' vi-forward-char
 
 function zvm_after_init() {
   [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
