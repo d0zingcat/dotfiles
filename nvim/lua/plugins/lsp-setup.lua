@@ -64,6 +64,8 @@ return {
                     }
                 }
             },
+            crystalline = {},
+            terraformls = {},
             jsonls = {},
             bashls = {},
             tsserver = {

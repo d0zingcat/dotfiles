@@ -20,6 +20,7 @@ return {
         vim.api.nvim_create_autocmd('BufEnter', { callback = close_nvim_tree })
     end,
     opts = {
+        filters = { dotfiles = false, custom = { '^.git$' } },
         on_attach = function(bufnr)
             local function map(mode, l, r, opts)
                 opts = opts or {}

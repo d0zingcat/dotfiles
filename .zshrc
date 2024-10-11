@@ -60,8 +60,9 @@ antigen bundle nvim
 antigen bundle fzf
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
+antigen bundle vi-mode
 #antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
-antigen bundle jeffreytse/zsh-vi-mode
+# antigen bundle jeffreytse/zsh-vi-mode
 antigen apply
 
 
@@ -237,14 +238,6 @@ alias pn='pnpm'
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
-# bindkey -M viins '^f' vi-backward-char
-# bindkey -M viins '^b' vi-forward-char
-
-function zvm_after_init() {
-  [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-  # [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-  # [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
-}
 #export LESS_TERMCAP_so=$'\E[30;43m'
 
 #export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
@@ -271,3 +264,9 @@ function zvm_after_init() {
 # unset __conda_setup
 # <<< conda initialize <<<
 
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
+# [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
+bindkey -M viins '^b' vi-backward-char
+bindkey -M viins '^f' vi-forward-char
+[ -f ~/.env ] && source ~/.env
