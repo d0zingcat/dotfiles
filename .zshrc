@@ -14,6 +14,7 @@ export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
+export PATH=$PATH:$HOME/.spicetify
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
@@ -269,4 +270,6 @@ alias pn='pnpm'
 # [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
 bindkey -M viins '^b' vi-backward-char
 bindkey -M viins '^f' vi-forward-char
+bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
+
