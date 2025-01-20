@@ -43,4 +43,5 @@ return {
             '<cmd>Telescope commands<cr>',
         }
     },
+    file_ignore_patterns = { '^vendor/', '^.git/' },
 }

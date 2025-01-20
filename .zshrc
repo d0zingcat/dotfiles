@@ -1,15 +1,12 @@
 export GOPATH=$HOME/.go
 # export GOPROXY=https://goproxy.cn,direct
-# export PYENV_ROOT="$HOME/.pyenv"
 export PNPM_HOME="$HOME/.pnpm"
 export CARGO_HOME=$HOME/.cargo
 export RYE_HOME=$HOME/.rye
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
-export PATH="/opt/homebrew/opt/python@3/libexec/bin:$PATH"
 export PATH="$RYE_HOME/shims:$PATH"
-# $PYENV_ROOT/shims
 export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
@@ -246,24 +243,7 @@ alias pn='pnpm'
 #export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 #eval "$(op completion zsh)"; compdef _op op
-#export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-# __conda_setup="$('/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-# if [ $? -eq 0 ]; then
-#     eval "$__conda_setup"
-# else
-#     if [ -f "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh" ]; then
-#         . "/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/etc/profile.d/conda.sh"
-#     else
-#         export PATH="/Users/d0zingcat/.pyenv/versions/miniforge3-22.11.1-4/bin:$PATH"
-#     fi
-# fi
-# unset __conda_setup
-# <<< conda initialize <<<
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
@@ -273,3 +253,5 @@ bindkey -M viins '^f' vi-forward-char
 bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
 
+# Added by Windsurf
+export PATH="/Users/d0zingcat/.codeium/windsurf/bin:$PATH"
