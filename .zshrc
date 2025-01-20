@@ -2,11 +2,9 @@ export GOPATH=$HOME/.go
 # export GOPROXY=https://goproxy.cn,direct
 export PNPM_HOME="$HOME/.pnpm"
 export CARGO_HOME=$HOME/.cargo
-export RYE_HOME=$HOME/.rye
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
-export PATH="$RYE_HOME/shims:$PATH"
 export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
