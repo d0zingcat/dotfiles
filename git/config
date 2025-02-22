@@ -2,7 +2,7 @@
     defaultBranch = main
 
 [user]
-	email = leewtang@gmail.com
+	email = lee.w.tang@gmail.com
 	name = d0zingcat
     signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
 

@@ -10,6 +10,8 @@ export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
 export PATH=$PATH:$HOME/.spicetify
+# Added by Windsurf
+export PATH="/Users/d0zingcat/.codeium/windsurf/bin:$PATH"
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
@@ -89,10 +91,6 @@ function macnst (){
 #    unset all_proxy
 #    echo "proxy all unset!"
 #}
-
-function flush-input() {
-    sudo killall -9 PAH_Extension TextInputMenuAgent TextInputSwitcher
-}
 
 function klogs() {
     keyword=$1
@@ -229,18 +227,9 @@ alias pn='pnpm'
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
 [[ $commands[helm] ]] && source <(helm completion zsh)
-# [[ $commands[gh] ]] && source <(gh completion -s zsh)
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-
-#export LESS_TERMCAP_so=$'\E[30;43m'
-
-#export LDFLAGS="-L/usr/local/opt/llvm/lib -L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib -L/usr/local/opt/zlib/lib -L/usr/local/opt/bzip2/lib"
-#export CPPFLAGS="-I/usr/local/opt/llvm/include -I/usr/local/opt/zlib/include -I/usr/local/opt/bzip2/include"
-#export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
-
-#eval "$(op completion zsh)"; compdef _op op
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -251,5 +240,3 @@ bindkey -M viins '^f' vi-forward-char
 bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
 
-# Added by Windsurf
-export PATH="/Users/d0zingcat/.codeium/windsurf/bin:$PATH"
