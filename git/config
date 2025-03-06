@@ -2,9 +2,9 @@
     defaultBranch = main
 
 [user]
-	email = lee.w.tang@gmail.com
+	email = 
 	name = d0zingcat
-    signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
 
 [commit]
     gpgsign = true
@@ -20,7 +20,7 @@
 
 [core]
     editor = nvim
-	excludesfile = /Users/d0zingcat/.config/git/.gitignore
+	  excludesfile = /Users/d0zingcat/.config/git/.gitignore
 
 [pager]
     difftool = true
