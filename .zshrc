@@ -167,6 +167,21 @@ function git_clean() {
     fi
 }
 
+function git_config() {
+  git config user.name $1
+  git config user.email $2
+  git config gpg.format ssh
+  git config user.signingkey "$3"
+}
+
+function git_config_work() {
+  git_config $1 $2 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF23DQtdH5PODF9fYUHr49I1J3lfKLAPk4LG54MVUTcg'
+}
+
+function git_config_play() {
+  git_config d0zingcat $1 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee'
+}
+
 function bitnami_seal() {
     if [[ $# != 2 ]]
     then 
