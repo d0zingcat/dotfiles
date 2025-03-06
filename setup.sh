@@ -212,6 +212,7 @@ function recover_kubectl() {
 function new_recover() {
     # recover_rust
     recover_kubectl
+    echo "don't forget to change the email address in git config"
 }
 
 function post_recover() {
