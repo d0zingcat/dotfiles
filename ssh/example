@@ -11,7 +11,7 @@ Host github.com
     Port 443
     User git
     # set to personal by default
-    IdentityFile ~/.ssh/personal.pub
+    IdentityFile ~/.ssh/Personal.pub
     IdentitiesOnly yes
 
 # Personal
@@ -19,7 +19,7 @@ Host personalgit
     Hostname ssh.github.com
     Port 443
     User git
-    IdentityFile ~/.ssh/personal.pub
+    IdentityFile ~/.ssh/Personal.pub
     IdentitiesOnly yes
 
 # Work
@@ -27,5 +27,5 @@ Host workgit
     Hostname ssh.github.com
     Port 443
     User git
-    IdentityFile ~/.ssh/work.pub
+    IdentityFile ~/.ssh/Work.pub
     IdentitiesOnly yes

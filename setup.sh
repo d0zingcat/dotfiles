@@ -1,28 +1,22 @@
 #!/usr/bin/env zsh
-# Working environment: macOS/ArchLinux
 
-set -x
+set -e
+
 FILES=(
-	.gitignore
-
 	.zshrc
-
 	.tmux.conf
 	.ideavimrc
-
 )
 
 CONFIG_FILES=(
-	nvim
 	git
+	nvim
 	tmux
-	raycast
-	wezterm
 	pycodestyle
+  wezterm
 	starship.toml
 	stylua.toml
 	direnv
-    zed
 )
 
 CUSTOM_FILES=(
@@ -31,41 +25,52 @@ CUSTOM_FILES=(
     #"logseq .logseq"
 )
 
+RUSTUP_COMPONENTS=(
+  clippy
+)
+
+KUBECTl_COMPONENTS=(
+    # ctx
+    # ns
+    # tail
+    # tree
+    # view-secret
+    # who-can
+    # cost
+    # neat
+    # sniff
+    # access-matrix
+    # pod-dive
+    # pod-chaos
+    # pod-lease
+    # pod-shell
+    # pod-logs
+    # pod-attach
+    # pod-exec
+    # pod-port-forward
+)
+
 WORKING_DIR=$(pwd)
 HOME_DIR="$HOME"
-
-UNAME_LINUX="Linux"
-UNAME_MACOS="Darwin"
-
-RELEASE_ARCH="Arch Linux"
-RELEASE_UBUNTU="Ubuntu"
-# install golang rustc cargo 
-# cargo install lsd
-RELEASE_DEBIAN="Debian"
-RELEASE_MANJARO="Manjaro Linux"
-RELEASE_MACOS="macOS"
-
-
-release_name=$(cat /etc/*release| egrep '^NAME=' | sed -E 's/.*"(.*)"/\1/')
 is_brew_installed="$+commands[brew]"
-_uname=`uname`
-is_linux=0
-is_macos=0
 
-if [ $_uname = $UNAME_LINUX ]
-then
-    is_linux=1
-fi
 
-if [ $_uname = $UNAME_MACOS ]
-then
-    is_macos=1
-fi
+function command_exists() {
+    # Check if a command exists
+    # Usage: command_exists <command_name>
+    local cmd="$1"
+    
+    if command -v "$cmd" >/dev/null 2>&1; then
+        return 0  # Command exists
+    else
+        return 1  # Command does not exist
+    fi
+}
 
 function init() {
 	sudo xcode-select --install
 	sudo xcodebuild -license accept
-k   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
+    git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
 	if [[ $(command -v brew) = "" ]]; then
 		echo "Installing brew"
 		/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -98,48 +103,10 @@ function manual_install() {
 }
 
 function backup() {
-    if (( $is_brew_installed ))
-    then
-        # brew backup
-        brew tap Homebrew/bundle
-        brew bundle dump -f
-        mv Brewfile .Brewfile."$(uname)."$(echo $(hostname) | cut -d '.' -f 1)
-    fi
-    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
-    then
-        pacman -Qqe > pkglist.txt
-    fi
+    brew bundle dump -f
 }
 
-function recover() {
-    #softwareupdate --install-rosetta
-    OS="$(uname)"
-
-    # Homebrew
-    if [ ! $(which brew) ]; then
-        echo "Installing homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    fi
-    if [ "$OS" = 'Darwin' ]; then
-        export PATH=/usr/local/bin/:$PATH
-        xcode-select --install
-        defaults write -g ApplePressAndHoldEnabled -bool false
-    elif [ "$OS" = 'Linux' ]; then
-        export PATH=/home/linuxbrew/.linuxbrew/bin/:$PATH
-    fi
-
-    # antigen
-    if [ ! -f $HOME/.antigen/antigen.zsh ]; then
-        mkdir -p $HOME/.antigen/
-        curl -L git.io/antigen >$HOME/.antigen/antigen.zsh
-    fi
-
-    mkdir -p $HOME/.kube/
-    mkdir $HOME/.ssh
-    mkdir $HOME/.config/
-
-	# dotfiles
-    cp ssh/example .ssh/config
+function softLink() {
     echo "Linking files..."
     for i in ${FILES[@]}; do
         ln -svfn $WORKING_DIR/$i $HOME_DIR/$i
@@ -155,6 +122,33 @@ function recover() {
         IFS=' ' read -r from to <<< "$row"
         ln -svfn $WORKING_DIR/$from $HOME_DIR/$to
     done
+}
+
+function recover() {
+    #softwareupdate --install-rosetta
+    OS="$(uname)"
+
+    # Homebrew
+    if [ ! $(which brew) ]; then
+        echo "Installing homebrew..."
+        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    fi
+    export PATH=/usr/local/bin/:$PATH
+    xcode-select --install
+    defaults write -g ApplePressAndHoldEnabled -bool false
+
+    # antigen
+    if [ ! -f $HOME/.antigen/antigen.zsh ]; then
+        mkdir -p $HOME/.antigen/
+        curl -L git.io/antigen >$HOME/.antigen/antigen.zsh
+    fi
+
+    mkdir -p $HOME/.kube/
+    mkdir $HOME/.ssh
+    mkdir $HOME/.config/
+
+    # dotfiles
+    cp ssh/example $HOME/.ssh/config
 
     # submodules
     echo 'Syncing Submodules...'
@@ -173,14 +167,7 @@ function recover() {
         mv Brewfile .Brewfile.$suffix
     fi
 
-    # if it is arch
-    if [ $is_linux -eq 1 ] && [ $release_name = $RELEASE_ARCH ]
-    then
-        sudo pacman -S - < pkglist.txt
-    elif [ $is_macos -eq 1 ]
-    then
-        mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
-    fi
+    mkdir -p ~/.1password && ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
 
     # others
     git config --global core.excludesfile ~/.config/git/.gitignore
@@ -188,21 +175,60 @@ function recover() {
     $(brew --prefix)/opt/fzf/install
 }
 
+function recover_rust() {
+  # install rustup
+  if ! command_exists rustup; then
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+  fi
+  # cargo commands installation
+  for command in ${RUSTUP_COMPONENTS[@]}; do
+    if ! command_exists $command; then
+      rustup component add $command
+    fi
+  done
+}
+
+function recover_kubectl() {
+    # krew installation
+    if ! command_exists kubectl-krew; then
+        (
+        set -x; cd "$(mktemp -d)" &&
+        OS="$(uname | tr '[:upper:]' '[:lower:]')" &&
+        ARCH="$(uname -m | sed -e 's/x86_64/amd64/' -e 's/\(arm\)\(64\)\?.*/\1\2/' -e 's/aarch64$/arm64/')" &&
+        KREW="krew-${OS}_${ARCH}" &&
+        curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/latest/download/${KREW}.tar.gz" &&
+        tar zxvf "${KREW}.tar.gz" &&
+        ./"${KREW}" install krew
+        )
+    fi
+    # kubectl plugins installation
+    for plugin in ${KUBECTl_COMPONENTS[@]}; do
+        if ! command_exists $plugin; then
+        kubectl krew install $plugin
+        fi
+    done
+}
+
+function new_recover() {
+    # recover_rust
+    recover_kubectl
+}
+
 function post_recover() {
-    mkdir -p ~/.1password && ln -s /Users/d0zingcat/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock /Users/d0zingcat/.1password/agent.sock
+    mkdir -p ~/.1password && ln -s "~/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock" ~/.1password/agent.sock
 }
 
 option=$1
 case $option in 
-    "")
-        recover
-        ;;
-    uninstall)
-        uninstall
-        ;;
-    *)
-        backup
-        ;;
+  recover)
+    new_recover
+    ;;
+  uninstall)
+    uninstall
+    ;;
+  backup)
+    backup
+    ;;
 esac
 
 exit 0

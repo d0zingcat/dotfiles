@@ -10,8 +10,6 @@ export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
 export PATH=$PATH:$HOME/.spicetify
-# Added by Windsurf
-export PATH="/Users/d0zingcat/.codeium/windsurf/bin:$PATH"
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
