@@ -177,7 +177,6 @@ function git_config() {
 function git_config_work() {
   if [ ! $# -eq 2 ]; then
     echo 'should be like git_config_work {name} {email}'
-    exit 1
   fi
   git_config $1 $2 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF23DQtdH5PODF9fYUHr49I1J3lfKLAPk4LG54MVUTcg'
 }
@@ -185,7 +184,6 @@ function git_config_work() {
 function git_config_play() {
   if [ ! $# -eq 1 ]; then 
     echo 'should be like gait_config_play {email}'
-    exit 1
   fi
   git_config d0zingcat $1 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee'
 }

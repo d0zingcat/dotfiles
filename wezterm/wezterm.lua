@@ -3,9 +3,8 @@ return {
 	default_cwd = wezterm.home_dir .. "/work",
 	font_size = 14,
 	font = wezterm.font_with_fallback({
+		"Maple Mono NF CN",
 		"JetBrainsMono Nerd Font",
-		"JetBrains Mono",
-		"JetBrainsMono Nerd Font Mono",
 	}),
 	colors = {
 		tab_bar = {
