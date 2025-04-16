@@ -1,15 +1,14 @@
 export GOPATH=$HOME/.go
-# export GOPROXY=https://goproxy.cn,direct
 export PNPM_HOME="$HOME/.pnpm"
 export CARGO_HOME=$HOME/.cargo
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
-export PATH="/home/linuxbrew/.linuxbrew/sbin:/home/linuxbrew/.linuxbrew/bin:$PATH"
+export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
-export PATH=$PATH:$HOME/.spicetify
+export PATH="$PATH:$HOME/.spicetify"
 
 export LC_ALL=en_US.UTF-8  
 export EDITOR=vim
@@ -35,7 +34,6 @@ export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
 export ZSH_HIGHLIGHT_MAXLENGTH=60
 export GIT_EXTERNAL_DIFF=difft
-export LIMA_INSTANCE=archlinux
 
 
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
@@ -250,12 +248,11 @@ alias pn='pnpm'
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
+source <(fzf --zsh)
 
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-# [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-# [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh 
 bindkey -M viins '^b' vi-backward-char
 bindkey -M viins '^f' vi-forward-char
 bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
+
 
