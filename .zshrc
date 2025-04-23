@@ -51,7 +51,6 @@ antigen bundle autojump
 antigen bundle pip
 antigen bundle asdf
 antigen bundle nvim
-antigen bundle fzf
 antigen bundle darvid/zsh-poetry
 antigen bundle Aloxaf/fzf-tab
 antigen bundle vi-mode
