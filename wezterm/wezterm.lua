@@ -1,10 +1,10 @@
 local wezterm = require("wezterm")
 return {
-	default_cwd = wezterm.home_dir .. "/work",
+	default_cwd = wezterm.home_dir .. "/Workbench",
 	font_size = 14,
 	font = wezterm.font_with_fallback({
-		"Maple Mono NF CN",
 		"JetBrainsMono Nerd Font",
+		"Maple Mono NF CN",
 	}),
 	colors = {
 		tab_bar = {

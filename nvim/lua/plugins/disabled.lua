@@ -1,0 +1,3 @@
+return {
+  -- disable the plugins
+}
