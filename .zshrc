@@ -64,7 +64,7 @@ function m() {
     if [[ -n "$TMUX" ]]; then
         exit 0
     fi
-    tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query |xargs echo | read session  && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
+    tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query | xargs echo | read session  && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
 }
 
 # find network ports
@@ -240,6 +240,8 @@ alias tf_pull_state='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terrafo
 alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
 alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
 alias pn='pnpm'
+alias python='python3'
+alias pip='pip3'
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
 [[ $commands[helm] ]] && source <(helm completion zsh)
