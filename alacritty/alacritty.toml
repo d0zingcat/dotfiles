@@ -1,13 +1,18 @@
+[env]
+TERM = "alacritty"
+
 [general]
 import = ["~/.config/alacritty/tokyo-night.toml"]
 working_directory = "~"
 live_config_reload = true
 
-[terminal.shell]
-program = "/bin/zsh"
+[terminal]
+# OSC 52 剪贴板支持
+osc52 = "CopyPaste"  # Disabled, OnlyCopy, OnlyPaste, CopyPaste
+shell = {program = "/bin/zsh"}
 
-[env]
-TERM = "alacritty"
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 
 [window]
 dimensions = { columns = 120, lines = 40 }
@@ -31,22 +36,43 @@ multiplier = 3
 
 [font]
 size = 13
-
-[font.normal]
-family = "JetBrainsMono Nerd Font Mono"
-style = "Regular"
-
-[font.bold]
-family = "JetBrainsMono Nerd Font Mono"
-style = "Bold"
-
-[font.italic]
-family = "JetBrainsMono Nerd Font Mono"
-style = "Italic"
-
-[font.bold_italic]
-family = "JetBrainsMono Nerd Font Mono"
-style = "Bold Italic"
+normal = {family = "JetBrainsMono Nerd Font Mono"}
+bold = {family = "JetBrainsMono Nerd Font Mono"}
+italic = {family = "JetBrainsMono Nerd Font Mono"}
+bold_italic = {family = "JetBrainsMono Nerd Font Mono"}
 
 [colors]
 transparent_background_colors = false
+
+[cursor]
+style = { shape = "Block", blinking = "Off" }  # Block, Underline, Beam
+thickness = 0.15
+unfocused_hollow = true
+blink_interval = 750
+blink_timeout = 5
+
+[bell]
+animation = "EaseOutExpo" # Ease EaseOut EaseOutSine EaseOutQuad EaseOutCubic EaseOutQuart EaseOutQuint EaseOutExpo EaseOutCirc Linear
+duration = 75
+
+[mouse]
+hide_when_typing = true
+bindings = [
+    { mouse = "Middle", action = "PasteSelection" },
+]
+
+[hints]
+alphabet = "jfkdls;ahgurieowpq"
+
+[[hints.enabled]]
+regex = '''(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|https://|http://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001f\u007f-\u009f<>"\\s{-}\\^⟨⟩`]+'''
+command = "open"
+post_processing = true
+
+[hints.enabled.mouse]
+enabled = true
+mods = "None"
+
+[hints.enabled.binding]
+key = "U"
+mods = "Control|Shift"
