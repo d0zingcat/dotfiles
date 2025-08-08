@@ -1,0 +1,52 @@
+[general]
+import = ["~/.config/alacritty/tokyo-night.toml"]
+working_directory = "~"
+live_config_reload = true
+
+[terminal.shell]
+program = "/bin/zsh"
+
+[env]
+TERM = "alacritty"
+
+[window]
+dimensions = { columns = 120, lines = 40 }
+padding = { x = 0, y = 0 }
+position = { x = 0, y = 0 }
+dynamic_padding = true
+decorations = "Full"  # Full, None, Transparent, Buttonless
+opacity = 0.95
+blur = false
+startup_mode = "Maximized"  # Windowed, Maximized, Fullscreen
+title = "Alacritty"
+dynamic_title = true
+# Linux
+class = { instance = "Alacritty", general = "Alacritty" }
+# MacOS
+decorations_theme_variant = "Dark"
+
+[scrolling]
+history = 10000
+multiplier = 3
+
+[font]
+size = 13
+
+[font.normal]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Regular"
+
+[font.bold]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Bold"
+
+[font.italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Italic"
+
+[font.bold_italic]
+family = "JetBrainsMono Nerd Font Mono"
+style = "Bold Italic"
+
+[colors]
+transparent_background_colors = false
