@@ -13,6 +13,7 @@ shell = {program = "/bin/zsh"}
 
 [selection]
 semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+save_to_clipboard = false
 
 [window]
 dimensions = { columns = 120, lines = 40 }
@@ -51,9 +52,9 @@ unfocused_hollow = true
 blink_interval = 750
 blink_timeout = 5
 
-[bell]
-animation = "EaseOutExpo" # Ease EaseOut EaseOutSine EaseOutQuad EaseOutCubic EaseOutQuart EaseOutQuint EaseOutExpo EaseOutCirc Linear
-duration = 75
+# [bell]
+# animation = "EaseOutExpo" # Ease EaseOut EaseOutSine EaseOutQuad EaseOutCubic EaseOutQuart EaseOutQuint EaseOutExpo EaseOutCirc Linear
+# duration = 75
 
 [mouse]
 hide_when_typing = true
@@ -76,3 +77,10 @@ mods = "None"
 [hints.enabled.binding]
 key = "U"
 mods = "Control|Shift"
+
+[keyboard]
+bindings = [
+    # Window/Tab switching
+    { key = "Tab", mods = "Control", action = "SelectNextTab" },
+    { key = "Tab", mods = "Control|Shift", action = "SelectPreviousTab" },
+]
