@@ -12,7 +12,7 @@ osc52 = "CopyPaste"  # Disabled, OnlyCopy, OnlyPaste, CopyPaste
 shell = {program = "/bin/zsh"}
 
 [selection]
-semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
+semantic_escape_chars = ",│`|\"' ()[]{}<>"
 save_to_clipboard = false
 
 [window]
@@ -57,9 +57,10 @@ blink_timeout = 5
 # duration = 75
 
 [mouse]
-hide_when_typing = true
+hide_when_typing = false
 bindings = [
     { mouse = "Middle", action = "PasteSelection" },
+    { mouse = "Right", action = "ExpandSelection" },
 ]
 
 [hints]
