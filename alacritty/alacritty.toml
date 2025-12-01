@@ -3,13 +3,12 @@ TERM = "alacritty"
 
 [general]
 import = ["~/.config/alacritty/tokyo-night.toml"]
-working_directory = "~"
 live_config_reload = true
 
 [terminal]
 # OSC 52 剪贴板支持
 osc52 = "CopyPaste"  # Disabled, OnlyCopy, OnlyPaste, CopyPaste
-shell = {program = "/bin/zsh"}
+shell = { program = "/bin/zsh", args = ["-c", "cd ~/Workspace 2>/dev/null || true; exec zsh"] }
 
 [selection]
 semantic_escape_chars = ",│`|\"' ()[]{}<>"
@@ -60,7 +59,6 @@ blink_timeout = 5
 hide_when_typing = false
 bindings = [
     { mouse = "Middle", action = "PasteSelection" },
-    { mouse = "Right", action = "ExpandSelection" },
 ]
 
 [hints]
