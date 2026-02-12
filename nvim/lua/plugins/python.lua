@@ -41,39 +41,30 @@ return {
     dependencies = {
       "nvim-neotest/neotest-python",
     },
-    opts = {
-      adapters = {
-        ["neotest-python"] = {
-          -- 使用项目根目录中的 pytest.ini
-          runner = "pytest",
-          -- 可以使用 pytest 或 unittest
-          -- runner = function()
-          --   if vim.fn.filereadable("pytest.ini") == 1 then
-          --     return "pytest"
-          --   else
-          --     return "unittest"
-          --   end
-          -- end,
-          
-          -- 额外的 pytest 参数
-          args = {
-            "--color=yes",
-            "-v",
-          },
-          
-          -- Python 测试发现模式
-          python = function()
-            -- 如果激活了虚拟环境，使用它
-            if vim.env.VIRTUAL_ENV then
-              return vim.env.VIRTUAL_ENV .. "/bin/python"
-            end
-            
-            -- 否则使用系统的 Python
-            return "python"
-          end,
+    opts = function(_, opts)
+      -- 确保 adapters 是列表
+      opts.adapters = opts.adapters or {}
+      -- 添加 neotest-python 适配器
+      table.insert(opts.adapters, require("neotest-python")({
+        -- 使用项目根目录中的 pytest.ini
+        runner = "pytest",
+        -- 额外的 pytest 参数
+        args = {
+          "--color=yes",
+          "-v",
         },
-      },
-    },
+        -- Python 测试发现模式
+        python = function()
+          -- 如果激活了虚拟环境，使用它
+          if vim.env.VIRTUAL_ENV then
+            return vim.env.VIRTUAL_ENV .. "/bin/python"
+          end
+          -- 否则使用系统的 Python
+          return "python"
+        end,
+      }))
+      return opts
+    end,
     keys = {
       { "<leader>pt", "<cmd>lua require('neotest').run.run()<cr>", desc = "运行最近的测试" },
       { "<leader>pT", "<cmd>lua require('neotest').run.run(vim.fn.expand('%'))<cr>", desc = "运行文件中的测试" },
@@ -112,13 +103,27 @@ return {
     dependencies = {
       "mfussenegger/nvim-dap-python",
     },
-    opts = function()
-      local path = require("mason-registry").get_package("debugpy"):get_install_path()
-      require("dap-python").setup(path .. "/venv/bin/python")
-      
+    config = function()
+      local ok, mason_registry = pcall(require, "mason-registry")
+      local debugpy_path = nil
+      if ok then
+        local ok2, debugpy_pkg = pcall(mason_registry.get_package, "debugpy")
+        if ok2 and debugpy_pkg then
+          local ok3, path = pcall(debugpy_pkg.get_install_path, debugpy_pkg)
+          if ok3 then
+            debugpy_path = path .. "/venv/bin/python"
+          end
+        end
+      end
+      -- 如果无法通过 mason 获取路径，使用默认路径
+      if not debugpy_path then
+        debugpy_path = vim.fn.exepath("python3") or "python3"
+      end
+      require("dap-python").setup(debugpy_path)
+
       -- 设置 pytest 调试
       require("dap-python").test_runner = "pytest"
-      
+
       -- 添加自定义配置
       table.insert(require("dap").configurations.python, {
         type = "python",
@@ -131,7 +136,7 @@ return {
         end,
         console = "integratedTerminal",
       })
-      
+
       -- 添加 FastAPI 配置
       table.insert(require("dap").configurations.python, {
         type = "python",

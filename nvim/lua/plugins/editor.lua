@@ -1,6 +1,26 @@
 -- editor.lua - 编辑器增强插件配置
 
 return {
+  -- LazyGit 集成
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "打开 LazyGit" },
+      { "<leader>gf", "<cmd>LazyGitCurrentFile<cr>", desc = "当前文件 Git 历史" },
+      { "<leader>gc", "<cmd>LazyGitConfig<cr>", desc = "LazyGit 配置" },
+    },
+  },
+
   -- 模糊搜索
   {
     "nvim-telescope/telescope.nvim",
@@ -95,6 +115,26 @@ return {
     end,
   },
   
+  -- LazyGit 集成
+  {
+    "kdheepak/lazygit.nvim",
+    cmd = {
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    keys = {
+      { "<leader>gg", "<cmd>LazyGit<cr>", desc = "打开 LazyGit" },
+      { "<leader>gf", "<cmd>LazyGitCurrentFile<cr>", desc = "当前文件 Git 历史" },
+      { "<leader>gc", "<cmd>LazyGitConfig<cr>", desc = "LazyGit 配置" },
+    },
+  },
+
   -- 高级语法高亮
   {
     "nvim-treesitter/nvim-treesitter",

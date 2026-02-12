@@ -1,3 +1,6 @@
+-- lazy.lua - lazy.nvim 插件管理器配置
+
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -14,40 +17,75 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- 配置 lazy.nvim
 require("lazy").setup({
+  -- 插件列表
   spec = {
-    -- add LazyVim and import its plugins
-    { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    -- import/override with your plugins
+    -- 导入插件模块
     { import = "plugins" },
   },
+  
+  -- 默认配置
   defaults = {
-    -- By default, only LazyVim plugins will be lazy-loaded. Your custom plugins will load during startup.
-    -- If you know what you're doing, you can set this to `true` to have all your custom plugins lazy-loaded by default.
-    lazy = false,
-    -- It's recommended to leave version=false for now, since a lot the plugin that support versioning,
-    -- have outdated releases, which may break your Neovim install.
-    version = false, -- always use the latest git commit
-    -- version = "*", -- try installing the latest stable version for plugins that support semver
+    lazy = false,           -- 默认不延迟加载
+    version = false,        -- 使用最新版本
   },
-  install = { colorscheme = { "tokyonight", "habamax" } },
-  checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
-  }, -- automatically check for plugin updates
+  
+  -- 安装配置
+  install = {
+    colorscheme = { "tokyonight", "habamax" },  -- 安装时使用的主题
+    missing = true,         -- 自动安装缺失的插件
+  },
+  
+  -- 性能配置
   performance = {
     rtp = {
-      -- disable some rtp plugins
+      -- 禁用一些内置插件
       disabled_plugins = {
-        "gzip",
-        -- "matchit",
-        -- "matchparen",
-        -- "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
+        "gzip",             -- 不需要在编辑器内处理 gzip 文件
+        "matchit",          -- 使用 treesitter 代替
+        "matchparen",       -- 使用 treesitter 代替
+        "netrwPlugin",      -- 使用 nvim-tree 代替
+        "tarPlugin",        -- 不需要在编辑器内处理 tar 文件
+        "tohtml",           -- 不需要转换为 HTML
+        "tutor",            -- 不需要内置教程
+        "zipPlugin",        -- 不需要在编辑器内处理 zip 文件
       },
     },
   },
-})
+  
+  -- UI 配置
+  ui = {
+    -- 自定义图标
+    icons = {
+      cmd = "⌘",
+      config = "🛠",
+      event = "📅",
+      ft = "📂",
+      init = "⚙",
+      keys = "🔑",
+      plugin = "🔌",
+      runtime = "💻",
+      source = "📄",
+      start = "🚀",
+      task = "📌",
+      lazy = "💤 ",
+    },
+    size = { width = 0.8, height = 0.8 },  -- 窗口大小
+    wrap = true,                           -- 自动换行
+    border = "rounded",                    -- 边框样式
+  },
+  
+  -- 检查更新配置
+  checker = {
+    enabled = true,         -- 启用自动检查更新
+    frequency = 3600,       -- 检查频率（秒）
+    notify = false,         -- 禁用更新通知
+  },
+  
+  -- 更新配置
+  change_detection = {
+    enabled = true,         -- 启用自动重载
+    notify = false,         -- 禁用更改通知
+  },
+}) 

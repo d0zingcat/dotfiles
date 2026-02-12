@@ -67,7 +67,7 @@ return {
             },
           },
         },
-        
+
         -- Python 服务器
         pyright = {
           settings = {
@@ -89,7 +89,7 @@ return {
             },
           },
         },
-        
+
         -- Go 服务器
         gopls = {
           settings = {
@@ -130,18 +130,6 @@ return {
             },
           },
         },
-      },
-      
-      -- 自动设置功能
-      setup = {
-        ruff_lsp = function()
-          require("lazyvim.util").lsp.on_attach(function(client, _)
-            -- 禁用 ruff 格式化功能，由 none-ls 处理
-            if client.name == "ruff_lsp" then
-              client.server_capabilities.documentFormattingProvider = false
-            end
-          end)
-        end,
       },
     },
     config = function(_, opts)
@@ -259,14 +247,21 @@ return {
           local server_opts = vim.tbl_deep_extend("force", {
             capabilities = vim.deepcopy(capabilities),
           }, opts.servers[server] or {})
-          
+
           -- 特殊设置钩子
-          if opts.setup[server] then
-            if opts.setup[server](server, server_opts) then
-              return
-            end
+          if server == "ruff_lsp" then
+            -- 使用 LspAttach 自动命令来配置 ruff_lsp
+            vim.api.nvim_create_autocmd("LspAttach", {
+              callback = function(args)
+                local client = vim.lsp.get_client_by_id(args.data.client_id)
+                -- 禁用 ruff 格式化功能，由 conform 处理
+                if client and client.name == "ruff_lsp" then
+                  client.server_capabilities.documentFormattingProvider = false
+                end
+              end,
+            })
           end
-          
+
           -- 启动服务器
           require("lspconfig")[server].setup(server_opts)
         end,
@@ -479,6 +474,7 @@ return {
       -- UI 相关
       {
         "rcarriga/nvim-dap-ui",
+        dependencies = { "nvim-neotest/nvim-nio" },
         keys = {
           { "<leader>du", function() require("dapui").toggle() end, desc = "Dap UI" },
         },
