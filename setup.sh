@@ -17,12 +17,12 @@ CONFIG_FILES=(
 	starship.toml
 	stylua.toml
 	direnv
+    ghostty
 )
 
 CUSTOM_FILES=(
     #"ssh/config .ssh/config"
     "git/config .gitconfig"
-    #"logseq .logseq"
 )
 
 RUSTUP_COMPONENTS=(
@@ -59,7 +59,7 @@ function command_exists() {
     # Check if a command exists
     # Usage: command_exists <command_name>
     local cmd="$1"
-    
+
     if command -v "$cmd" >/dev/null 2>&1; then
         return 0  # Command exists
     else
@@ -220,7 +220,7 @@ function post_recover() {
 }
 
 option=$1
-case $option in 
+case $option in
   recover)
     new_recover
     ;;
