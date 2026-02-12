@@ -59,13 +59,15 @@ blink_timeout = 5
 hide_when_typing = false
 bindings = [
     { mouse = "Middle", action = "PasteSelection" },
+    # Shift+左键点击扩展选择（从当前选择位置到点击位置）
+    { mouse = "Left", mods = "Shift", action = "ExpandSelection" },
 ]
 
 [hints]
 alphabet = "jfkdls;ahgurieowpq"
 
 [[hints.enabled]]
-regex = '''(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|http(s?)://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001f\u007f-\u009f<>"\\^⟨⟩`]+'''
+regex = '''(ipfs:|ipns:|magnet:|mailto:|gemini://|gopher://|http(s?)://|news:|file:|git://|ssh:|ftp://)[^\u0000-\u001f\u007f-\u009f<>"\s\\^⟨⟩`]+'''
 command = "open"
 post_processing = true
 
@@ -81,5 +83,5 @@ mods = "Control|Shift"
 bindings = [
     # Window/Tab switching
     { key = "Tab", mods = "Control", action = "SelectNextTab" },
-    { key = "Tab", mods = "Control|Shift", action = "SelectPreviousTab" },
+    { key = "V", mods = "Command|Control", action = "ToggleViMode" }
 ]

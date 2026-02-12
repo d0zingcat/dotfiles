@@ -1,5 +1,13 @@
 local wezterm = require("wezterm")
+local tmux = {}
+if wezterm.target_triple == "aarch64-apple-darwin" then
+	tmux = { "/opt/homebrew/bin/tmux", "new", "-As0" }
+else
+	tmux = { "tmux", "new", "-As0" }
+end
+
 return {
+	-- default_prog = tmux,
 	default_cwd = wezterm.home_dir .. "/Workbench",
 	font_size = 14,
 	font = wezterm.font_with_fallback({
@@ -16,7 +24,7 @@ return {
 	},
 	selection_word_boundary = " \t\n{}[]()\"'`=,.",
 	use_fancy_tab_bar = true,
-	-- hide_tab_bar_if_only_one_tab = true,
+	hide_tab_bar_if_only_one_tab = false,
 	color_scheme = "tokyonight",
 	window_decorations = "INTEGRATED_BUTTONS | RESIZE",
 	window_frame = {
@@ -39,14 +47,7 @@ return {
 		"zsh",
 		"fzf",
 	},
-	ssh_domains = {
-		{
-			name = "debian",
-			remote_address = "debian01",
-			username = "d0zingcat",
-			multiplexing = "None",
-		},
-	},
+	ssh_domains = {},
 	keys = {
 		--{ key = 'l', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|DOMAINS' } }) },
 		--{ key = 's', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }) },
