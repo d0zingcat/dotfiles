@@ -83,5 +83,6 @@ mods = "Control|Shift"
 bindings = [
     # Window/Tab switching
     { key = "Tab", mods = "Control", action = "SelectNextTab" },
+    { key = "Tab", mods = "Control|Shift", action = "SelectPreviousTab" },
     { key = "V", mods = "Command|Control", action = "ToggleViMode" }
 ]

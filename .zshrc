@@ -1,5 +1,6 @@
 export GOPATH=$HOME/.go
 export PNPM_HOME="$HOME/.pnpm"
+export BUN_HOME="$HOME/.bun"
 export CARGO_HOME=$HOME/.cargo
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
@@ -7,10 +8,11 @@ export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
 export PATH="$CARGO_HOME/bin:$GOPATH/bin:$PATH"
 export PATH="$HOME/.local/bin:${HOME}/.krew/bin:$PATH"
 export PATH="$PNPM_HOME:$PATH"
+export PATH="$BUN_HOME/bin:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
 export PATH="$PATH:$HOME/.spicetify"
 
-export LC_ALL=en_US.UTF-8  
+export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export LANG=en_US.UTF-8
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
@@ -38,6 +40,10 @@ export GIT_EXTERNAL_DIFF=difft
 
 FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
+
+HISTSIZE=10000         # Number of commands to remember in memory (in-session)
+SAVEHIST=50000         # Number of commands to save to the history file
+HISTFILE=~/.zsh_history  # File where history is stored
 
 
 source $HOME/.antigen/antigen.zsh
@@ -99,7 +105,7 @@ function replace_remote() {
     else
         url=$(git remote -v | head -n 1  | cut -d $'\t' -f 2 | cut -d ' ' -f 1)
         suffix=$(echo $url | cut -d ':' -f 2)
-        case $1 in 
+        case $1 in
             ops)
                 new_url=opsgit:$suffix
                 git remote set-url origin $new_url
@@ -124,7 +130,7 @@ function rsync_work() {
     local_work=`pwd`
     local_dir=${PWD##*/}
     local_dir=${local_dir:-/}
-    if [ $# -eq 0 ]; then 
+    if [ $# -eq 0 ]; then
         remote_work="devops-cloud-1:$remote_dir/$local_dir"
     elif [ $# -eq 1 ]; then
         remote_work="devops-cloud-$1:$remote_dir/$local_dir"
@@ -132,7 +138,7 @@ function rsync_work() {
         remote_work="devops-cloud-$1:$remote_dir/$local_dir"
         if [ "$2" = "back" ]; then
             # swap local and remote
-            t=$local_work 
+            t=$local_work
             local_work=$remote_work
             remote_work=$t
         else
@@ -153,8 +159,8 @@ function rsync_work() {
 
 function git_clean() {
     if [[ $# != 1 || ! $1 =~ 'main|master|develop' ]]
-    then 
-        echo 'Invalid parameter, should based on develop/main/master' 
+    then
+        echo 'Invalid parameter, should based on develop/main/master'
     else
         git fetch --all --prune
         git checkout $1 && \
@@ -179,7 +185,7 @@ function git_config_work() {
 }
 
 function git_config_play() {
-  if [ ! $# -eq 1 ]; then 
+  if [ ! $# -eq 1 ]; then
     echo 'should be like gait_config_play {email}'
   fi
   git_config d0zingcat $1 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee'
@@ -187,7 +193,7 @@ function git_config_play() {
 
 function bitnami_seal() {
     if [[ $# != 2 ]]
-    then 
+    then
         echo 'Invalid parameter, should be like bitnami_seal <namespace> <filename>'
     else
         if [[ ! -f $2 ]]
@@ -200,7 +206,7 @@ function bitnami_seal() {
             exit 1
         fi
         # parse *.raw.yaml to *.yaml
-        newname=${2//.raw/} 
+        newname=${2//.raw/}
         kubeseal --controller-namespace sealed-secrets --controller-name sealed-secrets -oyaml -n $1 -f $2 > $newname
     fi
 }
@@ -229,7 +235,6 @@ alias kapply='kubectl apply'
 alias gce='gh copilot explain'
 alias gcs='gh copilot suggest'
 alias vi='nvim'
-#alias wol_xps8940="host home.d0zingcat.xyz | cut -d ' ' -f 4 | cat | xargs -I {} wakeonlan -i {} -p 200 'FC:44:82:13:BA:0F'"
 alias batc='bat --paging=never'
 alias batcp='bat --plain --paging=never'
 alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
@@ -242,9 +247,12 @@ alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm
 alias pn='pnpm'
 alias python='python3'
 alias pip='pip3'
+alias sed='gsed'
+alias grep='ggrep'
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
 [[ $commands[helm] ]] && source <(helm completion zsh)
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
@@ -256,4 +264,7 @@ bindkey -M viins '^f' vi-forward-char
 bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
 
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
+alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
