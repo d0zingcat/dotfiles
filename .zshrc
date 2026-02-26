@@ -158,16 +158,31 @@ function rsync_work() {
 }
 
 function git_clean() {
-    if [[ $# != 1 || ! $1 =~ 'main|master|develop' ]]
-    then
-        echo 'Invalid parameter, should based on develop/main/master'
-    else
-        git fetch --all --prune
-        git checkout $1 && \
-            git config pull.rebase false && \
-            git pull && \
-            git branch --merged | grep -v $1 | cat | xargs git branch -d
+    git fetch --all --prune
+
+    base_branch="$1"
+    if [[ -z "$base_branch" ]]; then
+        base_branch=$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')
     fi
+
+    if [[ -z "$base_branch" ]]; then
+        for branch in main master develop; do
+            if git show-ref --verify --quiet "refs/heads/$branch" || git show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+                base_branch="$branch"
+                break
+            fi
+        done
+    fi
+
+    if [[ -z "$base_branch" ]]; then
+        echo 'Could not detect base branch. Pass it explicitly, e.g. git_clean main'
+        return 1
+    fi
+
+    git checkout "$base_branch" && \
+        git config pull.rebase false && \
+        git pull && \
+        git branch --merged | grep -v " $base_branch$" | cat | xargs git branch -d
 }
 
 function git_config() {
