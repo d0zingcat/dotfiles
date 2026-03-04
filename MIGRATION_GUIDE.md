@@ -318,3 +318,92 @@ cask "app-name"
 ---
 
 **祝新工作顺利！** 🎉
+
+---
+
+## 💾 离职前备份流程
+
+### 1. 运行备份脚本
+
+```bash
+cd ~/.dotfiles
+./setup.sh backup
+```
+
+### 2. 备份输出说明
+
+备份完成后会生成以下文件：
+
+| 文件 | 内容 | 是否提交 |
+|------|------|----------|
+| `Brewfile` | Homebrew 包列表 | ✅ |
+| `.git_config_summary.txt` | Git 配置（包含真实信息） | ⚠️ **不要** |
+| `ssh_backup_YYYYMMDD_HHMMSS/` | SSH 公钥 | ⚠️ **不要** |
+| `.1password_config.txt` | 1Password 设置 | ✅ |
+| `.vscode_extensions.txt` | VSCode 扩展 | ✅ |
+| `.backup_report_*.md` | 备份报告 | ✅ |
+
+### 3. 查看备份报告
+
+```bash
+# 查看最新的备份报告
+cat .backup_report_*.md | tail -50
+```
+
+备份报告会显示：
+- ✅ 已备份的项目
+- ⚠️ 未找到的配置
+- 📝 下一步操作建议
+
+### 4. 提交备份
+
+```bash
+# 查看变更
+git status
+
+# 提交安全文件
+git add Brewfile .1password_config.txt .vscode_extensions.txt
+git commit -m 'backup: pre-leaving dotfiles backup'
+git push
+```
+
+### 5. 清理敏感文件
+
+```bash
+# 确认敏感文件已被 .gitignore 排除
+git status --porcelain | grep -E "(summary|ssh_backup)"
+
+# 如果没有输出，说明已正确排除
+```
+
+### 6. 额外备份建议
+
+- [ ] **导出浏览器书签** (Chrome/Fi refox/Safari)
+- [ ] **备份 1Password 紧急工具包**
+- [ ] **记录常用 SSH 主机配置**
+- [ ] **导出 Kubeconfig** (如果允许)
+- [ ] **备份其他应用配置** (Raycast, Obsidian 等)
+
+---
+
+## 🔐 安全提醒
+
+### 不要提交的文件
+
+以下文件包含敏感信息，已在 `.gitignore` 中排除：
+
+```
+.git_config_summary.txt    # Git 真实配置
+ssh_backup_*/              # SSH 公钥
+.1password_config.txt      # 1Password 配置
+.backup_report_*.md        # 备份报告
+```
+
+### 离职前检查
+
+- [ ] **移除旧机器授权**: GitHub → Settings → Devices
+- [ ] **移除 1Password 授权**: 1Password → Settings → Security
+- [ ] **更新重要账户密码**
+- [ ] **备份个人 SSH 公钥** (用于新机器)
+
+---

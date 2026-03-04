@@ -89,3 +89,24 @@ brew bundle install
 # 备份当前配置
 ./setup.sh backup
 ```
+
+---
+
+## 💾 备份当前配置
+
+离职前建议备份：
+
+```bash
+# 运行完整备份
+./setup.sh backup
+
+# 查看备份报告
+cat .backup_report_*.md
+
+# 提交变更
+git add Brewfile
+git commit -m 'backup: pre-leaving dotfiles'
+git push
+```
+
+**注意**: 备份会生成敏感文件（`.git_config_summary.txt`, `ssh_backup_*/`），这些文件已在 `.gitignore` 中排除，**不要提交**。

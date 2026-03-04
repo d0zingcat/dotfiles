@@ -224,3 +224,59 @@ k9s version
 - 查看 README.md 获取详细文档
 - 查看 setup.sh --help 获取命令说明
 - 查看 .sisyphus/plans/dotfiles-migration.md 获取计划详情
+
+---
+
+## 💾 离职前备份
+
+### 运行备份脚本
+
+```bash
+cd ~/.dotfiles
+./setup.sh backup
+```
+
+### 备份验证
+
+- [ ] **自动** Brewfile 已更新
+- [ ] **自动** SSH 公钥已备份到 `ssh_backup_*/`
+- [ ] **自动** Git 配置摘要已导出
+- [ ] **自动** 1Password 配置已记录
+- [ ] **自动** VSCode 扩展列表已导出
+- [ ] **自动** 备份报告已生成
+
+### 提交备份
+
+```bash
+# 查看备份报告
+cat .backup_report_*.md
+
+# 提交安全文件
+git status
+git add Brewfile
+git commit -m 'backup: pre-leaving dotfiles'
+git push
+```
+
+### 清理敏感文件
+
+```bash
+# 确认敏感文件已被 .gitignore 排除
+git status
+
+# 手动清理（可选）
+rm -f .git_config_summary.txt
+rm -rf ssh_backup_*/
+rm -f .1password_config.txt
+rm -f .vscode_extensions.txt
+rm -f .backup_report_*.md
+```
+
+### 备份检查清单
+
+- [ ] **手动** 确认 Brewfile 包含所有需要的包
+- [ ] **手动** 记录 SSH 公钥（用于新机器）
+- [ ] **手动** 备份 1Password 紧急工具包
+- [ ] **手动** 导出浏览器书签
+- [ ] **手动** 记录常用 Kubernetes 上下文
+- [ ] **手动** 备份其他个人配置文件

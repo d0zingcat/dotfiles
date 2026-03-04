@@ -43,7 +43,7 @@ brew bundle install
 |------|------|
 | `./setup.sh init` | 初始化新系统 (Homebrew, Xcode, antigen) |
 | `./setup.sh install` | 安装 dotfiles 软链接 |
-| `./setup.sh backup` | 备份当前配置到 Brewfile |
+| `./setup.sh backup` | **完整备份** (Brewfile + Git 配置+SSH 公钥 +VSCode 扩展) |
 | `./setup.sh sync` | 从 git 仓库同步最新配置 |
 | `./setup.sh full-recover` | 新机器完整恢复 (init + install + sync) |
 | `./setup.sh check` | 检查当前安装状态 |
@@ -300,3 +300,50 @@ MIT
 - [迁移检查清单](./CHECKLIST.md)
 - [Neovim 配置](./nvim/README.md)
 - [Dotfiles 迁移计划](./.sisyphus/plans/dotfiles-migration.md)
+
+---
+
+## 💾 备份功能
+
+`./setup.sh backup` 会备份以下配置：
+
+### 备份内容
+
+| 项目 | 说明 | 是否可提交 |
+|------|------|-----------|
+| **Brewfile** | Homebrew 包列表 | ✅ |
+| **SSH 公钥** | `~/.ssh/*.pub` | ⚠️ 不提交 |
+| **Git 配置摘要** | 用户信息（脱敏） | ⚠️ 不提交 |
+| **1Password 配置** | SSH Agent 设置 | ✅ |
+| **VSCode 扩展** | 已安装扩展列表 | ✅ |
+| **备份报告** | 完整备份状态 | ✅ |
+
+### 使用方式
+
+```bash
+# 运行备份
+./setup.sh backup
+
+# 查看备份报告
+cat .backup_report_*.md
+
+# 提交安全文件
+git add Brewfile .1password_config.txt .vscode_extensions.txt
+git commit -m 'backup: update dotfiles'
+```
+
+### 安全提醒
+
+- ⚠️ **不要提交**: `.git_config_summary.txt`, `ssh_backup_*/`
+- ✅ **可以提交**: `Brewfile`, `.1password_config.txt`, `.vscode_extensions.txt`
+
+---
+
+## 📚 相关文档
+
+| 文档 | 用途 |
+|------|------|
+| [BACKUP_INSTRUCTIONS.md](./BACKUP_INSTRUCTIONS.md) | **详细备份指南**（离职前必读） |
+| [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md) | 个人备份说明 |
+| [CHECKLIST.md](./CHECKLIST.md) | 配置检查清单 |
+| [QUICKSTART.md](./QUICKSTART.md) | 快速开始指南 |
