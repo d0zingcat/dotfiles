@@ -182,7 +182,8 @@ function git_clean() {
     git checkout "$base_branch" && \
         git config pull.rebase false && \
         git pull && \
-        git branch --merged | grep -v " $base_branch$" | cat | xargs git branch -d
+        git branch --merged | grep -v " $base_branch$" | cat | xargs git branch -d && \
+        git worktree prune --verbose
 }
 
 function git_config() {
