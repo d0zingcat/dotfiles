@@ -1,3 +1,10 @@
+###############################################################################
+# My Dotfiles - Zsh Configuration
+###############################################################################
+# This configuration includes both personal and work-related functions.
+# Work-related functions are marked with "# ==== WORK: xxx" comments.
+###############################################################################
+
 export GOPATH=$HOME/.go
 export PNPM_HOME="$HOME/.pnpm"
 export BUN_HOME="$HOME/.bun"
@@ -93,11 +100,13 @@ function macnst (){
 #    echo "proxy all unset!"
 #}
 
+# ==== WORK: Kubernetes logs viewer
 function klogs() {
     keyword=$1
     k get pods --sort-by=.metadata.creationTimestamp | grep "$keyword" | head -n 1 | awk '{print $1}' | xargs kubectl logs -f
 }
 
+# ==== WORK: Git remote URL switcher
 function replace_remote() {
     if (( $# != 1 ));
     then
@@ -125,6 +134,7 @@ function replace_remote() {
     fi
 }
 
+# ==== WORK: Remote sync to work servers
 function rsync_work() {
     remote_dir="/root"
     local_work=`pwd`
@@ -193,6 +203,7 @@ function git_config() {
   git config user.signingkey "$3"
 }
 
+# ==== WORK: Multi-environment Git config (work)
 function git_config_work() {
   if [ ! $# -eq 2 ]; then
     echo 'should be like git_config_work {name} {email}'
@@ -200,6 +211,7 @@ function git_config_work() {
   git_config $1 $2 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF23DQtdH5PODF9fYUHr49I1J3lfKLAPk4LG54MVUTcg'
 }
 
+# ==== WORK: Multi-environment Git config (play)
 function git_config_play() {
   if [ ! $# -eq 1 ]; then
     echo 'should be like gait_config_play {email}'
@@ -207,6 +219,7 @@ function git_config_play() {
   git_config d0zingcat $1 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee'
 }
 
+# ==== WORK: Kubernetes secret sealer
 function bitnami_seal() {
     if [[ $# != 2 ]]
     then

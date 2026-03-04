@@ -9,3 +9,80 @@ zed/.tmp*
 zed/embeddings
 zed/conversations
 ssh/config
+
+# === 敏感数据排除 ===
+# SSH 密钥和配置
+.ssh/
+known_hosts
+authorized_keys
+id_rsa*
+id_ed25519*
+*.pem
+
+# 1Password
+.1password/
+
+# Kubernetes
+.kube/
+kubeconfig*
+*.kubeconfig
+
+# 环境变量和 secrets
+*.secret
+*.key
+credentials.json
+secrets.txt
+
+# 缓存目录
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.node_cache/
+.cache/
+tmp/
+temp/
+
+# IDE
+.idea/
+.vscode/workspace*
+*.swp
+*.swo
+*~
+
+# 语言版本文件
+.python-version
+.node-version
+.rust-version
+.tool-versions
+
+# 构建产物
+dist/
+build/
+target/
+*.o
+*.a
+*.so
+*.dylib
+
+# Mac 特有
+.Trash/
+.VolumeIcon.icns
+.apdisk
+
+# 日志
+*.log
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log*
+
+# === 备份文件排除 ===
+# Backup reports and sensitive configs
+.git_config_summary.txt
+*.backup.*
+ssh_backup_*/
+.backup_report_*.md
+
+# Generated config exports (contain sensitive info)
+.1password_config.txt
+.kube_contexts.txt
+.vscode_extensions.txt

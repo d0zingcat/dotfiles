@@ -2,9 +2,10 @@
   defaultBranch = main
 
 [user]
-  name = Tony Tang
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIF23DQtdH5PODF9fYUHr49I1J3lfKLAPk4LG54MVUTcg
-  email = tonytang@lilith.com
+  name = YOUR_NAME
+  signingkey = YOUR_SSH_SIGNING_KEY
+  email = YOUR_EMAIL
+
 [commit]
   gpgsign = true
 
@@ -19,7 +20,7 @@
 
 [core]
     editor = nvim
-	excludesfile = /Users/lilithgames/.gitignore_global
+	excludesfile = ~/.config/git/.gitignore
 
 [pager]
     difftool = true
@@ -49,6 +50,7 @@
     d = diff
     ds = diff --staged
     dc = diff --cached
+    detect-placeholder-config = "!bash -lc 'CONFIG_FILE=$(git rev-parse --show-toplevel 2>/dev/null || echo \".\")/git/config; if [ -f \"$HOME/.dotfiles/git/config\" ]; then CONFIG_FILE=\"$HOME/.dotfiles/git/config\"; fi; if [ -f \"$CONFIG_FILE\" ]; then if grep -qE \"name\\s*=\\s*YOUR_NAME|email\\s*=\\s*YOUR_EMAIL|signingkey\\s*=\\s*YOUR_SSH_SIGNING_KEY\" \"$CONFIG_FILE\"; then echo \"[config] WARNING: Placeholder values detected in $CONFIG_FILE\"; echo \"[config] Please run: git config --file $CONFIG_FILE user.name 'Your Name'; git config --file $CONFIG_FILE user.email 'your@email.com'; git config --file $CONFIG_FILE user.signingkey 'your-ssh-key'\"; else echo \"[config] Git config looks good - no placeholders detected\"; fi; else echo \"[config] Config file not found: $CONFIG_FILE\"; fi'"
 
 #[difftool "sourcetree"]
 #	cmd = opendiff \"$LOCAL\" \"$REMOTE\"

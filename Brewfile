@@ -1,3 +1,4 @@
+tap "anomalyco/tap"
 tap "farion1231/ccswitch"
 tap "homebrew/cask"
 tap "minio/stable"
@@ -10,8 +11,6 @@ brew "autojump"
 brew "bat"
 brew "btop"
 brew "cmake"
-brew "ripgrep"
-brew "codex"
 brew "difftastic"
 brew "direnv"
 brew "dosbox-staging"
@@ -44,11 +43,10 @@ brew "mysql-client@8.4"
 brew "neofetch"
 brew "neovim"
 brew "nexttrace"
-brew "opencode"
-brew "postgresql@17"
-brew "qwen-code"
+brew "postgresql@17", restart_service: :changed
 brew "rclone"
 brew "redis", restart_service: :changed
+brew "ripgrep"
 brew "rustup"
 brew "starship"
 brew "swiftformat"
@@ -60,12 +58,14 @@ brew "xcbeautify"
 brew "xcode-build-server"
 brew "yarn"
 brew "zsh"
+brew "anomalyco/tap/opencode"
 brew "minio/stable/mc"
 brew "telepresenceio/telepresence/telepresence-oss"
 brew "vitobotta/tap/hetzner_k3s"
 cask "1password"
 cask "1password-cli"
 cask "alacritty"
+cask "alma"
 cask "apifox"
 cask "appcleaner"
 cask "battle-net"
@@ -73,9 +73,10 @@ cask "brave-browser"
 cask "farion1231/ccswitch/cc-switch"
 cask "chatgpt"
 cask "cherry-studio"
-cask "clash-verge-rev"
 cask "claude"
 cask "claude-code"
+cask "codex"
+cask "codex-app"
 cask "copilot-cli"
 cask "craft"
 cask "cursor"
@@ -106,23 +107,21 @@ cask "squirrel-app"
 cask "stats"
 cask "steam"
 cask "telegram"
+cask "typeless"
 cask "visual-studio-code"
 cask "wechat"
-mas "Cult Of The Lamb", id: 1639580858
 mas "HamHub", id: 6458691598
 mas "Keynote", id: 409183694
 mas "Lark", id: 6449830127
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "PDFgear", id: 6469021132
-mas "PowerWash Simulator", id: 6477445344
 mas "Quantumult X", id: 1443988620
 mas "SenPlayer", id: 6443975850
 mas "Shadowrocket", id: 932747118
+mas "sing-box", id: 6673731168
 mas "The Unarchiver", id: 425424353
-mas "Windows App", id: 1295203466
 mas "Xcode", id: 497799835
-mas "网易爆米花", id: 6553989480
 vscode "anthropic.claude-code"
 vscode "donjayamanne.githistory"
 vscode "dreamecho.git-blame-lens"
