@@ -272,20 +272,6 @@ return {
     "kevinhwang91/nvim-ufo",
     dependencies = {
       "kevinhwang91/promise-async",
-      {
-        "luukvbaal/statuscol.nvim",
-        config = function()
-          local builtin = require("statuscol.builtin")
-          require("statuscol").setup({
-            relculright = true,
-            segments = {
-              { text = { builtin.foldfunc }, click = "v:lua.ScFa" },
-              { text = { "%s" }, click = "v:lua.ScSa" },
-              { text = { builtin.lnumfunc, " " }, click = "v:lua.ScLa" },
-            },
-          })
-        end,
-      },
     },
     event = "BufReadPost",
     opts = {
@@ -293,11 +279,7 @@ return {
         return { "treesitter", "indent" }
       end,
       open_fold_hl_timeout = 150,
-      close_fold_kinds_for_ft = {
-        default = { "imports", "comment" },
-        json = { "array" },
-        yaml = { "sequence" },
-      },
+      close_fold_kinds_for_ft = {},
       preview = {
         win_config = {
           border = { "", "─", "", "", "", "─", "", "" },

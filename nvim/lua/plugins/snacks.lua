@@ -31,13 +31,7 @@ return {
 
       -- Enhanced statuscolumn
       statuscolumn = {
-        enabled = true,
-        left = { "mark", "sign" },
-        right = { "fold", "git" },
-        folds = {
-          open = true,
-          git_hl = false,
-        },
+        enabled = false,
       },
 
       -- Word highlighting and jumping

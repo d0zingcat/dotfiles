@@ -44,9 +44,9 @@ opt.autoindent = true           -- 自动缩进
 opt.cindent = true              -- C语言缩进规则
 opt.textwidth = 120             -- 文本宽度
 opt.formatoptions = "jcroqlnt"  -- 格式化选项
-opt.foldenable = false          -- 默认不折叠
-opt.foldmethod = "expr"         -- 使用表达式进行折叠
-opt.foldexpr = "nvim_treesitter#foldexpr()" -- 使用treesitter进行折叠
+opt.foldenable = false
+opt.foldcolumn = "0"
+opt.foldmethod = "manual"
 
 -- 搜索设置
 opt.ignorecase = true           -- 搜索忽略大小写
