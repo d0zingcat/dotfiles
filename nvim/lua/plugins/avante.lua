@@ -60,17 +60,7 @@ return {
 					},
 				},
 
-				-- Copilot 配置（可选）
-				copilot = {
-					endpoint = "https://api.githubcopilot.com",
-					model = "gpt-4o-copilot",
-					timeout = 30000,
-					context_window = 128000,
-					extra_request_body = {
-						temperature = 0.75,
-						max_completion_tokens = 16384,
-					},
-				},
+				
 			},
 
 			-- 系统提示词 - 定义 AI 助手的角色
@@ -120,7 +110,7 @@ When suggesting code changes:
 			},
 
 			-- 建议 Provider 配置（用于代码补全）
-			suggestion_provider = "copilot", -- 或 "default"
+			suggestion_provider = "default",
 
 			-- 上下文窗口配置
 			context_window = 6000,
