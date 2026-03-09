@@ -167,6 +167,41 @@ function rsync_work() {
     fi
 }
 
+function claude_with() {
+  local name="$1"
+
+  if [ -z "$name" ]; then
+    echo "usage: claude_with <provider-name>"
+    return 1
+  fi
+
+  # 根据 name 找 id
+  local id
+  id=$(cc-switch provider list | awk -F'┆' -v n="$name" '$3 ~ n {gsub(/ /,"",$2); print $2}')
+
+  if [ -z "$id" ]; then
+    echo "provider not found: $name"
+    return 1
+  fi
+
+  # 当前 provider
+  local old
+  old=$(cc-switch provider list | awk -F'┆' '/✓/ {gsub(/ /,"",$2); print $2}')
+
+  cc-switch provider switch "$id" || return 1
+
+  claude
+  local exit_code=$?
+
+  # 恢复
+  if [ "$old" != "$id" ]; then
+    cc-switch provider switch "$old" >/dev/null
+  fi
+
+  return $exit_code
+}
+
+
 function git_clean() {
     git fetch --all --prune
 
