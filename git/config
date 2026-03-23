@@ -1,10 +1,10 @@
 [init]
-  defaultBranch = main
+	defaultBranch = main
 
 [user]
-  name = YOUR_NAME
-  signingkey = YOUR_SSH_SIGNING_KEY
-  email = YOUR_EMAIL
+	name = Li Tang
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
+	email = iamtangli42@gmail.com
 
 [commit]
   gpgsign = true
@@ -20,7 +20,7 @@
 
 [core]
     editor = nvim
-	excludesfile = ~/.config/git/.gitignore
+	excludesfile = /Users/d0zingcat/.config/git/.gitignore
 
 [pager]
     difftool = true

@@ -26,7 +26,11 @@ export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
     -c 'nnoremap <Space> <C-f>' \
     -c 'noremap q :quit<CR>' -\""
-export KUBECONFIG=$(echo `ls ~/.kube/*config*` | sed 's/ /:/g')
+typeset -a kubeconfigs
+kubeconfigs=("$HOME"/.kube/*config*(N))
+if (( ${#kubeconfigs[@]} )); then
+    export KUBECONFIG="${(j/:/)kubeconfigs}"
+fi
 export HELM_CACHE_HOME=$HOME/.cache/helm
 export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
 export GPG_TTY=$(tty)
@@ -45,7 +49,7 @@ export ZSH_HIGHLIGHT_MAXLENGTH=60
 export GIT_EXTERNAL_DIFF=difft
 
 
-FPATH="$brew_opt/share/zsh/site-functions:${ASDF_DIR}/completions:${FPATH}"
+FPATH="$brew_opt/share/zsh/site-functions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
 
 HISTSIZE=10000         # Number of commands to remember in memory (in-session)
@@ -53,23 +57,27 @@ SAVEHIST=50000         # Number of commands to save to the history file
 HISTFILE=~/.zsh_history  # File where history is stored
 
 
-source $HOME/.antigen/antigen.zsh
-antigen use oh-my-zsh
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-completions
-antigen bundle git
-antigen bundle kubectl
-antigen bundle autojump
-antigen bundle pip
-antigen bundle asdf
-antigen bundle nvim
-antigen bundle darvid/zsh-poetry
-antigen bundle Aloxaf/fzf-tab
-antigen bundle vi-mode
-#antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
-# antigen bundle jeffreytse/zsh-vi-mode
-antigen apply
+if [ -f "$HOME/.antigen/antigen.zsh" ]; then
+    source "$HOME/.antigen/antigen.zsh"
+    antigen use oh-my-zsh
+    antigen bundle zsh-users/zsh-autosuggestions
+    antigen bundle zsh-users/zsh-syntax-highlighting
+    antigen bundle zsh-users/zsh-completions
+    antigen bundle git
+    antigen bundle kubectl
+    antigen bundle autojump
+    antigen bundle pip
+    antigen bundle nvim
+    antigen bundle darvid/zsh-poetry
+    antigen bundle Aloxaf/fzf-tab
+    antigen bundle vi-mode
+    #antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
+    # antigen bundle jeffreytse/zsh-vi-mode
+    antigen apply
+else
+    mkdir $HOME/.antigen
+    curl -L git.io/antigen > $HOME/.antigen/antigen.zsh
+fi
 
 
 # menu
@@ -276,12 +284,12 @@ function bitnami_seal() {
 }
 
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-eval "$(starship init zsh)"
-eval "$(direnv hook zsh)"
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 
 alias ta='tmux a'
 alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
-alias ls='lsd'
+command -v lsd >/dev/null 2>&1 && alias ls='lsd'
 alias l='ls -l'
 alias la='ls -a'
 alias lla='ls -la'
@@ -321,7 +329,7 @@ alias grep='ggrep'
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
-source <(fzf --zsh)
+command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
 
 bindkey -M viins '^b' vi-backward-char
 bindkey -M viins '^f' vi-forward-char

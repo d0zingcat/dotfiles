@@ -34,6 +34,7 @@ FILES=(
 
 # Config directories to link
 CONFIG_FILES=(
+    alacritty
     git
     nvim
     tmux
@@ -168,15 +169,6 @@ function cmd_init() {
         print_success "Antigen already installed"
     fi
     
-    # Install asdf
-    if [ ! -d "$HOME/.asdf" ]; then
-        print_warning "Installing asdf..."
-        git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.14.0
-        print_success "asdf installed"
-    else
-        print_success "asdf already installed"
-    fi
-    
     # Create necessary directories
     print_warning "Creating directories..."
     mkdir -p "$HOME/.config/"
@@ -195,6 +187,10 @@ function cmd_init() {
 
 function cmd_install() {
     print_header "Installing Dotfiles Symlinks"
+
+    mkdir -p "$HOME_DIR/.config"
+    mkdir -p "$HOME_DIR/.ssh"
+    mkdir -p "$HOME_DIR/.kube"
     
     # Link files
     print_warning "Linking files..."
@@ -210,8 +206,7 @@ function cmd_install() {
     # Link config directories
     print_warning "Linking config directories..."
     for i in "${CONFIG_FILES[@]}"; do
-        if [ -d "$WORKING_DIR/$i" ]; then
-            mkdir -p "$HOME_DIR/.config"
+        if [ -e "$WORKING_DIR/$i" ]; then
             ln -svfn "$WORKING_DIR/$i" "$HOME_DIR/.config/$i"
             print_success "Linked: .config/$i"
         else
@@ -244,9 +239,13 @@ function cmd_install() {
     if command_exists fzf; then
         print_success "fzf already installed"
     elif command_exists brew; then
-        print_warning "Installing fzf..."
-        $(brew --prefix)/opt/fzf/install --key-bindings --completion 2>/dev/null || true
-        print_success "fzf installed"
+        if [ -x "$(brew --prefix)/opt/fzf/install" ]; then
+            print_warning "Installing fzf shell integration..."
+            "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc 2>/dev/null || true
+            print_success "fzf shell integration installed"
+        else
+            print_warning "fzf binary not found yet; run: brew bundle install"
+        fi
     fi
     
     print_header "Installation Complete!"
@@ -603,14 +602,14 @@ function cmd_check() {
     local git_email=$(git config --file "$HOME_DIR/.gitconfig" user.email 2>/dev/null || echo "")
     
     echo -n "  user.name: "
-    if [ "$git_name" == "YOUR_NAME" ] || [ -z "$git_name" ]; then
+    if [[ "$git_name" == "YOUR_NAME" || -z "$git_name" ]]; then
         print_warning "not configured"
     else
         print_success "$git_name"
     fi
     
     echo -n "  user.email: "
-    if [ "$git_email" == "YOUR_EMAIL" ] || [ -z "$git_email" ]; then
+    if [[ "$git_email" == "YOUR_EMAIL" || -z "$git_email" ]]; then
         print_warning "not configured"
     else
         print_success "$git_email"
