@@ -39,6 +39,8 @@
 - [ ] **自动** ~/.config/wezterm 软链接
 - [ ] **自动** ~/.config/starship.toml 软链接
 - [ ] **自动** ~/.gitconfig 软链接
+- [ ] **自动** 如不存在则用 `ssh/example` 初始化 ~/.ssh/config
+- [ ] **自动** 如可用则创建 ~/.1password/agent.sock 符号链接
 - [ ] **自动** Git 全局配置 (excludesfile, defaultBranch)
 - [ ] **自动** fzf 安装和配置
 
@@ -74,6 +76,7 @@ cat ~/.ssh/id_ed25519.pub | pbcopy
 - [ ] **手动** 生成 SSH 密钥
 - [ ] **手动** 添加密钥到 1Password
 - [ ] **手动** 添加公钥到代码托管平台
+- [ ] **手动** 按需调整 ~/.ssh/config 中的主机配置
 
 ### 验证 Git 配置
 ```bash

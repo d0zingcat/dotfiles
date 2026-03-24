@@ -313,6 +313,7 @@ MIT
 |------|------|-----------|
 | **Brewfile** | Homebrew 包列表 | ✅ |
 | **SSH 公钥** | `~/.ssh/*.pub` | ⚠️ 不提交 |
+| **SSH 配置备份** | `~/.ssh/config` | ⚠️ 不提交 |
 | **Git 配置摘要** | 用户信息（脱敏） | ⚠️ 不提交 |
 | **1Password 配置** | SSH Agent 设置 | ✅ |
 | **VSCode 扩展** | 已安装扩展列表 | ✅ |
@@ -336,6 +337,8 @@ git commit -m 'backup: update dotfiles'
 
 - ⚠️ **不要提交**: `.git_config_summary.txt`, `ssh_backup_*/`
 - ✅ **可以提交**: `Brewfile`, `.1password_config.txt`, `.vscode_extensions.txt`
+- `./setup.sh install` / `./setup.sh full-recover` 会在 `~/.ssh/config` 不存在时，用 `ssh/example` 初始化一份本地配置
+- `./setup.sh install` 也会在检测到 1Password socket 后，自动创建 `~/.1password/agent.sock`
 
 ---
 

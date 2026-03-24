@@ -33,6 +33,7 @@
 | `starship.toml` | Starship 配置 | Shell 提示符 |
 | `Brewfile` | Homebrew 包列表 | 所有工具和应用 |
 | `setup.sh` | 安装脚本 | 一键配置 |
+| `ssh/example` | SSH 配置模板 | 初始化 `~/.ssh/config` |
 | `CHECKLIST.md` | 检查清单 | 配置验证 |
 | `QUICKSTART.md` | 快速开始 | 3-5 分钟配置 |
 | `README.md` | 完整文档 | 使用说明 |
@@ -67,7 +68,7 @@ secrets.txt        # 密钥文件
 - [ ] Git 用户信息 (name, email)
 - [ ] 1Password SSH Agent
 - [ ] Kubeconfig (工作集群配置)
-- [ ] SSH config (如果有自定义主机)
+- [ ] SSH config 中的自定义主机条目（如需额外调整）
 
 ### 需要单独备份的
 
@@ -98,6 +99,7 @@ cd ~/.dotfiles
 - ✅ zsh antigen 安装
 - ✅ asdf 版本管理器安装
 - ✅ dotfiles 软链接创建
+- ✅ 如 `~/.ssh/config` 不存在，则用模板初始化
 - ✅ Git 基础配置
 - ✅ fzf 安装
 
@@ -129,7 +131,7 @@ cat ~/.ssh/id_ed25519.pub
 #### 1Password SSH Agent (如果使用)
 
 ```bash
-# 创建符号链接
+# 如果 install 没自动创建，再手动创建符号链接
 mkdir -p ~/.1password
 ln -s ~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock
 

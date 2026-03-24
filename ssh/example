@@ -1,7 +1,6 @@
-Host *
-    #HostkeyAlgorithms +ssh-rsa
-    #PubkeyAcceptedAlgorithms +ssh-rsa
+Include ~/.orbstack/ssh/config
 
+Host *
     IdentityAgent "~/.1password/agent.sock"
     ServerAliveInterval 60
     TCPKeepAlive yes
@@ -10,11 +9,9 @@ Host github.com
     Hostname ssh.github.com
     Port 443
     User git
-    # set to personal by default
     IdentityFile ~/.ssh/Personal.pub
     IdentitiesOnly yes
 
-# Personal
 Host personalgit
     Hostname ssh.github.com
     Port 443
@@ -22,7 +19,6 @@ Host personalgit
     IdentityFile ~/.ssh/Personal.pub
     IdentitiesOnly yes
 
-# Work
 Host workgit
     Hostname ssh.github.com
     Port 443
