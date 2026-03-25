@@ -104,7 +104,7 @@ function ask() {
     local default="${2:-n}"
     local choices="y/N"
     [[ "$default" == "y" ]] && choices="Y/n"
-    
+
     read -q "?$prompt [$choices] " response
     echo
     response=${response:-$default}
@@ -142,7 +142,7 @@ EOF
 
 function cmd_init() {
     print_header "Initializing macOS System"
-    
+
     # Check for Homebrew
     if command_exists brew; then
         print_success "Homebrew already installed"
@@ -152,13 +152,13 @@ function cmd_init() {
         eval "$(/opt/homebrew/bin/brew shellenv)"
         print_success "Homebrew installed"
     fi
-    
+
     # Xcode Command Line Tools
     print_warning "Installing Xcode Command Line Tools..."
     xcode-select --install
     sudo xcodebuild -license accept 2>/dev/null || true
     print_success "Xcode tools ready"
-    
+
     # Install antigen for zsh
     if [ ! -f "$HOME/.antigen/antigen.zsh" ]; then
         print_warning "Installing zsh antigen..."
@@ -168,19 +168,21 @@ function cmd_init() {
     else
         print_success "Antigen already installed"
     fi
-    
+
     # Create necessary directories
     print_warning "Creating directories..."
     mkdir -p "$HOME/.config/"
     mkdir -p "$HOME/.ssh"
     mkdir -p "$HOME/.kube"
     print_success "Directories created"
-    
+
     # Set default macOS preferences
     print_warning "Setting macOS preferences..."
     defaults write -g ApplePressAndHoldEnabled -bool false 2>/dev/null || true
+    defaults write -g KeyRepeat -int 2 2>/dev/null || true
+    defaults write -g InitialKeyRepeat -int 15 2>/dev/null || true
     print_success "Preferences set"
-    
+
     print_header "Init Complete!"
     echo "Now run: ./setup.sh install"
 }
@@ -213,7 +215,7 @@ function cmd_install() {
     else
         print_warning "1Password SSH agent socket not found yet"
     fi
-    
+
     # Link files
     print_warning "Linking files..."
     for i in "${FILES[@]}"; do
@@ -224,7 +226,7 @@ function cmd_install() {
             print_warning "Not found: $i"
         fi
     done
-    
+
     # Link config directories
     print_warning "Linking config directories..."
     for i in "${CONFIG_FILES[@]}"; do
@@ -235,7 +237,7 @@ function cmd_install() {
             print_warning "Not found: $i"
         fi
     done
-    
+
     # Link custom files
     print_warning "Linking custom files..."
     for row in "${CUSTOM_FILES[@]}"; do
@@ -272,13 +274,13 @@ function cmd_install() {
             print_success "Copied SSH config from template"
         fi
     fi
-    
+
     # Initialize git config excludesfile
     print_warning "Configuring git..."
     git config --global core.excludesfile ~/.config/git/.gitignore 2>/dev/null || true
     git config --global init.defaultBranch main 2>/dev/null || true
     print_success "Git configured"
-    
+
     # Install fzf
     if command_exists fzf; then
         print_success "fzf already installed"
@@ -291,7 +293,7 @@ function cmd_install() {
             print_warning "fzf binary not found yet; run: brew bundle install"
         fi
     fi
-    
+
     print_header "Installation Complete!"
     echo ""
     echo "Next steps:"
@@ -302,10 +304,10 @@ function cmd_install() {
 
 function cmd_backup() {
     print_header "Backing Up Configuration"
-    
+
     local backup_count=0
     local backup_warnings=0
-    
+
     # ==========================================================================
     # 1. Brewfile 备份
     # ==========================================================================
@@ -318,7 +320,7 @@ function cmd_backup() {
         print_error "Homebrew not found"
         backup_warnings=$((backup_warnings + 1))
     fi
-    
+
     # ==========================================================================
     # 2. Git 配置检查与备份（脱敏）
     # ==========================================================================
@@ -332,12 +334,12 @@ function cmd_backup() {
             backup_count=$((backup_count + 1))
         fi
     fi
-    
+
     print_warning "Exporting git config summary..."
     local git_name=$(git config --global user.name 2>/dev/null || echo "not set")
     local git_email=$(git config --global user.email 2>/dev/null || echo "not set")
     local git_key=$(git config --global user.signingkey 2>/dev/null || echo "not set")
-    
+
     cat > "$WORKING_DIR/.git_config_summary.txt" << EOF
 # Git Configuration Summary
 # Generated: $(date '+%Y-%m-%d %H:%M:%S')
@@ -354,28 +356,28 @@ user.signingkey = $git_key
 EOF
     print_success "Git config summary exported to .git_config_summary.txt"
     backup_count=$((backup_count + 1))
-    
+
     # ==========================================================================
     # 3. SSH 公钥备份
     # ==========================================================================
     print_warning "Backing up SSH public keys..."
     local ssh_backup_dir="$WORKING_DIR/ssh_backup_$(date +%Y%m%d_%H%M%S)"
-    
+
     if [ -d "$HOME/.ssh" ]; then
         mkdir -p "$ssh_backup_dir"
-        
+
         for key in "$HOME"/.ssh/*.pub; do
             if [ -f "$key" ]; then
                 cp "$key" "$ssh_backup_dir/"
                 print_success "Copied: $(basename "$key")"
             fi
         done
-        
+
         if [ -f "$HOME/.ssh/config" ]; then
             cp "$HOME/.ssh/config" "$ssh_backup_dir/"
             print_success "Copied: ssh config"
         fi
-        
+
         if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
             echo "# SSH Public Key Backup" > "$ssh_backup_dir/README.md"
             echo "# Generated: $(date '+%Y-%m-%d %H:%M:%S')" >> "$ssh_backup_dir/README.md"
@@ -400,12 +402,12 @@ EOF
     else
         print_warning "~/.ssh directory not found"
     fi
-    
+
     # ==========================================================================
     # 4. 其他重要配置备份
     # ==========================================================================
     print_warning "Backing up other configurations..."
-    
+
     if [ -L "$HOME/.1password/agent.sock" ]; then
         echo "# 1Password SSH Agent" > "$WORKING_DIR/.1password_config.txt"
         echo "Symlink: ~/.1password/agent.sock -> $(readlink "$HOME/.1password/agent.sock")" >> "$WORKING_DIR/.1password_config.txt"
@@ -416,7 +418,7 @@ EOF
         print_success "1Password config documented"
         backup_count=$((backup_count + 1))
     fi
-    
+
     if [ -f "$HOME/.kube/config" ]; then
         echo "# Kubernetes Contexts Backup" > "$WORKING_DIR/.kube_contexts.txt"
         echo "# Generated: $(date '+%Y-%m-%d %H:%M:%S')" >> "$WORKING_DIR/.kube_contexts.txt"
@@ -430,7 +432,7 @@ EOF
         print_success "Kubernetes contexts documented"
         backup_count=$((backup_count + 1))
     fi
-    
+
     if command_exists code; then
         echo "# VSCode Extensions Backup" > "$WORKING_DIR/.vscode_extensions.txt"
         echo "# Generated: $(date '+%Y-%m-%d %H:%M:%S')" >> "$WORKING_DIR/.vscode_extensions.txt"
@@ -440,12 +442,12 @@ EOF
         print_success "VSCode extensions documented"
         backup_count=$((backup_count + 1))
     fi
-    
+
     # ==========================================================================
     # 5. 生成备份报告
     # ==========================================================================
     print_header "Backup Summary"
-    
+
     local backup_report="$WORKING_DIR/.backup_report_$(date +%Y%m%d_%H%M%S).md"
     cat > "$backup_report" << EOF
 # Dotfiles Backup Report
@@ -481,9 +483,9 @@ $( [ -d "$ssh_backup_dir" ] && echo "- $ssh_backup_dir/ ⚠️ DO NOT COMMIT" )
 3. git commit -m 'backup: update dotfiles'
 4. ⚠️ DO NOT commit: .git_config_summary.txt, ssh_backup_*/
 EOF
-    
+
     print_success "Backup report generated: $backup_report"
-    
+
     echo ""
     echo "=========================================="
     echo "Backup Summary"
@@ -503,19 +505,19 @@ EOF
 }
 function cmd_sync() {
     print_header "Syncing from Git"
-    
+
     if [ ! -d "$DOTFILES_DIR/.git" ]; then
         print_error "Not a git repository: $DOTFILES_DIR"
         return 1
     fi
-    
+
     cd "$DOTFILES_DIR"
-    
+
     # Pull latest changes
     print_warning "Pulling latest changes..."
     git pull origin main 2>/dev/null || git pull 2>/dev/null || true
     print_success "Synced"
-    
+
     # Check for placeholder config
     if grep -qE "YOUR_NAME|YOUR_EMAIL" "$DOTFILES_DIR/git/config" 2>/dev/null; then
         print_warning "⚠️  git/config contains placeholder values!"
@@ -523,19 +525,19 @@ function cmd_sync() {
         echo "    Run: git config --file ~/.gitconfig user.email 'your@email.com'"
         echo "    Run: git config --file ~/.gitconfig user.signingkey 'your-ssh-key'"
     fi
-    
+
     print_header "Sync Complete!"
 }
 
 function cmd_full_recover() {
     print_header "Full Recovery (New Machine)"
-    
+
     # Check for git
     if ! command_exists git; then
         print_error "Git not found. Please install Xcode Command Line Tools first."
         return 1
     fi
-    
+
     # Check if this is a fresh clone or existing setup
     if [ ! -d "$DOTFILES_DIR/.git" ]; then
         print_warning "This doesn't appear to be a git clone."
@@ -543,16 +545,16 @@ function cmd_full_recover() {
         echo "  git clone <your-repo-url> $DOTFILES_DIR"
         return 1
     fi
-    
+
     # Run init
     cmd_init
-    
+
     # Run install
     cmd_install
-    
+
     # Run sync
     cmd_sync
-    
+
     print_header "Full Recovery Complete!"
     echo ""
     echo "IMPORTANT: Configure your personal settings:"
@@ -574,9 +576,9 @@ function cmd_full_recover() {
 
 function cmd_check() {
     print_header "Checking Setup Status"
-    
+
     local missing=0
-    
+
     # Check Homebrew
     echo -n "Homebrew: "
     if command_exists brew; then
@@ -585,7 +587,7 @@ function cmd_check() {
         print_error "not found"
         ((missing++))
     fi
-    
+
     # Check zsh
     echo -n "Zsh: "
     if command_exists zsh; then
@@ -594,7 +596,7 @@ function cmd_check() {
         print_error "not found"
         ((missing++))
     fi
-    
+
     # Check Neovim
     echo -n "Neovim: "
     if command_exists nvim; then
@@ -603,7 +605,7 @@ function cmd_check() {
         print_error "not found"
         ((missing++))
     fi
-    
+
     # Check tmux
     echo -n "Tmux: "
     if command_exists tmux; then
@@ -612,7 +614,7 @@ function cmd_check() {
         print_error "not found"
         ((missing++))
     fi
-    
+
     # Check antigen
     echo -n "Antigen: "
     if [ -f "$HOME/.antigen/antigen.zsh" ]; then
@@ -621,7 +623,7 @@ function cmd_check() {
         print_error "not found"
         ((missing++))
     fi
-    
+
     # Check symlinks
     echo ""
     echo "Symlinks:"
@@ -640,27 +642,27 @@ function cmd_check() {
             print_error "not found"
         fi
     done
-    
+
     # Check git config
     echo ""
     echo "Git Config:"
     local git_name=$(git config --file "$HOME_DIR/.gitconfig" user.name 2>/dev/null || echo "")
     local git_email=$(git config --file "$HOME_DIR/.gitconfig" user.email 2>/dev/null || echo "")
-    
+
     echo -n "  user.name: "
     if [[ "$git_name" == "YOUR_NAME" || -z "$git_name" ]]; then
         print_warning "not configured"
     else
         print_success "$git_name"
     fi
-    
+
     echo -n "  user.email: "
     if [[ "$git_email" == "YOUR_EMAIL" || -z "$git_email" ]]; then
         print_warning "not configured"
     else
         print_success "$git_email"
     fi
-    
+
     echo ""
     if [ $missing -eq 0 ]; then
         print_success "All checks passed!"
