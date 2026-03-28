@@ -38,7 +38,7 @@
 - [ ] **自动** ~/.config/tmux 软链接
 - [ ] **自动** ~/.config/wezterm 软链接
 - [ ] **自动** ~/.config/starship.toml 软链接
-- [ ] **自动** ~/.gitconfig 软链接
+- [ ] **自动** 用 `git/config` 模板覆盖生成 ~/.gitconfig
 - [ ] **自动** 如不存在则用 `ssh/example` 初始化 ~/.ssh/config
 - [ ] **自动** 如可用则创建 ~/.1password/agent.sock 符号链接
 - [ ] **自动** Git 全局配置 (excludesfile, defaultBranch)

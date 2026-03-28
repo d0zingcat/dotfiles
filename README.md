@@ -176,7 +176,7 @@ figma             # 设计
 
 ### Git 配置模板
 
-`git/config` 使用占位符，首次使用时需要配置：
+`git/config` 是仓库内模板；`./setup.sh install` 会将它复制到 `~/.gitconfig`。首次使用后请在本机副本中填写真实信息：
 
 ```bash
 git config --file ~/.gitconfig user.name "Your Name"

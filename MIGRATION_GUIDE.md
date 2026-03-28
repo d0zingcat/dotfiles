@@ -245,7 +245,7 @@ antigen apply
 
 ### 修改 Git 配置
 
-编辑 `~/.dotfiles/git/config` 或直接运行：
+仓库中的 `git/config` 只作为模板使用。机器上的实际配置请直接修改 `~/.gitconfig`：
 
 ```bash
 git config --global user.name "Your Name"

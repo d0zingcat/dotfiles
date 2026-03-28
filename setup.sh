@@ -46,11 +46,6 @@ CONFIG_FILES=(
     ghostty
 )
 
-# Custom file mappings (from -> to)
-CUSTOM_FILES=(
-    "git/config .gitconfig"
-)
-
 # Rustup components
 RUSTUP_COMPONENTS=(
     clippy
@@ -238,20 +233,18 @@ function cmd_install() {
         fi
     done
 
-    # Link custom files
-    print_warning "Linking custom files..."
-    for row in "${CUSTOM_FILES[@]}"; do
-        IFS=' ' read -r from to <<< "$row"
-        if [ -f "$WORKING_DIR/$from" ]; then
-            # Create parent directory if needed
-            local to_dir=$(dirname "$HOME_DIR/$to")
-            mkdir -p "$to_dir"
-            ln -svfn "$WORKING_DIR/$from" "$HOME_DIR/$to"
-            print_success "Linked: $to"
-        else
-            print_warning "Not found: $from"
+    # Install git config from template by copying it into place.
+    local git_config_template="$WORKING_DIR/git/config"
+    local git_config_target="$HOME_DIR/.gitconfig"
+    if [ -f "$git_config_template" ]; then
+        if [ -L "$git_config_target" ]; then
+            rm "$git_config_target"
         fi
-    done
+        cp -f "$git_config_template" "$git_config_target"
+        print_success "Copied git config template to ~/.gitconfig"
+    else
+        print_warning "Not found: git/config"
+    fi
 
     # Install SSH config from template without symlinking it into the repo.
     local ssh_template="$WORKING_DIR/ssh/example"
