@@ -2,9 +2,9 @@
 	defaultBranch = main
 
 [user]
-	name = Li Tang
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee
-	email = iamtangli42@gmail.com
+    name = YOUR_NAME
+    signingkey = YOUR_SSH_SIGNING_KEY
+    email = YOUR_EMAIL
 
 [commit]
   gpgsign = true
