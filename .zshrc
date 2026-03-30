@@ -1,3 +1,7 @@
+
+# Kiro CLI pre block. Keep at the top of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
+
 ###############################################################################
 # My Dotfiles - Zsh Configuration
 ###############################################################################
@@ -235,7 +239,8 @@ function git_clean() {
     git checkout "$base_branch" && \
         git config pull.rebase false && \
         git pull && \
-        git branch --merged | grep -v " $base_branch$" | cat | xargs git branch -d && \
+        git branch --merged | grep -v " $base_branch$" | xargs git branch -d 2>/dev/null; \
+        git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D 2>/dev/null; \
         git worktree prune --verbose
 }
 
@@ -321,6 +326,8 @@ alias python='python3'
 alias pip='pip3'
 alias sed='gsed'
 alias grep='ggrep'
+alias cc='claude --append-system-prompt-file ~/.config/opencode/AGENTS.md --model claude-opus-4.6'
+alias oc='opencode'
 
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
 [[ $commands[helm] ]] && source <(helm completion zsh)
@@ -340,3 +347,7 @@ bindkey -M viins '^d' vi-delete-char
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+
+
+# Kiro CLI post block. Keep at the bottom of this file.
+[[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
