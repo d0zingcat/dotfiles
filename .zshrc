@@ -37,9 +37,9 @@ export FZF_DEFAULT_OPTS="--height=50% --layout=reverse"
 export GPG_TTY=$(tty)
 
 arch=$(uname -m)
-if [ $arch = "x86_64" ]; then
+if [[ $arch == "x86_64" ]]; then
     brew_opt="/usr/local/opt"
-elif [ $arch = "arm64" ]; then
+elif [[ $arch == "arm64" ]]; then
     brew_opt="/opt/homebrew/opt"
 fi
 LDFLAGS="-L$brew_opt/zlib/lib -L$brew_opt/openssl@3/lib"
@@ -71,8 +71,6 @@ if [ -f "$HOME/.antigen/antigen.zsh" ]; then
     antigen bundle darvid/zsh-poetry
     antigen bundle Aloxaf/fzf-tab
     antigen bundle vi-mode
-    #antigen bundle MichaelAquilina/zsh-autoswitch-virtualenv
-    # antigen bundle jeffreytse/zsh-vi-mode
     antigen apply
 else
     mkdir $HOME/.antigen
@@ -132,21 +130,6 @@ function macnst (){
     netstat -Watnlv | grep LISTEN | awk '{"ps -o comm= -p " $9 | getline procname;colred="\033[01;31m";colclr="\033[0m"; print colred "proto: " colclr $1 colred " | addr.port: " colclr $4 colred " | pid: " colclr $9 colred " | name: " colclr procname;  }' | column -t -s "|"
 }
 
-# As clash for windows provides TUN mode/ClashX provides enhance mode, there's no necessity to set proxy munally(which proxy all traffix transparently)
-# proxy by clashx function clashproxy() {
-#    local proxy=http://127.0.0.1:7890
-#    export https_proxy=$proxy http_proxy=$proxy all_proxy=socks5://127.0.0.1:7891;
-#    echo "proxy all set!"
-#}
-#
-## unset proxy
-#function clashproxy_unset() {
-#    unset http_proxy
-#    unset https_proxy
-#    unset all_proxy
-#    echo "proxy all unset!"
-#}
-
 # ==== WORK: Kubernetes logs viewer
 function klogs() {
     keyword=$1
@@ -200,11 +183,11 @@ function rsync_work() {
             remote_work=$t
         else
             echo "Invalid argument! should be 'back'"
-            exit(1)
+            exit 1
         fi
     else
         echo "invalid argument!"
-        exit(1)
+        exit 1
     fi
     rsync_exclude="$local_work/rsync_exclude.txt"
     if [ -f $rsync_exclude ]; then
@@ -297,7 +280,7 @@ function git_config_work() {
 # ==== WORK: Multi-environment Git config (play)
 function git_config_play() {
   if [ ! $# -eq 1 ]; then
-    echo 'should be like gait_config_play {email}'
+    echo 'should be like git_config_play {email}'
   fi
   git_config d0zingcat $1 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPaVruhhL4O9BiAncnW1wH3jc7/hsqsXLknA8Xtnjjee'
 }
