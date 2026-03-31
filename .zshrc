@@ -5,6 +5,7 @@
 # Work-related functions are marked with "# ==== WORK: xxx" comments.
 ###############################################################################
 
+# -- Environment Variables --
 export GOPATH=$HOME/.go
 export PNPM_HOME="$HOME/.pnpm"
 export BUN_HOME="$HOME/.bun"
@@ -48,7 +49,6 @@ export CPPFLAGS=$CPPFLAGS
 export ZSH_HIGHLIGHT_MAXLENGTH=60
 export GIT_EXTERNAL_DIFF=difft
 
-
 FPATH="$brew_opt/share/zsh/site-functions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
 
@@ -56,7 +56,7 @@ HISTSIZE=10000         # Number of commands to remember in memory (in-session)
 SAVEHIST=50000         # Number of commands to save to the history file
 HISTFILE=~/.zsh_history  # File where history is stored
 
-
+# -- Antigen for plugin management --
 if [ -f "$HOME/.antigen/antigen.zsh" ]; then
     source "$HOME/.antigen/antigen.zsh"
     antigen use oh-my-zsh
@@ -79,7 +79,46 @@ else
     curl -L git.io/antigen > $HOME/.antigen/antigen.zsh
 fi
 
+# -- Aliases --
+alias ta='tmux a'
+alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
+alias l='ls -l'
+alias la='ls -a'
+alias lla='ls -la'
+alias lt='ls --tree'
+alias kns='kubens'
+alias kctx='kubectx'
+alias kd='kubectl debug'
+alias kk='kubectl krew'
+alias kzeus='kubectl --context zeus '
+alias khybrid='kubectl --context hybrid'
+alias kget='kubectl get'
+alias kdesc='kubectl describe'
+alias klog='kubectl logs'
+alias kapply='kubectl apply'
+alias gce='gh copilot explain'
+alias gcs='gh copilot suggest'
+alias vi='nvim'
+alias batc='bat --paging=never'
+alias batcp='bat --plain --paging=never'
+alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
+# do not use -r as it skips the non-regular files
+alias tf_push='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl --exclude=terraform.tfstate'
+alias tf_push_state='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl'
+alias tf_pull_state='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
+alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
+alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
+alias pn='pnpm'
+alias python='python3'
+alias pip='pip3'
+alias sed='gsed'
+alias grep='ggrep'
+alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
+alias cc='claude --append-system-prompt-file ~/.config/opencode/AGENTS.md --model claude-opus-4.6'
+alias oc='opencode'
 
+# -- Functions --
 # menu
 function m() {
     if [[ -n "$TMUX" ]]; then
@@ -284,48 +323,75 @@ function bitnami_seal() {
     fi
 }
 
+# Create dev workspace in tmux
+# Usage: dev [-g] [session-name]
+#   default: Claude Code | Yazi (top-right) + shell (bottom-right)
+#   -g/--git: 2x2 layout adding lazygit (bottom-left)
+function dev() {
+    local session=""
+    local layout="simple"
+
+    for arg in "$@"; do
+        case "$arg" in
+            -g|--git) layout="full" ;;
+            *) session="$arg" ;;
+        esac
+    done
+
+    session="${session:-$(basename $(pwd))}"
+    local cwd="$(pwd)"
+
+    if tmux has-session -t "$session" 2>/dev/null; then
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$session"
+        else
+            tmux attach-session -t "$session"
+        fi
+        return
+    fi
+
+    # Create session; first pane = left (Claude Code)
+    tmux new-session -d -s "$session" -c "$cwd"
+    local left
+    left=$(tmux display-message -p -t "${session}:1.1" "#{pane_id}")
+
+    if [[ "$layout" == "full" ]]; then
+        # 2x2: Claude Code | Yazi / shell | lazygit
+        local tr
+        tr=$(tmux split-window -t "$left" -h -c "$cwd" -P -F "#{pane_id}")
+        local br
+        br=$(tmux split-window -t "$tr"   -v -c "$cwd" -P -F "#{pane_id}")
+        local bl
+        bl=$(tmux split-window -t "$left" -v -c "$cwd" -P -F "#{pane_id}")
+
+        tmux send-keys -t "$left" "cc"       Enter
+        tmux send-keys -t "$tr"   "yazi"     Enter
+        tmux send-keys -t "$br"   "lazygit"  Enter
+    else
+        # simple: Claude Code (left) | Yazi (top-right) + shell (bottom-right)
+        local tr
+        tr=$(tmux split-window -t "$left" -h -c "$cwd" -P -F "#{pane_id}")
+        local br
+        br=$(tmux split-window -t "$tr"   -v -c "$cwd" -P -F "#{pane_id}")
+
+        tmux send-keys -t "$left" "cc"    Enter
+        tmux send-keys -t "$tr"   "yazi"  Enter
+    fi
+
+    tmux select-pane -t "$left"
+
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$session"
+    else
+        tmux attach-session -t "$session"
+    fi
+}
+
+# -- MISC Configuration --
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
-
-alias ta='tmux a'
-alias tl='tmux ls && read session && tmux attach -t ${session:-default} || tmux new -s ${session:-default}'
 command -v lsd >/dev/null 2>&1 && alias ls='lsd'
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-alias kns='kubens'
-alias kctx='kubectx'
-alias kd='kubectl debug'
-alias kk='kubectl krew'
-alias kzeus='kubectl --context zeus '
-alias khybrid='kubectl --context hybrid'
-alias kget='kubectl get'
-alias kdesc='kubectl describe'
-alias klog='kubectl logs'
-alias kapply='kubectl apply'
-alias gce='gh copilot explain'
-alias gcs='gh copilot suggest'
-alias vi='nvim'
-alias batc='bat --paging=never'
-alias batcp='bat --plain --paging=never'
-alias fixscreen='sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.screensharing.plist &&  sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.screensharing.plist'
-# do not use -r as it skips the non-regular files
-alias tf_push='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl --exclude=terraform.tfstate'
-alias tf_push_state='rsync -avhti . devops-cloud-1:~/meex-deploy/ --exclude=.terraform/ --exclude=.terraform.lock.hcl'
-alias tf_pull_state='rsync -avhti devops-cloud-1:~/meex-deploy/terraform/terraform.tfstate terraform/.'
-alias git_branch="git for-each-ref --sort=committerdate refs/heads/ --format='%(HEAD) %(color:yellow)%(refname:short)%(color:reset) - %(color:red)%(objectname:short)%(color:reset) - %(contents:subject) - %(authorname) (%(color:green)%(committerdate:relative)%(color:reset))'"
-alias clean_tmux_session='ls ~/.tmux/resurrect/* -1dtr | head -n 100  | xargs rm  -v'
-alias pn='pnpm'
-alias python='python3'
-alias pip='pip3'
-alias sed='gsed'
-alias grep='ggrep'
-alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
-alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
-alias cc='claude --append-system-prompt-file ~/.config/opencode/AGENTS.md --model claude-opus-4.6'
-alias oc='opencode'
 
 export ZSH_COMPLETION_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 mkdir -p "$ZSH_COMPLETION_CACHE"
