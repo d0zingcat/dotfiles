@@ -578,7 +578,7 @@ function cmd_check() {
         print_success "installed ($(brew --version | head -1))"
     else
         print_error "not found"
-        ((missing++))
+        missing=$((missing + 1))
     fi
 
     # Check zsh
@@ -587,7 +587,7 @@ function cmd_check() {
         print_success "installed ($(zsh --version))"
     else
         print_error "not found"
-        ((missing++))
+        missing=$((missing + 1))
     fi
 
     # Check Neovim
@@ -596,7 +596,7 @@ function cmd_check() {
         print_success "installed ($(nvim --version | head -1))"
     else
         print_error "not found"
-        ((missing++))
+        missing=$((missing + 1))
     fi
 
     # Check tmux
@@ -605,7 +605,7 @@ function cmd_check() {
         print_success "installed ($(tmux -V))"
     else
         print_error "not found"
-        ((missing++))
+        missing=$((missing + 1))
     fi
 
     # Check antigen
@@ -614,7 +614,7 @@ function cmd_check() {
         print_success "installed"
     else
         print_error "not found"
-        ((missing++))
+        missing=$((missing + 1))
     fi
 
     # Check symlinks
@@ -633,6 +633,26 @@ function cmd_check() {
             print_warning "exists but not linked"
         else
             print_error "not found"
+            missing=$((missing + 1))
+        fi
+    done
+
+    echo ""
+    echo "Config Links:"
+    for i in "${CONFIG_FILES[@]}"; do
+        echo -n "  .config/$i: "
+        if [ -L "$HOME_DIR/.config/$i" ]; then
+            local target=$(readlink "$HOME_DIR/.config/$i")
+            if [[ "$target" == *"$WORKING_DIR"* ]]; then
+                print_success "linked to dotfiles"
+            else
+                print_warning "linked elsewhere: $target"
+            fi
+        elif [ -e "$HOME_DIR/.config/$i" ]; then
+            print_warning "exists but not linked"
+        else
+            print_error "not found"
+            missing=$((missing + 1))
         fi
     done
 

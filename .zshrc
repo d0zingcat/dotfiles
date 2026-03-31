@@ -327,6 +327,7 @@ alias pip='pip3'
 alias sed='gsed'
 alias grep='ggrep'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
+alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude --append-system-prompt-file ~/.config/opencode/AGENTS.md --model claude-opus-4.6'
 alias oc='opencode'
 
