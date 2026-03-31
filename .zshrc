@@ -327,14 +327,40 @@ alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude --append-system-prompt-file ~/.config/opencode/AGENTS.md --model claude-opus-4.6'
 alias oc='opencode'
 
-[[ $commands[kubectl] ]] && source <(kubectl completion zsh) && compdef __start_kubectl k
-[[ $commands[helm] ]] && source <(helm completion zsh)
+export ZSH_COMPLETION_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+mkdir -p "$ZSH_COMPLETION_CACHE"
+
+if [[ $commands[kubectl] ]]; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
+        command kubectl completion zsh >| "$ZSH_COMPLETION_CACHE/_kubectl" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
+        source "$ZSH_COMPLETION_CACHE/_kubectl"
+        compdef __start_kubectl k
+    fi
+fi
+
+if [[ $commands[helm] ]]; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
+        command helm completion zsh >| "$ZSH_COMPLETION_CACHE/_helm" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
+        source "$ZSH_COMPLETION_CACHE/_helm"
+    fi
+fi
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
-command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
+if command -v fzf >/dev/null 2>&1; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
+        command fzf --zsh >| "$ZSH_COMPLETION_CACHE/fzf.zsh" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
+        source "$ZSH_COMPLETION_CACHE/fzf.zsh"
+    fi
+fi
 
 bindkey -M viins '^b' vi-backward-char
 bindkey -M viins '^f' vi-forward-char
@@ -345,5 +371,3 @@ bindkey -M viins '^d' vi-delete-char
 export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
 
 alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
-
-
