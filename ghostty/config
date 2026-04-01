@@ -59,7 +59,7 @@ keybind = cmd+shift+j=goto_split:bottom
 keybind = cmd+shift+k=goto_split:top
 keybind = cmd+shift+l=goto_split:right
 
-keybind = global:ctrl+grave_accent=toggle_quick_terminal
+keybind = global:cmd+ctrl+grave_accent=toggle_quick_terminal
 keybind = cmd+shift+e=equalize_splits
 keybind = cmd+shift+f=toggle_split_zoom
 keybind = cmd+shift+comma=reload_config
