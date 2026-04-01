@@ -41,7 +41,6 @@ CONFIG_FILES=(
     pycodestyle
     wezterm
     starship.toml
-    stylua.toml
     direnv
     ghostty
 )
