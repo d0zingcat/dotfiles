@@ -320,6 +320,8 @@ function dev() {
             -g|--git) layout="full" ;;
             oc|--oc) tool="oc" ;;
             cc|--cc) tool="cc" ;;
+            codex|--codex) tool="codex" ;;
+            copilot|--copilot) tool="copilot" ;;
             *) session="$arg" ;;
         esac
     done
