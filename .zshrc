@@ -313,15 +313,20 @@ function bitnami_seal() {
 function dev() {
     local session=""
     local layout="simple"
+    local tool="cc"
 
     for arg in "$@"; do
         case "$arg" in
             -g|--git) layout="full" ;;
+            oc|--oc) tool="oc" ;;
+            cc|--cc) tool="cc" ;;
             *) session="$arg" ;;
         esac
     done
 
     session="${session:-$(basename $(pwd))}"
+    # Sanitize: tmux treats '.' and ':' as special in target strings
+    session="${session//[.:]/_}"
     local cwd="$(pwd)"
 
     if tmux has-session -t "$session" 2>/dev/null; then
@@ -347,7 +352,7 @@ function dev() {
         local bl
         bl=$(tmux split-window -t "$left" -v -c "$cwd" -P -F "#{pane_id}")
 
-        tmux send-keys -t "$left" "cc"       Enter
+        tmux send-keys -t "$left" "$tool"     Enter
         tmux send-keys -t "$tr"   "yazi"     Enter
         tmux send-keys -t "$br"   "lazygit"  Enter
     else
@@ -357,7 +362,7 @@ function dev() {
         local br
         br=$(tmux split-window -t "$tr"   -v -c "$cwd" -P -F "#{pane_id}")
 
-        tmux send-keys -t "$left" "cc"    Enter
+        tmux send-keys -t "$left" "$tool"    Enter
         tmux send-keys -t "$tr"   "yazi"  Enter
     fi
 
