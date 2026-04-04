@@ -134,7 +134,7 @@ return {
       { "<leader>s", group = "搜索", icon = { icon = "🔍", color = "yellow" } },
 
       -- 终端
-      { "<leader>t", group = "终端", icon = { icon = "🖥️", color = "magenta" } },
+      { "<leader>t", group = "终端", icon = { icon = "🖥️", color = "purple" } },
 
       -- 缓冲区
       { "<leader>b", group = "缓冲区", icon = { icon = "📋", color = "blue" } },
