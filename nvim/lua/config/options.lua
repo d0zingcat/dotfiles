@@ -8,9 +8,7 @@ opt.termguicolors = true        -- 使用终端真彩色
 opt.number = true               -- 显示行号
 opt.relativenumber = true       -- 相对行号
 opt.cursorline = true           -- 高亮当前行
-opt.cursorcolumn = true         -- 高亮当前列
-opt.signcolumn = "auto:1"       -- 显示标记列
-opt.showmatch = true            -- 高亮匹配的括号
+opt.signcolumn = "yes"          -- 始终显示标记列（避免每次出现符号时布局跳动）
 opt.showmode = false            -- 不显示模式，由状态栏插件替代
 opt.laststatus = 3              -- 全局状态栏
 opt.cmdheight = 1               -- 命令行高度
@@ -25,7 +23,6 @@ opt.listchars = {               -- 设置不可见字符的显示方式
   extends = "›",
   precedes = "‹",
   nbsp = "␣",
-  eol = "↴"
 }
 opt.fillchars:append({          -- 分隔符符号设置
   vert = "│",                   -- 窗口分隔符
@@ -41,7 +38,6 @@ opt.shiftwidth = 4              -- 缩进宽度
 opt.expandtab = true            -- 使用空格替代Tab
 opt.smartindent = true          -- 智能缩进
 opt.autoindent = true           -- 自动缩进
-opt.cindent = true              -- C语言缩进规则
 opt.textwidth = 120             -- 文本宽度
 opt.formatoptions = "jcroqlnt"  -- 格式化选项
 opt.foldenable = false
@@ -56,7 +52,7 @@ opt.incsearch = true            -- 增量搜索
 
 -- 性能设置
 opt.hidden = true               -- 允许切换未保存的缓冲区
-opt.history = 500               -- 历史记录数
+opt.history = 1000              -- 历史记录数
 opt.updatetime = 100            -- 更新时间（ms）
 opt.timeout = true              -- 启用超时
 opt.timeoutlen = 300            -- 键映射超时时间（ms）
@@ -83,6 +79,8 @@ opt.completeopt = "menu,menuone,noselect" -- 补全选项
 opt.pumheight = 10              -- 弹出菜单高度
 opt.confirm = true              -- 显示确认对话框
 opt.autoread = true             -- 自动重新加载文件
+-- 减少消息噪音（W=写入/I=intro/c=补全消息/C=扫描消息）
+opt.shortmess:append("WIcC")
 
 -- 加载 .nvimrc, .exrc 等本地配置
 opt.exrc = true                 -- 启用 .exrc

@@ -21,8 +21,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   -- 插件列表
   spec = {
-    -- 导入插件模块
     { import = "plugins" },
+    { import = "plugins.lang" },
   },
   
   -- 默认配置
