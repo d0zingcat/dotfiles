@@ -1,5 +1,6 @@
 nvim/plugin/
 nvim/.netrwhist
+tmux/plugins/
 raycast/extensions
 raycast/config.json
 *.env

@@ -163,6 +163,17 @@ function cmd_init() {
         print_success "Antigen already installed"
     fi
 
+    # Install tpm (Tmux Plugin Manager)
+    local tpm_dir="$WORKING_DIR/tmux/plugins/tpm"
+    if [ -d "$tpm_dir" ]; then
+        print_success "tpm already installed"
+    else
+        print_warning "Installing tpm..."
+        mkdir -p "$WORKING_DIR/tmux/plugins"
+        git clone https://github.com/tmux-plugins/tpm "$tpm_dir"
+        print_success "tpm installed"
+    fi
+
     # Create necessary directories
     print_warning "Creating directories..."
     mkdir -p "$HOME/.config/"
@@ -610,6 +621,15 @@ function cmd_check() {
     # Check antigen
     echo -n "Antigen: "
     if [ -f "$HOME/.antigen/antigen.zsh" ]; then
+        print_success "installed"
+    else
+        print_error "not found"
+        missing=$((missing + 1))
+    fi
+
+    # Check tpm
+    echo -n "tpm: "
+    if [ -d "$WORKING_DIR/tmux/plugins/tpm" ]; then
         print_success "installed"
     else
         print_error "not found"
