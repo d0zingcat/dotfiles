@@ -155,18 +155,14 @@ return {
         -- ts_ls 由 typescript-tools.nvim 接管，此处不配置
         eslint = {},
         jsonls = {
-          -- 延迟加载 schemastore（插件安装后才可用）
-          on_new_config = function(new_config)
-            new_config.settings = new_config.settings or {}
-            new_config.settings.json = new_config.settings.json or {}
-            new_config.settings.json.schemas = new_config.settings.json.schemas or {}
-            local ok, schemastore = pcall(require, "schemastore")
-            if ok then
-              vim.list_extend(new_config.settings.json.schemas, schemastore.json.schemas())
-            end
-          end,
           settings = {
-            json = { validate = { enable = true } },
+            json = {
+              validate = { enable = true },
+              schemas = (function()
+                local ok, schemastore = pcall(require, "schemastore")
+                return ok and schemastore.json.schemas() or {}
+              end)(),
+            },
           },
         },
         yamlls = {},
@@ -215,7 +211,7 @@ return {
           map("n", "<leader>cd", function() vim.diagnostic.open_float() end, "行诊断")
 
           -- Inlay hints 切换
-          if client and client.supports_method("textDocument/inlayHint") then
+          if client and client:supports_method("textDocument/inlayHint") then
             map("n", "<leader>uh", function()
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = buf }), { bufnr = buf })
             end, "切换 Inlay Hints")
@@ -226,21 +222,22 @@ return {
       -- 构建 capabilities（blink.cmp 提供）
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      -- 通过 mason-lspconfig 自动启动服务器
-      require("mason-lspconfig").setup_handlers({
-        function(server)
-          local server_opts = vim.tbl_deep_extend("force", {
-            capabilities = vim.deepcopy(capabilities),
-          }, opts.servers[server] or {})
+      -- 通过 mason-lspconfig 自动启动服务器（使用原生 vim.lsp.config API）
+      local mlsp = require("mason-lspconfig")
+      for _, server in ipairs(mlsp.get_installed_servers()) do
+        -- Rust 由 rustaceanvim 接管，跳过
+        if server == "rust_analyzer" then goto continue end
+        -- TypeScript 由 typescript-tools.nvim 接管，跳过
+        if server == "ts_ls" or server == "tsserver" then goto continue end
 
-          -- Rust 由 rustaceanvim 接管，跳过
-          if server == "rust_analyzer" then return end
-          -- TypeScript 由 typescript-tools.nvim 接管，跳过
-          if server == "ts_ls" or server == "tsserver" then return end
+        local server_opts = vim.tbl_deep_extend("force", {
+          capabilities = vim.deepcopy(capabilities),
+        }, opts.servers[server] or {})
 
-          require("lspconfig")[server].setup(server_opts)
-        end,
-      })
+        vim.lsp.config(server, server_opts)
+        vim.lsp.enable(server)
+        ::continue::
+      end
     end,
   },
 

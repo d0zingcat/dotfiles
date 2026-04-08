@@ -241,15 +241,23 @@ return {
         signature = { enabled = false }, -- blink.cmp 处理签名
         progress = { enabled = true, format_done = "" },
       },
+      -- 禁用 vim 命令行的 treesitter 语法高亮（Neovim 0.12 的 vim grammar 移除了 "tab" 节点类型）
+      cmdline = {
+        format = {
+          cmdline = { pattern = "^:", icon = "" },
+        },
+      },
       routes = {
         {
-          -- 屏蔽 treesitter query 字段兼容性警告（Neovim 0.12 校验更严格，功能不受影响）
+          -- 屏蔽 treesitter query 兼容性警告（msg_show 和 notify 两种来源）
           filter = {
-            event = "msg_show",
             any = {
-              { find = "Invalid field name" },
-              { find = "Invalid node type" },
-              { find = "Query error" },
+              { event = "msg_show", find = "Query error" },
+              { event = "msg_show", find = "Invalid field name" },
+              { event = "msg_show", find = "Invalid node type" },
+              { event = "notify", find = "Query error" },
+              { event = "notify", find = "Invalid field name" },
+              { event = "notify", find = "Invalid node type" },
             },
           },
           opts = { skip = true },
