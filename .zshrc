@@ -10,10 +10,12 @@
 ###############################################################################
 
 # -- Environment Variables --
-export GOPATH=$HOME/.go
+export BREW_HOME="/opt/homebrew/"
+export GOPATH="$HOME/.go"
 export PNPM_HOME="$HOME/.pnpm"
 export BUN_HOME="$HOME/.bun"
-export CARGO_HOME=$HOME/.cargo
+export CARGO_HOME="$HOME/.cargo"
+export JAVA_HOME="$BREW_HOME/opt/openjdk@17"
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
@@ -26,6 +28,7 @@ export PATH="$PATH:$HOME/.spicetify"
 # Added by LM Studio CLI (lms)
 export PATH="$PATH:/Users/d0zingcat/.lmstudio/bin"
 # End of LM Studio CLI section
+export PATH="$PATH:$JAVA_HOME/bin"
 
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
