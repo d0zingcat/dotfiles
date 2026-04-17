@@ -384,6 +384,48 @@ function dev() {
     fi
 }
 
+# Create a throwaway scratch workspace in a temp dir
+# Usage: scratch [-g] [--git] [oc|cc|codex|copilot]
+#   Creates /tmp/scratch-<ts>, calls dev() for a throwaway workspace
+#   --git: initialize a git repo in the temp dir (off by default)
+#   The temp dir is cleaned up when the tmux session is destroyed
+function scratch() {
+    local extra_args=()
+    local init_git=false
+
+    for arg in "$@"; do
+        case "$arg" in
+            --git) init_git=true ;;
+            *) extra_args+=("$arg") ;;
+        esac
+    done
+
+    local ts=$(date +%Y%m%d-%H%M%S)
+    local dir="/tmp/scratch-${ts}"
+    mkdir -p "$dir"
+
+    if $init_git; then
+        git -C "$dir" init -q
+        git -C "$dir" commit --allow-empty -m "scratch init" -q
+    fi
+
+    pushd "$dir" > /dev/null
+
+    local session="scratch_${ts}"
+    dev "${extra_args[@]}" "$session"
+
+    popd > /dev/null
+
+    # Auto-cleanup: wait for the session to die, then remove the dir
+    (
+        while tmux has-session -t "$session" 2>/dev/null; do
+            sleep 5
+        done
+        rm -rf "$dir"
+    ) &>/dev/null &
+    disown
+}
+
 # -- MISC Configuration --
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
