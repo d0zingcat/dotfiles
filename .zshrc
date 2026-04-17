@@ -23,6 +23,9 @@ export PATH="$PNPM_HOME:$PATH"
 export PATH="$BUN_HOME/bin:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
 export PATH="$PATH:$HOME/.spicetify"
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/d0zingcat/.lmstudio/bin"
+# End of LM Studio CLI section
 
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
@@ -118,7 +121,7 @@ alias grep='ggrep'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude'
-alias oc='opencode'
+alias oc='OPENCODE_EXPERIMENTAL_PLAN_MODE=1 opencode'
 
 # -- Functions --
 # menu
@@ -435,3 +438,4 @@ alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scri
 
 # Kiro CLI post block. Keep at the bottom of this file.
 [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+

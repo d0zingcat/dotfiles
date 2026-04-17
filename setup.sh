@@ -43,6 +43,7 @@ CONFIG_FILES=(
     starship.toml
     direnv
     ghostty
+    yazi
 )
 
 # Rustup components
