@@ -364,6 +364,9 @@ function dev() {
         local bl
         bl=$(tmux split-window -t "$left" -v -c "$cwd" -P -F "#{pane_id}")
 
+        # Only enable passthrough for yazi pane (image display); keep it off elsewhere
+        # to prevent Ghostty DA/XTVERSION responses leaking into other panes' stdin.
+        # tmux set-option -p -t "$tr" allow-passthrough on
         tmux send-keys -t "$left" "$tool"     Enter
         tmux send-keys -t "$tr"   "yazi"     Enter
         tmux send-keys -t "$br"   "lazygit"  Enter
@@ -374,6 +377,7 @@ function dev() {
         local br
         br=$(tmux split-window -t "$tr"   -v -c "$cwd" -P -F "#{pane_id}")
 
+        # tmux set-option -p -t "$tr" allow-passthrough on
         tmux send-keys -t "$left" "$tool"    Enter
         tmux send-keys -t "$tr"   "yazi"  Enter
     fi
