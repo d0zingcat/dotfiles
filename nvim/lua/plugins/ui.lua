@@ -241,12 +241,9 @@ return {
         signature = { enabled = false }, -- blink.cmp 处理签名
         progress = { enabled = true, format_done = "" },
       },
-      -- 禁用 vim 命令行的 treesitter 语法高亮（Neovim 0.12 的 vim grammar 移除了 "tab" 节点类型）
-      cmdline = {
-        format = {
-          cmdline = { pattern = "^:", icon = "" },
-        },
-      },
+      -- 禁用 noice 的 cmdline 接管，使用原生命令行，避免浮窗闪烁
+      cmdline = { enabled = false },
+      messages = { enabled = false },
       routes = {
         {
           -- 屏蔽 treesitter query 兼容性警告（msg_show 和 notify 两种来源）
