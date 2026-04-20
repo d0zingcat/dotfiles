@@ -50,7 +50,6 @@ brew "nexttrace"
 brew "node"
 brew "ripgrep"
 brew "opencode"
-brew "openjdk@17"
 brew "openjdk@21"
 brew "pnpm"
 brew "postgresql@17", restart_service: :changed, link: true

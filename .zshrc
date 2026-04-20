@@ -15,7 +15,7 @@ export GOPATH="$HOME/.go"
 export PNPM_HOME="$HOME/.pnpm"
 export BUN_HOME="$HOME/.bun"
 export CARGO_HOME="$HOME/.cargo"
-export JAVA_HOME="$BREW_HOME/opt/openjdk@17"
+export JAVA_HOME="$BREW_HOME/opt/openjdk@21"
 
 export PATH="/opt/homebrew/sbin:/opt/homebrew/bin:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 export PATH="/opt/homebrew/opt/rustup/bin:$PATH"
