@@ -124,7 +124,7 @@ alias grep='ggrep'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude'
-alias oc='OPENCODE_EXPERIMENTAL_PLAN_MODE=1 opencode'
+alias oc='opencode'
 
 # -- Functions --
 # menu
