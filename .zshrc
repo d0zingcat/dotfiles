@@ -2,6 +2,9 @@
 # Kiro CLI pre block. Keep at the top of this file.
 # [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
 
+
+# Kiro CLI pre block. Keep at the top of this file.
+#
 ###############################################################################
 # My Dotfiles - Zsh Configuration
 ###############################################################################
@@ -125,6 +128,58 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude'
 alias oc='opencode'
+
+
+# -- MISC Configuration --
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
+command -v lsd >/dev/null 2>&1 && alias ls='lsd'
+
+export ZSH_COMPLETION_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+mkdir -p "$ZSH_COMPLETION_CACHE"
+
+if [[ $commands[kubectl] ]]; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
+        command kubectl completion zsh >| "$ZSH_COMPLETION_CACHE/_kubectl" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
+        source "$ZSH_COMPLETION_CACHE/_kubectl"
+        compdef __start_kubectl k
+    fi
+fi
+
+if [[ $commands[helm] ]]; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
+        command helm completion zsh >| "$ZSH_COMPLETION_CACHE/_helm" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
+        source "$ZSH_COMPLETION_CACHE/_helm"
+    fi
+fi
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
+[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+
+if command -v fzf >/dev/null 2>&1; then
+    if [[ ! -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
+        command fzf --zsh >| "$ZSH_COMPLETION_CACHE/fzf.zsh" 2>/dev/null
+    fi
+    if [[ -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
+        source "$ZSH_COMPLETION_CACHE/fzf.zsh"
+    fi
+fi
+
+bindkey -M viins '^b' vi-backward-char
+bindkey -M viins '^f' vi-forward-char
+bindkey -M viins '^d' vi-delete-char
+[ -f ~/.env ] && source ~/.env
+
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
+alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 # -- Functions --
 # menu
@@ -433,58 +488,17 @@ function scratch() {
     disown
 }
 
-# -- MISC Configuration --
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
-command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
-command -v lsd >/dev/null 2>&1 && alias ls='lsd'
+function copilot_local {
+    export COPILOT_PROVIDER_TYPE=anthropic
+    export COPILOT_PROVIDER_BASE_URL=http://localhost:8990
+    export COPILOT_PROVIDER_API_KEY=sk-kiro-rs-qazWSXedcRFV123456
+    export COPILOT_MODEL=claude-opus-4.6
+    copilot
+}
 
-export ZSH_COMPLETION_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-mkdir -p "$ZSH_COMPLETION_CACHE"
-
-if [[ $commands[kubectl] ]]; then
-    if [[ ! -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
-        command kubectl completion zsh >| "$ZSH_COMPLETION_CACHE/_kubectl" 2>/dev/null
-    fi
-    if [[ -s "$ZSH_COMPLETION_CACHE/_kubectl" ]]; then
-        source "$ZSH_COMPLETION_CACHE/_kubectl"
-        compdef __start_kubectl k
-    fi
-fi
-
-if [[ $commands[helm] ]]; then
-    if [[ ! -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
-        command helm completion zsh >| "$ZSH_COMPLETION_CACHE/_helm" 2>/dev/null
-    fi
-    if [[ -s "$ZSH_COMPLETION_CACHE/_helm" ]]; then
-        source "$ZSH_COMPLETION_CACHE/_helm"
-    fi
-fi
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-
-if command -v fzf >/dev/null 2>&1; then
-    if [[ ! -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
-        command fzf --zsh >| "$ZSH_COMPLETION_CACHE/fzf.zsh" 2>/dev/null
-    fi
-    if [[ -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
-        source "$ZSH_COMPLETION_CACHE/fzf.zsh"
-    fi
-fi
-
-bindkey -M viins '^b' vi-backward-char
-bindkey -M viins '^f' vi-forward-char
-bindkey -M viins '^d' vi-delete-char
-[ -f ~/.env ] && source ~/.env
-
-# Added by Antigravity
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
-alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
+# Kiro CLI post block. Keep at the bottom of this file.
+#
 
 
 # Kiro CLI post block. Keep at the bottom of this file.
 # [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-
