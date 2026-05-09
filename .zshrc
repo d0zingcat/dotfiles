@@ -33,6 +33,9 @@ export PATH="$PATH:/Users/d0zingcat/.lmstudio/bin"
 # End of LM Studio CLI section
 export PATH="$PATH:$JAVA_HOME/bin"
 
+
+# SSH use 1password socket
+export SSH_AUTH_SOCK=~/.1password/agent.sock
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export LANG=en_US.UTF-8
@@ -61,6 +64,9 @@ export LDFLAGS=$LDFLAGS
 export CPPFLAGS=$CPPFLAGS
 export ZSH_HIGHLIGHT_MAXLENGTH=60
 export GIT_EXTERNAL_DIFF=difft
+# Added by Antigravity
+export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
+
 
 FPATH="$brew_opt/share/zsh/site-functions:${FPATH}"
 DISABLE_MAGIC_FUNCTIONS=true
@@ -78,7 +84,6 @@ if [ -f "$HOME/.antigen/antigen.zsh" ]; then
     antigen bundle zsh-users/zsh-completions
     antigen bundle git
     antigen bundle kubectl
-    antigen bundle autojump
     antigen bundle pip
     antigen bundle nvim
     antigen bundle darvid/zsh-poetry
@@ -128,6 +133,7 @@ alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias cc='claude --permission-mode auto'
 alias oc='opencode'
+alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 
 # -- MISC Configuration --
@@ -135,6 +141,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 command -v lsd >/dev/null 2>&1 && alias ls='lsd'
+eval "$(zoxide init zsh)"
 
 export ZSH_COMPLETION_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 mkdir -p "$ZSH_COMPLETION_CACHE"
@@ -159,7 +166,6 @@ if [[ $commands[helm] ]]; then
 fi
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
-[ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 [ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
 if command -v fzf >/dev/null 2>&1; then
@@ -176,10 +182,6 @@ bindkey -M viins '^f' vi-forward-char
 bindkey -M viins '^d' vi-delete-char
 [ -f ~/.env ] && source ~/.env
 
-# Added by Antigravity
-export PATH="$HOME/.antigravity/antigravity/bin:$PATH"
-
-alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 # -- Functions --
 # menu
@@ -495,10 +497,6 @@ function copilot_local {
     export COPILOT_MODEL=claude-opus-4.6
     copilot
 }
-
-# Kiro CLI post block. Keep at the bottom of this file.
-#
-
 
 # Kiro CLI post block. Keep at the bottom of this file.
 # [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
