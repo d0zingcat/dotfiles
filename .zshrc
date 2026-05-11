@@ -381,7 +381,7 @@ function bitnami_seal() {
 function dev() {
     local session=""
     local layout="simple"
-    local tool="cc"
+    local tool=""
 
     for arg in "$@"; do
         case "$arg" in
@@ -425,7 +425,7 @@ function dev() {
         # Only enable passthrough for yazi pane (image display); keep it off elsewhere
         # to prevent Ghostty DA/XTVERSION responses leaking into other panes' stdin.
         # tmux set-option -p -t "$tr" allow-passthrough on
-        tmux send-keys -t "$left" "$tool"     Enter
+        [[ -n "$tool" ]] && tmux send-keys -t "$left" "$tool" Enter
         tmux send-keys -t "$tr"   "yazi"     Enter
         tmux send-keys -t "$br"   "lazygit"  Enter
     else
@@ -436,7 +436,7 @@ function dev() {
         br=$(tmux split-window -t "$tr"   -v -c "$cwd" -P -F "#{pane_id}")
 
         # tmux set-option -p -t "$tr" allow-passthrough on
-        tmux send-keys -t "$left" "$tool"    Enter
+        [[ -n "$tool" ]] && tmux send-keys -t "$left" "$tool" Enter
         tmux send-keys -t "$tr"   "yazi"  Enter
     fi
 
