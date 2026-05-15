@@ -385,8 +385,8 @@ function dev() {
     for arg in "$@"; do
         case "$arg" in
             -g|--git) layout="full" ;;
-            oc|--oc) tool="oc" ;;
-            cc|--cc) tool="cc" ;;
+            opencode|--oc) tool="opencode" ;;
+            claude|--cc) tool="cluade" ;;
             codex|--codex) tool="codex" ;;
             copilot|--copilot) tool="copilot" ;;
             *) session="$arg" ;;
