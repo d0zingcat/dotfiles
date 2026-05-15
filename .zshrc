@@ -131,9 +131,8 @@ alias sed='gsed'
 alias grep='ggrep'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
-alias cc='claude'
-alias ccd='claude --dangerously-skip-permissions'
-alias oc='opencode'
+alias claudeyolo='claude --dangerously-skip-permissions'
+alias opencode='OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX=64000 opencode'
 alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 
