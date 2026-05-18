@@ -448,6 +448,21 @@ function dev() {
     fi
 }
 
+# Destroy the dev session matching the current directory (or a given name)
+# Usage: undev [session-name]
+#   Mirrors dev()'s session-name derivation: basename $(pwd) with '.' and ':' -> '_'
+function undev() {
+    local session="${1:-$(basename "$(pwd)")}"
+    session="${session//[.:]/_}"
+
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        echo "undev: no tmux session named '$session'" >&2
+        return 1
+    fi
+
+    tmux kill-session -t "$session"
+}
+
 # Create a throwaway scratch workspace in a temp dir
 # Usage: scratch [-g] [--git] [oc|cc|codex|copilot]
 #   Creates /tmp/scratch-<ts>, calls dev() for a throwaway workspace
@@ -475,7 +490,7 @@ function scratch() {
 
     pushd "$dir" > /dev/null
 
-    local session="scratch_${ts}"
+    local session="scratch-${ts}"
     dev "${extra_args[@]}" "$session"
 
     popd > /dev/null
