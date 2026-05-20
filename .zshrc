@@ -323,7 +323,7 @@ function git_clean() {
 
     git checkout "$base_branch" && \
         git config pull.rebase false && \
-        git pull && \
+        git pull --rebase && \
         git branch --merged | grep -v " $base_branch$" | xargs git branch -d 2>/dev/null; \
         git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D 2>/dev/null; \
         git worktree prune --verbose
@@ -515,3 +515,7 @@ function copilot_local {
 
 # Kiro CLI post block. Keep at the bottom of this file.
 # [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
+
+
+# Added by Antigravity CLI installer
+export PATH="/Users/d0zingcat/.local/bin:$PATH"
