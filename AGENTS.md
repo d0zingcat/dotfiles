@@ -9,8 +9,10 @@ Use the setup script instead of ad hoc symlink changes:
 - `./setup.sh install`: link managed files into `$HOME` and `$HOME/.config`.
 - `./setup.sh check`: verify expected tools, links, and directories.
 - `./setup.sh full-recover`: bootstrap a new machine end to end.
-- `./setup.sh backup`: refresh tracked backup artifacts such as `Brewfile`.
-- `brew bundle install`: install CLI tools and apps from [Brewfile](/Users/d0zingcat/.dotfiles/Brewfile).
+- `./setup.sh brew-backup`: dump Homebrew packages to `brewfiles/<hostname>/Brewfile`.
+- `./setup.sh brew-install`: install packages from the current machine's Brewfile.
+- `./setup.sh backup`: full backup (includes brew-backup plus git/ssh/vscode exports).
+- Per-machine Brewfiles live under [brewfiles/](/Users/d0zingcat/.dotfiles/brewfiles/).
 - `tmux/plugins/tpm/tests/test_plugin_installation.sh`: example TPM plugin test entrypoint when working inside the submodule.
 
 ## Coding Style & Naming Conventions

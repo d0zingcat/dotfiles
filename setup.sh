@@ -7,6 +7,8 @@
 #   init           - Initialize a brand new macOS system
 #   install        - Install dotfiles symlinks
 #   backup         - Backup current configuration
+#   brew-backup    - Dump Homebrew Brewfile for this machine (hostname-specific)
+#   brew-install   - Install Homebrew packages from this machine's Brewfile
 #   sync           - Sync from git repository
 #   full-recover   - Full recovery on new machine (init + install + sync)
 #   check          - Check current setup status
@@ -25,6 +27,9 @@ NC='\033[0m' # No Color
 DOTFILES_DIR="${DOTFILES_DIR:-$HOME/.dotfiles}"
 WORKING_DIR=$(cd "$(dirname "$0")" && pwd)
 HOME_DIR="$HOME"
+BREWFILES_DIR="$WORKING_DIR/brewfiles"
+# Override hostname when restoring on a machine whose Brewfile was created elsewhere
+BREWFILE_HOST="${BREWFILE_HOST:-}"
 
 # Files to link
 FILES=(
@@ -106,6 +111,80 @@ function ask() {
     [[ "$response" =~ ^[Yy] ]]
 }
 
+# Short hostname for brewfiles/<host>/ (override with BREWFILE_HOST).
+# Use /bin/hostname — bare "hostname" in a zsh function is parsed as host + $name.
+function dotfiles_host() {
+    local id
+    if [[ -n "$BREWFILE_HOST" ]]; then
+        id="$BREWFILE_HOST"
+    else
+        id=$(/bin/hostname -s 2>/dev/null || /bin/hostname)
+    fi
+    echo "${id//\//-}"
+}
+
+function brewfile_for_machine() {
+    local host="${1:-$(dotfiles_host)}"
+    echo "$BREWFILES_DIR/$host/Brewfile"
+}
+
+# Prefer hostname-specific Brewfile; fall back to legacy repo-root Brewfile
+function resolve_brewfile() {
+    local path
+    path=$(brewfile_for_machine)
+    if [ -f "$path" ]; then
+        echo "$path"
+        return 0
+    fi
+    if [ -f "$WORKING_DIR/Brewfile" ]; then
+        echo "$WORKING_DIR/Brewfile"
+        return 0
+    fi
+    return 1
+}
+
+function cmd_brew_backup() {
+    print_header "Backing Up Brewfile ($(dotfiles_host))"
+
+    if ! command_exists brew; then
+        print_error "Homebrew not found"
+        return 1
+    fi
+
+    local brewfile
+    brewfile=$(brewfile_for_machine)
+    mkdir -p "$(dirname "$brewfile")"
+
+    print_warning "Dumping to $brewfile..."
+    brew bundle dump -f --file="$brewfile"
+    print_success "Brewfile saved: $brewfile"
+    echo ""
+    echo "Commit on this machine:"
+    echo "  git add brewfiles/$(dotfiles_host)/Brewfile"
+    echo "  git commit -m 'backup: update brewfile for $(dotfiles_host)'"
+}
+
+function cmd_brew_install() {
+    print_header "Installing Homebrew Packages ($(dotfiles_host))"
+
+    if ! command_exists brew; then
+        print_error "Homebrew not found — run ./setup.sh init first"
+        return 1
+    fi
+
+    local brewfile
+    if ! brewfile=$(resolve_brewfile); then
+        print_error "No Brewfile for host $(dotfiles_host) under $BREWFILES_DIR"
+        echo "  Run: ./setup.sh brew-backup"
+        echo "  Or set BREWFILE_HOST=<other-host> if this machine was renamed"
+        return 1
+    fi
+
+    print_warning "Installing from $brewfile..."
+    brew bundle install --file="$brewfile"
+    print_success "Homebrew packages installed"
+}
+
 # =============================================================================
 # Commands
 # =============================================================================
@@ -120,6 +199,8 @@ Commands:
     init           Initialize a brand new macOS system (Homebrew, Xcode, etc.)
     install        Install dotfiles symlinks to home directory
     backup         Backup current configuration to dotfiles repo
+    brew-backup    Dump Brewfile for this machine (brewfiles/<hostname>/)
+    brew-install   Install packages from this machine's Brewfile
     sync           Sync from git repository
     full-recover   Full recovery on new machine (init + install + sync)
     check          Check current setup status
@@ -129,6 +210,8 @@ Examples:
     ./setup.sh init              # Initialize new system
     ./setup.sh install           # Link dotfiles
     ./setup.sh full-recover      # Full setup on new machine
+    ./setup.sh brew-backup       # Update Brewfile for this Mac only
+    ./setup.sh brew-install      # Install packages from hostname Brewfile
     ./setup.sh check             # Check what's installed
 
 For more information, see README.md
@@ -294,7 +377,7 @@ function cmd_install() {
             "$(brew --prefix)/opt/fzf/install" --key-bindings --completion --no-update-rc 2>/dev/null || true
             print_success "fzf shell integration installed"
         else
-            print_warning "fzf binary not found yet; run: brew bundle install"
+            print_warning "fzf binary not found yet; run: ./setup.sh brew-install"
         fi
     fi
 
@@ -303,7 +386,7 @@ function cmd_install() {
     echo "Next steps:"
     echo "  1. Configure git: git config --file ~/.gitconfig user.name 'Your Name'"
     echo "  2. Restart terminal or run: source ~/.zshrc"
-    echo "  3. Run: brew bundle install (to install packages)"
+    echo "  3. Run: ./setup.sh brew-install (to install packages)"
 }
 
 function cmd_backup() {
@@ -313,12 +396,15 @@ function cmd_backup() {
     local backup_warnings=0
 
     # ==========================================================================
-    # 1. Brewfile 备份
+    # 1. Brewfile 备份（按 hostname 分目录）
     # ==========================================================================
-    print_warning "Dumping Brewfile..."
+    local brewfile
+    brewfile=$(brewfile_for_machine)
+    print_warning "Dumping Brewfile for $(dotfiles_host)..."
     if command_exists brew; then
-        brew bundle dump -f --file="$WORKING_DIR/Brewfile"
-        print_success "Brewfile saved"
+        mkdir -p "$(dirname "$brewfile")"
+        brew bundle dump -f --file="$brewfile"
+        print_success "Brewfile saved: $brewfile"
         backup_count=$((backup_count + 1))
     else
         print_error "Homebrew not found"
@@ -464,7 +550,7 @@ EOF
 
 | Item | Status |
 |------|--------|
-| Brewfile | $([ -f "$WORKING_DIR/Brewfile" ] && echo "✅ Saved" || echo "❌ Failed") |
+| Brewfile ($(dotfiles_host)) | $([ -f "$brewfile" ] && echo "✅ Saved" || echo "❌ Failed") |
 | Git config summary | $([ -f "$WORKING_DIR/.git_config_summary.txt" ] && echo "✅ Saved" || echo "❌ Failed") |
 | SSH public keys | $([ -d "$ssh_backup_dir" ] && echo "✅ Saved to $ssh_backup_dir" || echo "⚠️ Not found") |
 | 1Password config | $([ -f "$WORKING_DIR/.1password_config.txt" ] && echo "✅ Documented" || echo "⚠️ Not configured") |
@@ -473,7 +559,7 @@ EOF
 
 ## Files Created
 
-- Brewfile (updated)
+- brewfiles/$(dotfiles_host)/Brewfile (updated)
 - .git_config_summary.txt ⚠️ DO NOT COMMIT
 - .1password_config.txt
 - .kube_contexts.txt
@@ -483,7 +569,7 @@ $( [ -d "$ssh_backup_dir" ] && echo "- $ssh_backup_dir/ ⚠️ DO NOT COMMIT" )
 ## Next Steps
 
 1. Review changes: git status
-2. Commit safe files: git add Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt
+2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt
 3. git commit -m 'backup: update dotfiles'
 4. ⚠️ DO NOT commit: .git_config_summary.txt, ssh_backup_*/
 EOF
@@ -498,12 +584,12 @@ EOF
     echo "  Warnings: $backup_warnings"
     echo ""
     echo "Files to review:"
-    echo "  ✅ Safe to commit: Brewfile, .1password_config.txt, .kube_contexts.txt, .vscode_extensions.txt"
+    echo "  ✅ Safe to commit: brewfiles/$(dotfiles_host)/Brewfile, .1password_config.txt, .kube_contexts.txt, .vscode_extensions.txt"
     echo "  ⚠️  DO NOT COMMIT: .git_config_summary.txt, ssh_backup_*/"
     echo ""
     echo "Next steps:"
     echo "  1. Review: git status"
-    echo "  2. Commit safe files: git add Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt"
+    echo "  2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt"
     echo "  3. git commit -m 'backup: update dotfiles'"
     echo "=========================================="
 }
@@ -559,6 +645,17 @@ function cmd_full_recover() {
     # Run sync
     cmd_sync
 
+    # Install Homebrew packages for this hostname
+    if command_exists brew; then
+        if resolve_brewfile >/dev/null; then
+            print_warning "Installing Homebrew packages for $(dotfiles_host)..."
+            cmd_brew_install || print_warning "brew-install had errors — review output above"
+        else
+            print_warning "No Brewfile for $(dotfiles_host) under brewfiles/ — skip package install"
+            echo "  After first brew-backup on another Mac, git pull then run: ./setup.sh brew-install"
+        fi
+    fi
+
     print_header "Full Recovery Complete!"
     echo ""
     echo "IMPORTANT: Configure your personal settings:"
@@ -573,8 +670,8 @@ function cmd_full_recover() {
     echo "  # Generate new SSH keys"
     echo "  ssh-keygen -t ed25519 -C 'your@email.com'"
     echo ""
-    echo "  # Install Homebrew packages"
-    echo "  brew bundle install"
+    echo "  # Install Homebrew packages (if not already done above)"
+    echo "  ./setup.sh brew-install"
     echo ""
 }
 
@@ -590,6 +687,14 @@ function cmd_check() {
     else
         print_error "not found"
         missing=$((missing + 1))
+    fi
+
+    echo -n "Brewfile ($(dotfiles_host)): "
+    local brewfile_check
+    if brewfile_check=$(resolve_brewfile 2>/dev/null); then
+        print_success "$brewfile_check"
+    else
+        print_warning "not found — run ./setup.sh brew-backup"
     fi
 
     # Check zsh
@@ -720,6 +825,12 @@ case "$COMMAND" in
         ;;
     backup)
         cmd_backup
+        ;;
+    brew-backup)
+        cmd_brew_backup
+        ;;
+    brew-install)
+        cmd_brew_install
         ;;
     sync)
         cmd_sync
