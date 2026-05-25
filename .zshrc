@@ -322,8 +322,7 @@ function git_clean() {
     fi
 
     git checkout "$base_branch" && \
-        git config pull.rebase false && \
-        git pull --rebase && \
+        git pull && \
         git branch --merged | grep -v " $base_branch$" | xargs git branch -d 2>/dev/null; \
         git branch -vv | awk '/: gone]/{print $1}' | xargs git branch -D 2>/dev/null; \
         git worktree prune --verbose

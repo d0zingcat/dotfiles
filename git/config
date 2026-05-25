@@ -1,6 +1,9 @@
 [init]
 	defaultBranch = main
 
+[pull]
+	rebase = true
+
 [user]
     name = YOUR_NAME
     signingkey = YOUR_SSH_SIGNING_KEY
