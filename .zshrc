@@ -1,10 +1,3 @@
-
-# Kiro CLI pre block. Keep at the top of this file.
-# [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.pre.zsh"
-
-
-# Kiro CLI pre block. Keep at the top of this file.
-#
 ###############################################################################
 # My Dotfiles - Zsh Configuration
 ###############################################################################
@@ -512,9 +505,7 @@ function copilot_local {
     copilot
 }
 
-# Kiro CLI post block. Keep at the bottom of this file.
-# [[ -f "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh" ]] && builtin source "${HOME}/Library/Application Support/kiro-cli/shell/zshrc.post.zsh"
-
-
-# Added by Antigravity CLI installer
-export PATH="/Users/d0zingcat/.local/bin:$PATH"
+function zi() {
+  local dir
+  dir=$(zoxide query -l | fzf --preview 'ls -la {}') && z "$dir"
+ }
