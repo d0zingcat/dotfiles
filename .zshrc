@@ -365,25 +365,63 @@ function bitnami_seal() {
     fi
 }
 
-# Create dev workspace in tmux
-# Usage: dev [-g] [session-name]
-#   default: Claude Code | Yazi (top-right) + shell (bottom-right)
-#   -g/--git: 2x2 layout adding lazygit (bottom-left)
-function dev() {
-    local session=""
-    local layout="simple"
-    local tool=""
+# Parse dev/gdev args into layout, tool, session (name in $dev_parse_name for errors)
+function _dev_parse_args() {
+    layout="simple"
+    tool=""
+    session=""
+    local -a positional=()
 
-    for arg in "$@"; do
-        case "$arg" in
-            -g|--git) layout="full" ;;
-            opencode|--oc) tool="opencode" ;;
-            claude|--cc) tool="cluade" ;;
-            codex|--codex) tool="codex" ;;
-            copilot|--copilot) tool="copilot" ;;
-            *) session="$arg" ;;
+    while (( $# )); do
+        case "$1" in
+            -g|--git) layout="full"; shift ;;
+            -c|--cmd)
+                shift
+                (( $# )) || {
+                    echo "${dev_parse_name}: -c requires a command" >&2
+                    return 1
+                }
+                tool="$1"
+                shift
+                ;;
+            *)
+                positional+=("$1")
+                shift
+                ;;
         esac
     done
+
+    case ${#positional[@]} in
+        0) ;;
+        1)
+            if [[ -n "$tool" ]]; then
+                session="${positional[1]}"
+            elif command -v "${positional[1]}" &>/dev/null; then
+                tool="${positional[1]}"
+            else
+                session="${positional[1]}"
+            fi
+            ;;
+        2)
+            tool="${positional[1]}"
+            session="${positional[2]}"
+            ;;
+        *)
+            echo "${dev_parse_name}: too many arguments" >&2
+            return 1
+            ;;
+    esac
+}
+
+# Create dev workspace in tmux
+# Usage: dev [-g] [-c command] [command] [session-name]
+#   default: shell (left) | Yazi (top-right) + shell (bottom-right)
+#   -g/--git: 2x2 layout adding lazygit (bottom-left)
+#   -c/--cmd or a command in PATH as first positional runs in the left pane
+function dev() {
+    dev_parse_name=dev
+    _dev_parse_args "$@" || return 1
+    local session="$session" layout="$layout" tool="$tool"
 
     session="${session:-$(basename $(pwd))}"
     # Sanitize: tmux treats '.' and ':' as special in target strings
@@ -455,8 +493,161 @@ function undev() {
     tmux kill-session -t "$session"
 }
 
+# Create dev workspace in Ghostty (native splits via AppleScript, no tmux)
+# Usage: gdev [-g] [-c command] [command] [session-name]
+#   In Ghostty: split in the current tab; outside Ghostty: open a new window
+function gdev() {
+    if [[ "$OSTYPE" != darwin* ]] || ! osascript -e 'id of application "Ghostty"' &>/dev/null; then
+        echo "gdev: requires Ghostty on macOS" >&2
+        return 1
+    fi
+
+    dev_parse_name=gdev
+    _dev_parse_args "$@" || return 1
+    local session="$session" layout="$layout" tool="$tool"
+
+    session="${session:-$(basename "$(pwd)")}"
+    session="${session//[.:]/_}"
+    local cwd="$(pwd)"
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ghostty-dev"
+    local session_file="$cache_dir/$session"
+    mkdir -p "$cache_dir"
+
+    if [[ -f "$session_file" ]]; then
+        local tab_id result
+        tab_id=$(<"$session_file")
+        result=$(GHOSTTY_GDEV_TAB_ID="$tab_id" osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set targetId to system attribute "GHOSTTY_GDEV_TAB_ID"
+    repeat with w in windows
+        repeat with tb in tabs of w
+            if id of tb is targetId then
+                activate window w
+                select tab tb
+                focus terminal 1 of tb
+                return "ok"
+            end if
+        end repeat
+    end repeat
+    return "missing"
+end tell
+APPLESCRIPT
+)
+        if [[ "$result" == "ok" ]]; then
+            return 0
+        fi
+        rm -f "$session_file"
+    fi
+
+    local in_ghostty=0
+    [[ "$TERM_PROGRAM" == "ghostty" ]] && in_ghostty=1
+
+    local tab_id
+    tab_id=$( \
+        GHOSTTY_GDEV_CWD="$cwd" \
+        GHOSTTY_GDEV_LAYOUT="$layout" \
+        GHOSTTY_GDEV_TOOL="$tool" \
+        GHOSTTY_GDEV_IN_GHOSTTY="$in_ghostty" \
+        osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set cwd to system attribute "GHOSTTY_GDEV_CWD"
+    set layout to system attribute "GHOSTTY_GDEV_LAYOUT"
+    set tool to system attribute "GHOSTTY_GDEV_TOOL"
+    if tool is missing value then set tool to ""
+    set inGhostty to system attribute "GHOSTTY_GDEV_IN_GHOSTTY"
+
+    set paneCfg to new surface configuration
+    set initial working directory of paneCfg to cwd
+
+    if inGhostty is "1" then
+        set w to front window
+        set tb to selected tab of w
+        set t to focused terminal of tb
+    else
+        set w to new window with configuration paneCfg
+        set tb to selected tab of w
+        set t to terminal 1 of tb
+    end if
+
+    set tr to split t direction right with configuration paneCfg
+
+    if layout is "full" then
+        set br to split tr direction down with configuration paneCfg
+        set bl to split t direction down with configuration paneCfg
+    else
+        set br to split tr direction down with configuration paneCfg
+    end if
+
+    if tool is not "" then
+        input text tool to t
+        send key "enter" to t
+    end if
+    input text "yazi" to tr
+    send key "enter" to tr
+    if layout is "full" then
+        input text "lazygit" to br
+        send key "enter" to br
+    end if
+
+    perform action "equalize_splits" given on:t
+    focus t
+
+    return id of tb
+end tell
+APPLESCRIPT
+    ) || {
+        echo "gdev: failed to create Ghostty workspace" >&2
+        return 1
+    }
+
+    print -r -- "$tab_id" >"$session_file"
+}
+
+# Destroy the Ghostty dev tab matching the current directory (or a given name)
+# Usage: ungdev [session-name]
+function ungdev() {
+    if [[ "$OSTYPE" != darwin* ]] || ! osascript -e 'id of application "Ghostty"' &>/dev/null; then
+        echo "ungdev: requires Ghostty on macOS" >&2
+        return 1
+    fi
+
+    local session="${1:-$(basename "$(pwd)")}"
+    session="${session//[.:]/_}"
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ghostty-dev"
+    local session_file="$cache_dir/$session"
+
+    if [[ ! -f "$session_file" ]]; then
+        echo "ungdev: no ghostty session named '$session'" >&2
+        return 1
+    fi
+
+    local tab_id result
+    tab_id=$(<"$session_file")
+    result=$(GHOSTTY_GDEV_TAB_ID="$tab_id" osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set targetId to system attribute "GHOSTTY_GDEV_TAB_ID"
+    repeat with w in windows
+        repeat with tb in tabs of w
+            if id of tb is targetId then
+                close tab tb
+                return "closed"
+            end if
+        end repeat
+    end repeat
+    return "missing"
+end tell
+APPLESCRIPT
+)
+    rm -f "$session_file"
+
+    if [[ "$result" != "closed" ]]; then
+        echo "ungdev: ghostty tab for '$session' no longer exists" >&2
+        return 1
+    fi
+}
+
 # Create a throwaway scratch workspace in a temp dir
-# Usage: scratch [-g] [--git] [oc|cc|codex|copilot]
+# Usage: scratch [-g] [--git] [-c command] [command]
 #   Creates /tmp/scratch-<ts>, calls dev() for a throwaway workspace
 #   --git: initialize a git repo in the temp dir (off by default)
 #   The temp dir is cleaned up when the tmux session is destroyed

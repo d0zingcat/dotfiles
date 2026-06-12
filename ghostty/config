@@ -51,7 +51,8 @@ shell-integration = detect
 keybind = cmd+t=new_tab
 keybind = cmd+alt+h=previous_tab
 keybind = cmd+alt+l=next_tab
-keybind = cmd+w=close_surface
+keybind = cmd+w=close_tab
+keybind = cmd+alt+w=close_surface
 
 keybind = cmd+d=new_split:right
 keybind = cmd+shift+d=new_split:down
