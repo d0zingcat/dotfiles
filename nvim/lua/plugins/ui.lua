@@ -25,6 +25,7 @@ return {
   ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
   ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
           keys = {
+            { icon = " ", key = "n", desc = "新建文件", action = ":enew" },
             { icon = " ", key = "f", desc = "查找文件", action = ":lua Snacks.picker.files()" },
             { icon = " ", key = "g", desc = "全局搜索", action = ":lua Snacks.picker.grep()" },
             { icon = " ", key = "r", desc = "最近文件", action = ":lua Snacks.picker.recent()" },

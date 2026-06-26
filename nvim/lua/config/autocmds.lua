@@ -80,7 +80,8 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold", "CursorHo
   pattern = "*",
   group = augroup,
   callback = function()
-    if vim.fn.mode() ~= "c" and not vim.bo.readonly then
+    local mode = vim.fn.mode()
+    if mode ~= "c" and not vim.bo.readonly and vim.fn.getcmdwintype() == "" then
       vim.cmd("checktime")
     end
   end,
