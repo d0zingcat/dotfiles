@@ -17,10 +17,13 @@ return {
         typescriptreact = { "eslint_d" },
         markdown = { "markdownlint" },
         yaml = { "yamllint" },
-        dockerfile = { "hadolint" },
         sh = { "shellcheck" },
         bash = { "shellcheck" },
       }
+
+      if vim.fn.executable("hadolint") == 1 then
+        lint.linters_by_ft.dockerfile = { "hadolint" }
+      end
 
       local lint_augroup = vim.api.nvim_create_augroup("nvim_lint", { clear = true })
 
