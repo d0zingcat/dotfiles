@@ -493,6 +493,186 @@ function undev() {
     tmux kill-session -t "$session"
 }
 
+# Create a dual-panel AI workspace in tmux: codex (left) | claude (right)
+# Usage: dual [session-name]
+#   Session defaults to dual-<basename pwd>; re-attaches if it already exists
+function dual() {
+    local session="${1:-$(basename "$(pwd)")}"
+    session="dual-${session//[.:]/_}"
+    local cwd="$(pwd)"
+
+    if tmux has-session -t "$session" 2>/dev/null; then
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$session"
+        else
+            tmux attach-session -t "$session"
+        fi
+        return
+    fi
+
+    tmux new-session -d -s "$session" -c "$cwd"
+    local left
+    left=$(tmux display-message -p -t "${session}:1.1" "#{pane_id}")
+    local right
+    right=$(tmux split-window -t "$left" -h -c "$cwd" -P -F "#{pane_id}")
+
+    tmux send-keys -t "$left"  "codex"  Enter
+    tmux send-keys -t "$right" "claude" Enter
+
+    tmux select-pane -t "$left"
+
+    if [[ -n "$TMUX" ]]; then
+        tmux switch-client -t "$session"
+    else
+        tmux attach-session -t "$session"
+    fi
+}
+
+# Destroy the dual session matching the current directory (or a given name)
+# Usage: undual [session-name]
+function undual() {
+    local session="${1:-$(basename "$(pwd)")}"
+    session="dual-${session//[.:]/_}"
+
+    if ! tmux has-session -t "$session" 2>/dev/null; then
+        echo "undual: no tmux session named '$session'" >&2
+        return 1
+    fi
+
+    tmux kill-session -t "$session"
+}
+
+# Create dual-panel AI workspace in Ghostty: codex (left) | claude (right)
+# Usage: gdual [session-name]
+#   In Ghostty: split in the current tab; outside Ghostty: open a new window
+function gdual() {
+    if [[ "$OSTYPE" != darwin* ]] || ! osascript -e 'id of application "Ghostty"' &>/dev/null; then
+        echo "gdual: requires Ghostty on macOS" >&2
+        return 1
+    fi
+
+    local session="${1:-$(basename "$(pwd)")}"
+    session="dual-${session//[.:]/_}"
+    local cwd="$(pwd)"
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ghostty-dual"
+    local session_file="$cache_dir/$session"
+    mkdir -p "$cache_dir"
+
+    if [[ -f "$session_file" ]]; then
+        local tab_id result
+        tab_id=$(<"$session_file")
+        result=$(GHOSTTY_GDUAL_TAB_ID="$tab_id" osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set targetId to system attribute "GHOSTTY_GDUAL_TAB_ID"
+    repeat with w in windows
+        repeat with tb in tabs of w
+            if id of tb is targetId then
+                activate window w
+                select tab tb
+                focus terminal 1 of tb
+                return "ok"
+            end if
+        end repeat
+    end repeat
+    return "missing"
+end tell
+APPLESCRIPT
+)
+        if [[ "$result" == "ok" ]]; then
+            return 0
+        fi
+        rm -f "$session_file"
+    fi
+
+    local in_ghostty=0
+    [[ "$TERM_PROGRAM" == "ghostty" ]] && in_ghostty=1
+
+    local tab_id
+    tab_id=$( \
+        GHOSTTY_GDUAL_CWD="$cwd" \
+        GHOSTTY_GDUAL_IN_GHOSTTY="$in_ghostty" \
+        osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set cwd to system attribute "GHOSTTY_GDUAL_CWD"
+    set inGhostty to system attribute "GHOSTTY_GDUAL_IN_GHOSTTY"
+
+    set paneCfg to new surface configuration
+    set initial working directory of paneCfg to cwd
+
+    if inGhostty is "1" then
+        set w to front window
+        set tb to selected tab of w
+        set t to focused terminal of tb
+    else
+        set w to new window with configuration paneCfg
+        set tb to selected tab of w
+        set t to terminal 1 of tb
+    end if
+
+    set tr to split t direction right with configuration paneCfg
+
+    input text "codex" to t
+    send key "enter" to t
+    input text "claude" to tr
+    send key "enter" to tr
+
+    perform action "equalize_splits" given on:t
+    focus t
+
+    return id of tb
+end tell
+APPLESCRIPT
+    ) || {
+        echo "gdual: failed to create Ghostty workspace" >&2
+        return 1
+    }
+
+    print -r -- "$tab_id" >"$session_file"
+}
+
+# Destroy the Ghostty dual tab matching the current directory (or a given name)
+# Usage: ungdual [session-name]
+function ungdual() {
+    if [[ "$OSTYPE" != darwin* ]] || ! osascript -e 'id of application "Ghostty"' &>/dev/null; then
+        echo "ungdual: requires Ghostty on macOS" >&2
+        return 1
+    fi
+
+    local session="${1:-$(basename "$(pwd)")}"
+    session="dual-${session//[.:]/_}"
+    local cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/ghostty-dual"
+    local session_file="$cache_dir/$session"
+
+    if [[ ! -f "$session_file" ]]; then
+        echo "ungdual: no ghostty session named '$session'" >&2
+        return 1
+    fi
+
+    local tab_id result
+    tab_id=$(<"$session_file")
+    result=$(GHOSTTY_GDUAL_TAB_ID="$tab_id" osascript <<'APPLESCRIPT'
+tell application "Ghostty"
+    set targetId to system attribute "GHOSTTY_GDUAL_TAB_ID"
+    repeat with w in windows
+        repeat with tb in tabs of w
+            if id of tb is targetId then
+                close tab tb
+                return "closed"
+            end if
+        end repeat
+    end repeat
+    return "missing"
+end tell
+APPLESCRIPT
+)
+    rm -f "$session_file"
+
+    if [[ "$result" != "closed" ]]; then
+        echo "ungdual: ghostty tab for '$session' no longer exists" >&2
+        return 1
+    fi
+}
+
 # Create dev workspace in Ghostty (native splits via AppleScript, no tmux)
 # Usage: gdev [-g] [-c command] [command] [session-name]
 #   In Ghostty: split in the current tab; outside Ghostty: open a new window
