@@ -23,7 +23,7 @@
 
 [core]
     editor = nvim
-	excludesfile = /Users/d0zingcat/.config/git/.gitignore
+	excludesfile = ~/.config/git/.gitignore
 
 [pager]
     difftool = true

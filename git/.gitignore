@@ -4,3 +4,5 @@
 .python-version
 .mypy_cache/
 .tool-versions
+
+**/.claude/settings.local.json
