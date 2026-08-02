@@ -27,8 +27,9 @@ export PATH="$PATH:/Users/d0zingcat/.lmstudio/bin"
 export PATH="$PATH:$JAVA_HOME/bin"
 
 
-# SSH use 1password socket
-export SSH_AUTH_SOCK=~/.1password/agent.sock
+# SSH: use system ssh-agent (launchd-managed com.openssh.ssh-agent)
+# SSH_AUTH_SOCK is set automatically by macOS; no need to override.
+# AddKeysToAgent yes in ~/.ssh/config will load keys on first use.
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export LANG=en_US.UTF-8
