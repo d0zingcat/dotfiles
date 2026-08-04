@@ -28,7 +28,7 @@ export PATH="$PATH:$JAVA_HOME/bin"
 
 
 # SSH use 1password socket
-export SSH_AUTH_SOCK=~/.1password/agent.sock
+#export SSH_AUTH_SOCK=~/.1password/agent.sock
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export LANG=en_US.UTF-8
@@ -125,7 +125,6 @@ alias grep='ggrep'
 alias tailscale="/Applications/Tailscale.app/Contents/MacOS/Tailscale"
 alias ghostty='/Applications/Ghostty.app/Contents/MacOS/ghostty'
 alias claudeyolo='claude --dangerously-skip-permissions'
-alias opencode='OPENCODE_EXPERIMENTAL_OUTPUT_TOKEN_MAX=64000 opencode'
 alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scripts/worker-service.cjs"'
 
 

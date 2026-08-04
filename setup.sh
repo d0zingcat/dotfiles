@@ -282,28 +282,29 @@ function cmd_install() {
     mkdir -p "$HOME_DIR/.config"
     mkdir -p "$HOME_DIR/.ssh"
     mkdir -p "$HOME_DIR/.kube"
-    mkdir -p "$HOME_DIR/.1password"
 
-    local op_agent_target="$HOME_DIR/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
-    local op_agent_link="$HOME_DIR/.1password/agent.sock"
-    if [ -S "$op_agent_target" ]; then
-        if [ -L "$op_agent_link" ]; then
-            local op_link_target
-            op_link_target=$(readlink "$op_agent_link")
-            if [ "$op_link_target" = "$op_agent_target" ]; then
-                print_success "1Password SSH agent link already exists"
-            else
-                print_warning "~/.1password/agent.sock points elsewhere; leaving it unchanged"
-            fi
-        elif [ -e "$op_agent_link" ]; then
-            print_warning "~/.1password/agent.sock already exists; leaving it unchanged"
-        else
-            ln -s "$op_agent_target" "$op_agent_link"
-            print_success "Linked 1Password SSH agent"
-        fi
-    else
-        print_warning "1Password SSH agent socket not found yet"
-    fi
+    # 1Password SSH agent socket (disabled by default — use system ssh-agent instead)
+    # mkdir -p "$HOME_DIR/.1password"
+    # local op_agent_target="$HOME_DIR/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
+    # local op_agent_link="$HOME_DIR/.1password/agent.sock"
+    # if [ -S "$op_agent_target" ]; then
+    #     if [ -L "$op_agent_link" ]; then
+    #         local op_link_target
+    #         op_link_target=$(readlink "$op_agent_link")
+    #         if [ "$op_link_target" = "$op_agent_target" ]; then
+    #             print_success "1Password SSH agent link already exists"
+    #         else
+    #             print_warning "~/.1password/agent.sock points elsewhere; leaving it unchanged"
+    #         fi
+    #     elif [ -e "$op_agent_link" ]; then
+    #         print_warning "~/.1password/agent.sock already exists; leaving it unchanged"
+    #     else
+    #         ln -s "$op_agent_target" "$op_agent_link"
+    #         print_success "Linked 1Password SSH agent"
+    #     fi
+    # else
+    #     print_warning "1Password SSH agent socket not found yet"
+    # fi
 
     # Link files
     print_warning "Linking files..."
@@ -498,16 +499,17 @@ EOF
     # ==========================================================================
     print_warning "Backing up other configurations..."
 
-    if [ -L "$HOME/.1password/agent.sock" ]; then
-        echo "# 1Password SSH Agent" > "$WORKING_DIR/.1password_config.txt"
-        echo "Symlink: ~/.1password/agent.sock -> $(readlink "$HOME/.1password/agent.sock")" >> "$WORKING_DIR/.1password_config.txt"
-        echo "# Setup on new machine:" >> "$WORKING_DIR/.1password_config.txt"
-        echo "# 1. Install 1Password" >> "$WORKING_DIR/.1password_config.txt"
-        echo "# 2. mkdir -p ~/.1password" >> "$WORKING_DIR/.1password_config.txt"
-        echo "# 3. ln -s ~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock" >> "$WORKING_DIR/.1password_config.txt"
-        print_success "1Password config documented"
-        backup_count=$((backup_count + 1))
-    fi
+    # 1Password SSH agent config (disabled by default — use system ssh-agent instead)
+    # if [ -L "$HOME/.1password/agent.sock" ]; then
+    #     echo "# 1Password SSH Agent" > "$WORKING_DIR/.1password_config.txt"
+    #     echo "Symlink: ~/.1password/agent.sock -> $(readlink "$HOME/.1password/agent.sock")" >> "$WORKING_DIR/.1password_config.txt"
+    #     echo "# Setup on new machine:" >> "$WORKING_DIR/.1password_config.txt"
+    #     echo "# 1. Install 1Password" >> "$WORKING_DIR/.1password_config.txt"
+    #     echo "# 2. mkdir -p ~/.1password" >> "$WORKING_DIR/.1password_config.txt"
+    #     echo "# 3. ln -s ~/Library/Group\\ Containers/2BUA8C4S2C.com.1password/t/agent.sock ~/.1password/agent.sock" >> "$WORKING_DIR/.1password_config.txt"
+    #     print_success "1Password config documented"
+    #     backup_count=$((backup_count + 1))
+    # fi
 
     if [ -f "$HOME/.kube/config" ]; then
         echo "# Kubernetes Contexts Backup" > "$WORKING_DIR/.kube_contexts.txt"
@@ -553,7 +555,6 @@ EOF
 | Brewfile ($(dotfiles_host)) | $([ -f "$brewfile" ] && echo "✅ Saved" || echo "❌ Failed") |
 | Git config summary | $([ -f "$WORKING_DIR/.git_config_summary.txt" ] && echo "✅ Saved" || echo "❌ Failed") |
 | SSH public keys | $([ -d "$ssh_backup_dir" ] && echo "✅ Saved to $ssh_backup_dir" || echo "⚠️ Not found") |
-| 1Password config | $([ -f "$WORKING_DIR/.1password_config.txt" ] && echo "✅ Documented" || echo "⚠️ Not configured") |
 | Kubernetes contexts | $([ -f "$WORKING_DIR/.kube_contexts.txt" ] && echo "✅ Documented" || echo "⚠️ Not configured") |
 | VSCode extensions | $([ -f "$WORKING_DIR/.vscode_extensions.txt" ] && echo "✅ Documented" || echo "⚠️ Not installed") |
 
@@ -561,7 +562,6 @@ EOF
 
 - brewfiles/$(dotfiles_host)/Brewfile (updated)
 - .git_config_summary.txt ⚠️ DO NOT COMMIT
-- .1password_config.txt
 - .kube_contexts.txt
 - .vscode_extensions.txt
 $( [ -d "$ssh_backup_dir" ] && echo "- $ssh_backup_dir/ ⚠️ DO NOT COMMIT" )
@@ -569,7 +569,7 @@ $( [ -d "$ssh_backup_dir" ] && echo "- $ssh_backup_dir/ ⚠️ DO NOT COMMIT" )
 ## Next Steps
 
 1. Review changes: git status
-2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt
+2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .kube_contexts.txt .vscode_extensions.txt
 3. git commit -m 'backup: update dotfiles'
 4. ⚠️ DO NOT commit: .git_config_summary.txt, ssh_backup_*/
 EOF
@@ -584,12 +584,12 @@ EOF
     echo "  Warnings: $backup_warnings"
     echo ""
     echo "Files to review:"
-    echo "  ✅ Safe to commit: brewfiles/$(dotfiles_host)/Brewfile, .1password_config.txt, .kube_contexts.txt, .vscode_extensions.txt"
+    echo "  ✅ Safe to commit: brewfiles/$(dotfiles_host)/Brewfile, .kube_contexts.txt, .vscode_extensions.txt"
     echo "  ⚠️  DO NOT COMMIT: .git_config_summary.txt, ssh_backup_*/"
     echo ""
     echo "Next steps:"
     echo "  1. Review: git status"
-    echo "  2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .1password_config.txt .kube_contexts.txt .vscode_extensions.txt"
+    echo "  2. Commit safe files: git add brewfiles/$(dotfiles_host)/Brewfile .kube_contexts.txt .vscode_extensions.txt"
     echo "  3. git commit -m 'backup: update dotfiles'"
     echo "=========================================="
 }
@@ -666,7 +666,7 @@ function cmd_full_recover() {
     echo "  git config --file ~/.gitconfig user.signingkey 'your-ssh-key'"
     echo ""
     echo "  # SSH config template is in ~/.dotfiles/ssh/example"
-    echo "  # 1Password SSH agent symlink should exist at ~/.1password/agent.sock"
+    echo "  # 1Password SSH agent symlink is disabled by default — use system ssh-agent"
     echo "  # Generate new SSH keys"
     echo "  ssh-keygen -t ed25519 -C 'your@email.com'"
     echo ""

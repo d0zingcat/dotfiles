@@ -6,7 +6,7 @@
 
 [user]
     name = YOUR_NAME
-    signingkey = YOUR_SSH_SIGNING_KEY
+    signingkey = ~/.ssh/Personal
     email = YOUR_EMAIL
 
 [commit]
@@ -15,8 +15,8 @@
 [gpg]
   format = ssh
 
-[gpg "ssh"]
-  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+# [gpg "ssh"]
+#   program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
 
 [url "https://"]
     insteadOf = git://

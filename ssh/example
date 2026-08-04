@@ -1,7 +1,9 @@
 Include ~/.orbstack/ssh/config
 
 Host *
-    IdentityAgent "~/.1password/agent.sock"
+    #IdentityAgent "~/.1password/agent.sock"
+    AddKeysToAgent yes
+    UseKeychain yes
     ServerAliveInterval 60
     TCPKeepAlive yes
     SetEnv TERM=xterm-256color
