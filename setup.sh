@@ -457,19 +457,21 @@ EOF
     if [ -d "$HOME/.ssh" ]; then
         mkdir -p "$ssh_backup_dir"
 
-        for key in "$HOME"/.ssh/*.pub; do
-            if [ -f "$key" ]; then
-                cp "$key" "$ssh_backup_dir/"
-                print_success "Copied: $(basename "$key")"
-            fi
-        done
+        # find instead of a glob: zsh aborts the whole function on an unmatched glob
+        while IFS= read -r key; do
+            cp "$key" "$ssh_backup_dir/"
+            print_success "Copied: $(basename "$key")"
+        done < <(find "$HOME/.ssh" -maxdepth 1 -type f -name '*.pub')
 
         if [ -f "$HOME/.ssh/config" ]; then
             cp "$HOME/.ssh/config" "$ssh_backup_dir/"
             print_success "Copied: ssh config"
         fi
 
-        if [ -f "$HOME/.ssh/id_ed25519.pub" ]; then
+        local pub_count
+        pub_count=$(find "$ssh_backup_dir" -maxdepth 1 -type f -name '*.pub' | wc -l | tr -d ' ')
+
+        if [ "$pub_count" -gt 0 ]; then
             echo "# SSH Public Key Backup" > "$ssh_backup_dir/README.md"
             echo "# Generated: $(date '+%Y-%m-%d %H:%M:%S')" >> "$ssh_backup_dir/README.md"
             echo "# WARNING: Contains public keys only - DO NOT COMMIT" >> "$ssh_backup_dir/README.md"
@@ -613,7 +615,7 @@ function cmd_sync() {
         print_warning "⚠️  git/config contains placeholder values!"
         echo "    Run: git config --file ~/.gitconfig user.name 'Your Name'"
         echo "    Run: git config --file ~/.gitconfig user.email 'your@email.com'"
-        echo "    Run: git config --file ~/.gitconfig user.signingkey 'your-ssh-key'"
+        echo "    Run: git config --file ~/.gitconfig user.signingkey ~/.ssh/<key>"
     fi
 
     print_header "Sync Complete!"
@@ -663,12 +665,18 @@ function cmd_full_recover() {
     echo "  # Git configuration"
     echo "  git config --file ~/.gitconfig user.name 'Your Name'"
     echo "  git config --file ~/.gitconfig user.email 'your@email.com'"
-    echo "  git config --file ~/.gitconfig user.signingkey 'your-ssh-key'"
+    echo "  git config --file ~/.gitconfig user.signingkey ~/.ssh/<key>"
     echo ""
     echo "  # SSH config template is in ~/.dotfiles/ssh/example"
     echo "  # 1Password SSH agent symlink is disabled by default — use system ssh-agent"
     echo "  # Generate new SSH keys"
     echo "  ssh-keygen -t ed25519 -C 'your@email.com'"
+    echo ""
+    echo "  # Load the key into the agent and persist its passphrase in Keychain"
+    echo "  ssh-add --apple-use-keychain ~/.ssh/<key>"
+    echo ""
+    echo "  # Allow local verification of your own signatures"
+    echo "  echo \"your@email.com \$(cat ~/.ssh/<key>.pub)\" >> ~/.ssh/allowed_signers"
     echo ""
     echo "  # Install Homebrew packages (if not already done above)"
     echo "  ./setup.sh brew-install"
