@@ -80,7 +80,7 @@ if [ -f "$HOME/.antigen/antigen.zsh" ]; then
     antigen bundle kubectl
     antigen bundle pip
     antigen bundle nvim
-    antigen bundle darvid/zsh-poetry
+    # antigen bundle darvid/zsh-poetry
     antigen bundle Aloxaf/fzf-tab
     antigen bundle vi-mode
     antigen apply
@@ -132,6 +132,9 @@ alias claude-mem='bun "$HOME/.claude/plugins/marketplaces/thedotmack/plugin/scri
 # -- MISC Configuration --
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
+# zsh-poetry 在 starship 之前激活 venv，导致 _OLD_VIRTUAL_PS1 保存了 zsh 默认提示符。
+# deactivate 时会恢复该旧值，覆盖 starship 的 PROMPT。清除它以避免此冲突。
+# unset _OLD_VIRTUAL_PS1
 command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
 command -v lsd >/dev/null 2>&1 && alias ls='lsd'
 eval "$(zoxide init zsh)"
