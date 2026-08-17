@@ -185,7 +185,12 @@ function m() {
     if [[ -n "$TMUX" ]]; then
         exit 0
     fi
-    tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query | xargs echo | read session  && tmux attach -t ${session:-default} || tmux new -s ${session:-default}
+    local session
+    local default_session
+    default_session="$(basename "$(pwd)")"
+    # Sanitize: tmux treats '.' and ':' as special in target strings
+    default_session="${default_session//[^A-Za-z0-9_-]/_}"
+    tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query | xargs echo | read session && tmux attach -t "${session:-$default_session}" || tmux new -s "${session:-$default_session}"
 }
 
 # find network ports
