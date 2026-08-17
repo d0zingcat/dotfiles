@@ -178,7 +178,7 @@ bindkey -M viins '^d' vi-delete-char
 
 
 # -- Functions --
-# menu
+# menu: pick a tmux session to attach, or create a new one named after cwd
 function m() {
     if [[ -n "$TMUX" ]]; then
         exit 0
@@ -188,7 +188,32 @@ function m() {
     default_session="$(basename "$(pwd)")"
     # Sanitize: tmux treats '.' and ':' as special in target strings
     default_session="${default_session//[^A-Za-z0-9_-]/_}"
-    tmux ls -F '#{session_name}' | fzf --bind=enter:replace-query+print-query | xargs echo | read session && tmux attach -t "${session:-$default_session}" || tmux new -s "${session:-$default_session}"
+
+    local new_marker=$'\e[1;32m[new]\e[0m '"$default_session"
+    local sessions
+    sessions=$(tmux ls -F '#{session_name}' 2>/dev/null)
+
+    local -a list=()
+    if ! echo "$sessions" | grep -qx "$default_session" 2>/dev/null; then
+        list+=("$new_marker")
+    fi
+    if [[ -n "$sessions" ]]; then
+        while IFS= read -r line; do
+            [[ -n "$line" ]] && list+=("$line")
+        done <<< "$sessions"
+    fi
+
+    session=$(printf '%s\n' "${list[@]}" | fzf --ansi --bind=enter:replace-query+print-query)
+
+    if [[ -z "$session" ]]; then
+        return 0
+    elif [[ "$session" == "$new_marker" ]]; then
+        tmux new -s "$default_session"
+    elif tmux has-session -t "$session" 2>/dev/null; then
+        tmux attach -t "$session"
+    else
+        tmux new -s "$session"
+    fi
 }
 
 # find network ports
