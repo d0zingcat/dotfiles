@@ -6,7 +6,7 @@
 ###############################################################################
 
 # -- Environment Variables --
-export BREW_HOME="/opt/homebrew/"
+export BREW_HOME="/opt/homebrew"
 export GOPATH="$HOME/.go"
 export PNPM_HOME="$HOME/.pnpm"
 export BUN_HOME="$HOME/.bun"
@@ -22,7 +22,7 @@ export PATH="$BUN_HOME/bin:$PATH"
 export PATH="$HOME/.docker/bin:$PATH"
 export PATH="$PATH:$HOME/.spicetify"
 # Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/d0zingcat/.lmstudio/bin"
+export PATH="$PATH:$HOME/.lmstudio/bin"
 # End of LM Studio CLI section
 export PATH="$PATH:$JAVA_HOME/bin"
 
@@ -161,8 +161,6 @@ if [[ $commands[helm] ]]; then
     fi
 fi
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
-
-[ -f /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc ] &&  .  /usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
 
 if command -v fzf >/dev/null 2>&1; then
     if [[ ! -s "$ZSH_COMPLETION_CACHE/fzf.zsh" ]]; then
