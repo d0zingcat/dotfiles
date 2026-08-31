@@ -205,10 +205,11 @@ function m() {
 
     session=$(printf '%s\n' "${list[@]}" | fzf --ansi --bind=enter:replace-query+print-query)
 
+    # Strip [new] prefix if selected
+    session="${session#\[new\] }"
+
     if [[ -z "$session" ]]; then
         return 0
-    elif [[ "$session" == "$new_marker" ]]; then
-        tmux new -s "$default_session"
     elif tmux has-session -t "$session" 2>/dev/null; then
         tmux attach -t "$session"
     else
@@ -911,3 +912,5 @@ function zi() {
   local dir
   dir=$(zoxide query -l | fzf --preview 'ls -la {}') && z "$dir"
  }
+
+export CODEX_TEST=1
