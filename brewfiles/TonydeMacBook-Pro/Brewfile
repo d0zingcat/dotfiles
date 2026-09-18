@@ -1,0 +1,347 @@
+tap "abue-ammar/tinycast", trusted: true
+tap "anomalyco/tap", trusted: true
+tap "buo/cask-upgrade", trusted: true
+tap "clojure/tools"
+tap "d0zingcat/tap", "https://github.com/d0zingcat/homebrew-tap.git", trusted: true
+tap "farion1231/ccswitch", trusted: true
+tap "hashicorp/tap"
+tap "homebrew/cask"
+tap "homebrew/core"
+tap "markmals/tap", trusted: true
+tap "minio/stable"
+tap "oven-sh/bun"
+tap "t8y2/tap", trusted: true
+tap "vitobotta/tap"
+# Static checker for GitHub Actions workflow files
+brew "actionlint"
+# Open-source, cross-platform JavaScript runtime environment
+brew "node"
+# Browser automation CLI for AI agents
+brew "agent-browser"
+# Universal Command-Line Interface for Alibaba Cloud
+brew "aliyun-cli"
+# GitOps Continuous Delivery for Kubernetes
+brew "argocd"
+# Record and share terminal sessions
+brew "asciinema"
+# Official Amazon AWS command-line interface
+brew "awscli"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
+# Resource monitor. C++ version and continuation of bashtop and bpytop
+brew "btop"
+# Bridges local AI coding agents to messaging platforms
+brew "cc-connect"
+# Library for dealing with Microsoft ITSS/CHM files
+brew "chmlib"
+# Cross-platform make
+brew "cmake"
+# Tool for interacting with remote images and registries
+brew "crane"
+# Shell script to build fancy DMGs
+brew "create-dmg"
+# Diff that understands syntax
+brew "difftastic"
+# Load/unload environment variables based on $PWD
+brew "direnv"
+# Modernized DOSBox soft-fork
+brew "dosbox-staging"
+# Embeddable SQL OLAP Database Management System
+brew "duckdb"
+# Program that can automate interactive applications
+brew "expect"
+# Simple, fast and user-friendly alternative to find
+brew "fd"
+# Play, record, convert, and stream select audio and video codecs
+brew "ffmpeg"
+# Command-line fuzzy finder written in Go
+brew "fzf"
+# GNU compiler collection
+brew "gcc"
+# GitHub command-line tool
+brew "gh"
+# GNU implementation of the famous stream editor
+brew "gnu-sed"
+# Open source programming language to build simple/reliable/efficient software
+brew "go"
+# GNU grep, egrep and fgrep
+brew "grep"
+# Kubernetes package manager
+brew "helm"
+# Deploy Kubernetes Helm Charts
+brew "helmfile"
+# Tool for managing apps on iOS devices
+brew "ideviceinstaller"
+# CLI tool for searching and downloading app packages from the iOS App Store
+brew "ipatool"
+# Update of iperf: measures TCP, UDP, and SCTP bandwidth
+brew "iperf3"
+# Lightweight and flexible command-line JSON processor
+brew "jq"
+# Cloud-based, distributed POSIX file system built on top of Redis and S3
+brew "juicefs"
+# Kubernetes CLI To Manage Your Clusters In Style!
+brew "k9s"
+# AI coding agent for your terminal
+brew "kimi-code"
+# Tool that can switch between kubectl contexts easily and create aliases
+brew "kubectx"
+# Kubernetes command-line interface
+brew "kubernetes-cli"
+# Template-free customization of Kubernetes YAML manifests
+brew "kustomize"
+# Simple terminal UI for git commands
+brew "lazygit"
+# Library for OS-independent pseudo-TTY management
+brew "libptytty"
+# Tools for zmodem/xmodem/ymodem file transfer
+brew "lrzsz"
+# Clone of ls with colorful output, file type icons, and more
+brew "lsd"
+# Powerful, lightweight programming language
+brew "lua"
+# Just-In-Time Compiler (JIT) for the Lua programming language
+brew "luajit"
+# Package manager for the Lua programming language
+brew "luarocks"
+# Mac App Store command-line interface
+brew "mas"
+# Java-based project management
+brew "maven"
+# Deep clean and optimize your Mac
+brew "mole"
+# 'traceroute' and 'ping' in a single tool
+brew "mtr"
+# Protocol buffers (Google's data interchange format)
+brew "protobuf"
+# Open source relational database management system
+brew "mysql@8.4", link: true
+# Incremental parsing library
+brew "tree-sitter"
+# Ambitious Vim-fork focused on extensibility and agility
+brew "neovim"
+# Open source visual route tracking CLI tool
+brew "nexttrace"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
+# AI coding agent, built for the terminal
+brew "opencode"
+# Development kit for the Java programming language
+brew "openjdk@21"
+# Fast, disk space efficient package manager
+brew "pnpm"
+# Tool for managing OCI containers and pods
+brew "podman"
+# Object-relational database system
+brew "postgresql@18", restart_service: :changed, link: true
+# Persistent key-value database, with built-in net interface
+brew "redis", restart_service: :changed
+# Readline wrapper: adds readline support to tools that lack it
+brew "rlwrap"
+# Rust toolchain installer
+brew "rustup"
+# Autoformat shell script source code
+brew "shfmt"
+# Universal proxy platform
+brew "sing-box"
+# Non-interactive SSH password auth
+brew "sshpass"
+# Cross-shell prompt for astronauts
+brew "starship"
+# Formatting tool for reformatting Swift code
+brew "swiftformat"
+# Tool to enforce Swift style and conventions
+brew "swiftlint"
+# Keyboard-first Telegram client for the terminal, written in Go
+brew "tele"
+# User interface to the TELNET protocol
+brew "telnet"
+# Terminal multiplexer
+brew "tmux"
+# Parser generator tool
+brew "tree-sitter-cli"
+# Highly OpenSSH-compatible client with extended features
+brew "trzsz-ssh"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
+# Internet file retriever
+brew "wget"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper.cpp"
+# Little beautifier tool for xcodebuild
+brew "xcbeautify"
+# Blazing fast terminal file manager written in Rust, based on async I/O
+brew "yazi"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
+# UNIX shell (command interpreter)
+brew "zsh"
+# Cross-platform codesigning tool for iOS apps
+brew "zsign"
+# The Clojure Programming Language
+brew "clojure/tools/clojure", trusted: true
+# Terraform
+brew "hashicorp/tap/terraform", trusted: true
+# MinIO Client for object storage and filesystems
+brew "minio/stable/mc", trusted: true
+# Incredibly fast JavaScript runtime, bundler, transpiler and package manager - all in one.
+brew "oven-sh/bun/bun", trusted: true
+# This is a CLI tool to quickly create and manage Kubernetes clusters in Hetzner Cloud using the lightweight Kubernetes distribution k3s from Rancher.
+brew "vitobotta/tap/hetzner_k3s", trusted: true
+# Password manager that keeps all passwords secure behind one password
+cask "1password"
+# Command-line interface for 1Password
+cask "1password-cli"
+# Configuration manager for AI coding agents
+cask "cc-switch"
+# OpenAI's official ChatGPT desktop app
+cask "chatgpt"
+# Desktop client that supports multiple LLM providers
+cask "cherry-studio"
+# Financial information acquisition platform
+cask "choice-financial-terminal"
+# Another Mihomo GUI
+cask "clash-party"
+# Continuation of Clash Verge - A Clash Meta GUI based on Tauri
+cask "clash-verge-rev"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
+# OpenAI's coding agent that runs in your terminal
+cask "codex"
+# Brings the power of Copilot coding agent directly to your terminal
+cask "copilot-cli"
+# Write, edit, and chat about your code with AI
+cask "cursor"
+# Command-line agent for Cursor
+cask "cursor-cli"
+# Databases and SQL IDE
+cask "datagrip"
+# Browser for SQLite databases
+cask "db-browser-for-sqlite"
+# Database management tool
+cask "dbx"
+# AI input method
+cask "d0zingcat/tap/doubao-ime", trusted: true
+# Project management software
+cask "feishu"
+cask "font-jetbrains-mono-nerd-font"
+cask "font-maple-mono-nf-cn"
+# Amazon Glacier file transfer client
+cask "freeze"
+# Web browser
+cask "google-chrome"
+# Native desktop AI assistant from Google
+cask "google-gemini"
+# Extensible coding agent for the terminal
+cask "grok-build"
+# Homebrew's official GUI
+cask "homebrew-app"
+# Open source API development ecosystem
+cask "hoppscotch"
+# AI-powered productivity tool for the command-line
+cask "kiro-cli"
+# Discover, download, and run local LLMs
+cask "lm-studio"
+# Intercept, modify, replay, save HTTP/S traffic
+cask "mitmproxy"
+# Free and open-source RSS reader
+cask "netnewswire"
+# App to write, plan, collaborate, and get organised
+cask "notion"
+# Knowledge base that works on top of a local folder of plain text Markdown files
+cask "obsidian"
+# All system and utility switches in one place
+cask "one-switch"
+# System and utility switches
+cask "only-switch"
+# Replacement for Docker Desktop
+cask "orbstack"
+# Instant messaging tool
+cask "qq"
+# Music streaming service
+cask "spotify"
+# Native database client for many database types
+cask "tablepro"
+# Messaging app with a focus on speed and security
+cask "telegram"
+# Menu bar manager
+cask "thaw"
+# Tiny, fully native launcher, hotkeys, and clipboard history
+cask "abue-ammar/tinycast/tinycast", trusted: true
+# AI voice dictation that turns speech into polished text
+cask "typeless"
+# Open-source code editor
+cask "visual-studio-code@insiders"
+# Remote wake utility
+cask "d0zingcat/tap/wakeup-macos"
+# Messaging and calling application
+cask "wechatwork"
+# Text input app from WeChat team for Chinese users
+cask "wetype"
+# GPU-accelerated cross-platform terminal emulator and multiplexer
+cask "wezterm"
+# Network protocol analyzer
+cask "wireshark-app"
+mas "1Password for Safari", id: 1569813296
+mas "DingTalk", id: 1435447041
+mas "GarageBand", id: 682658836
+mas "iMovie", id: 408981434
+mas "Microsoft Excel", id: 462058435
+mas "Microsoft PowerPoint", id: 462062816
+mas "Microsoft Word", id: 462054704
+mas "Read CHM", id: 594432954
+mas "WeChat", id: 836500024
+mas "Wind", id: 1123416056
+mas "Wind API", id: 1599219369
+mas "Windows App", id: 1295203466
+mas "Xcode", id: 497799835
+mas "东方财富", id: 1638844222
+go "rsc.io/2fa"
+go "github.com/air-verse/air"
+go "golang.org/x/tools/cmd/callgraph"
+go "claudette/cmd/claudette"
+go "github.com/go-delve/delve/cmd/dlv"
+go "entgo.io/ent/cmd/ent"
+go "github.com/davidrjenni/reftools/cmd/fillswitch"
+go "github.com/onsi/ginkgo/v2/ginkgo"
+go "gitea.com/gitea/gitea-mcp"
+go "github.com/abice/go-enum"
+go "github.com/zeromicro/go-zero/tools/goctl"
+go "mvdan.cc/gofumpt"
+go "golang.org/x/tools/cmd/goimports"
+go "github.com/twpayne/go-jsonstruct/v3/cmd/gojsonstruct"
+go "github.com/golangci/golangci-lint/v2/cmd/golangci-lint"
+go "github.com/segmentio/golines"
+go "github.com/fatih/gomodifytags"
+go "github.com/abenz1267/gomvp"
+go "golang.org/x/tools/cmd/gonew"
+go "github.com/haya14busa/goplay/cmd/goplay"
+go "golang.org/x/tools/gopls"
+go "github.com/cweill/gotests/gotests"
+go "gotest.tools/gotestsum"
+go "golang.org/x/vuln/cmd/govulncheck"
+go "github.com/koron/iferr"
+go "github.com/josharian/impl"
+go "github.com/tmc/json-to-struct"
+go "github.com/go-kratos/kratos/cmd/kratos/v2"
+go "go.uber.org/mock/mockgen"
+go "google.golang.org/protobuf/cmd/protoc-gen-go"
+go "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
+go "github.com/go-kratos/kratos/cmd/protoc-gen-go-http/v2"
+go "github.com/google/gnostic/cmd/protoc-gen-openapi"
+go "github.com/kyoh86/richgo"
+go "honnef.co/go/tools/cmd/staticcheck"
+go "github.com/swaggo/swag/cmd/swag"
+go "github.com/google/wire/cmd/wire"
+cargo "sqlx-cli"
+cargo "syswatch", source: "https://github.com/matthart1983/syswatch.git"
+npm "@bitkyc08/opencodex"
+npm "@dbx-app/mcp-server"
+npm "@larksuite/cli"
+npm "@playwright/cli"
