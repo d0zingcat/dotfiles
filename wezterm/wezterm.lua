@@ -1,95 +1,68 @@
+-- WezTerm configuration for macOS.
+-- It intentionally stays compatible with the latest stable release
+-- (20240203-110809-5046fc22).
 local wezterm = require("wezterm")
-local tmux = {}
-if wezterm.target_triple == "aarch64-apple-darwin" then
-	tmux = { "/opt/homebrew/bin/tmux", "new", "-As0" }
-else
-	tmux = { "tmux", "new", "-As0" }
-end
+local act = wezterm.action
 
-return {
-	-- default_prog = tmux,
-	default_cwd = wezterm.home_dir .. "/Workbench",
-	font_size = 14,
-	font = wezterm.font_with_fallback({
-		"JetBrainsMono Nerd Font",
-		"Maple Mono NF CN",
-	}),
-	colors = {
-		tab_bar = {
-			active_tab = {
-				bg_color = "#24283b",
-				fg_color = "#c0caf5",
-			},
-		},
-	},
-	selection_word_boundary = " \t\n{}[]()\"'`=,.",
-	use_fancy_tab_bar = true,
-	hide_tab_bar_if_only_one_tab = false,
-	color_scheme = "tokyonight",
-	window_decorations = "INTEGRATED_BUTTONS | RESIZE",
-	window_frame = {
-		font_size = 14.0,
-	},
-	window_padding = {
-		left = 5,
-		right = 5,
-		top = 0,
-		bottom = 0,
-	},
-	foreground_text_hsb = {
-		hue = 1.0,
-		saturation = 1.0,
-		brightness = 1.2,
-	},
-	use_ime = true, -- fix Chinese
-	skip_close_confirmation_for_processes_named = {
-		"fzf",
-		"zsh",
-		"fzf",
-	},
-	ssh_domains = {},
-	keys = {
-		--{ key = 'l', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|DOMAINS' } }) },
-		--{ key = 's', mods = 'CMD', action = wezterm.action({ ShowLauncherArgs = { flags = 'FUZZY|WORKSPACES' } }) },
-		{ key = "e", mods = "CMD", action = wezterm.action({ EmitEvent = "window-visible-text" }) },
-		{ key = "l", mods = "CMD", action = wezterm.action({ ShowLauncherArgs = { flags = "DOMAINS" } }) },
-		{ key = "w", mods = "CMD", action = wezterm.action({ CloseCurrentPane = { confirm = false } }) },
-		{ key = "d", mods = "CMD", action = wezterm.action({ SplitHorizontal = { domain = "CurrentPaneDomain" } }) },
-		{
-			key = "d",
-			mods = "CMD|SHIFT",
-			action = wezterm.action({ SplitVertical = { domain = "CurrentPaneDomain" } }),
-		},
-		{
-			key = "[",
-			mods = "CMD",
-			action = wezterm.action({ ActivatePaneDirection = "Next" }),
-		},
-		{
-			key = "]",
-			mods = "CMD",
-			action = wezterm.action({ ActivatePaneDirection = "Prev" }),
-		},
-		{
-			key = ">",
-			mods = "CMD|SHIFT",
-			action = wezterm.action.MoveTabRelative(1),
-		},
-		{
-			key = "<",
-			mods = "CMD|SHIFT",
-			action = wezterm.action.MoveTabRelative(-1),
-		},
-		{ key = "Enter", mods = "CMD", action = "ToggleFullScreen" },
-	},
-	-- hyperlink_rules = {
-	--     {
-	--         regex = [[\b(https|http)://\S*\b]],
-	--         format = '$0',
-	--     },
-	--     {
-	--         regex = [[["]?([\w\d]{1}[-\w\d]+)(/){1}([-\w\d\.]+)["]?]],
-	--         format = 'https://www.github.com/$1/$3',
-	--     }
-	-- }
+local config = {
+  font_dirs = { wezterm.home_dir .. "/Library/Fonts" },
+  -- Use fonts that this WezTerm build can enumerate. macOS's automatic
+  -- fallback selected Apple SD Gothic Neo for some Han characters and missed
+  -- others in the previous configuration.
+  font = wezterm.font_with_fallback({
+    "JetBrains Mono",
+    "Maple Mono NF CN",
+  }),
+  font_size = 13,
+  line_height = 1.15,
+
+  -- Matches the Ghostty theme. Other useful built-ins: "Tokyo Night",
+  -- "Kanagawa Dragon", and "Everforest Dark Hard".
+  color_scheme = "Catppuccin Mocha",
+  window_background_opacity = 0.90,
+  macos_window_background_blur = 20,
+  window_decorations = "INTEGRATED_BUTTONS | RESIZE",
+  window_padding = { left = 8, right = 8, top = 8, bottom = 8 },
+
+  default_cwd = wezterm.home_dir,
+  use_ime = true,
+  default_cursor_style = "BlinkingBar",
+  cursor_blink_rate = 500,
+  selection_word_boundary = " \t\n{}[]()\"'`=,.",
+  -- This WezTerm release has no copy_on_select config field.
+  -- 100k lines avoids the large memory cost of Ghostty's 25m-line history.
+  scrollback_lines = 100000,
+  window_close_confirmation = "NeverPrompt",
+
+  use_fancy_tab_bar = true,
+  hide_tab_bar_if_only_one_tab = false,
+  window_frame = { font_size = 13.0 },
+
+  -- Reach these with Cmd+L. Keeping tmux out of default_prog prevents its
+  -- panes from competing with WezTerm's own splits.
+  launch_menu = {
+    { label = "Workspace", cwd = wezterm.home_dir .. "/Workspace", args = { "zsh", "-l" } },
+  },
+
+  keys = {
+    { key = "l", mods = "CMD", action = act.ShowLauncherArgs({ flags = "FUZZY|LAUNCH_MENU_ITEMS|DOMAINS" }) },
+    { key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = false }) },
+    { key = "d", mods = "CMD", action = act.SplitHorizontal({ domain = "CurrentPaneDomain" }) },
+    { key = "d", mods = "CMD|SHIFT", action = act.SplitVertical({ domain = "CurrentPaneDomain" }) },
+    { key = "[", mods = "CMD", action = act.ActivatePaneDirection("Next") },
+    { key = "]", mods = "CMD", action = act.ActivatePaneDirection("Prev") },
+    { key = "h", mods = "CMD|ALT", action = act.ActivateTabRelative(-1) },
+    { key = "l", mods = "CMD|ALT", action = act.ActivateTabRelative(1) },
+    { key = "h", mods = "ALT", action = act.MoveTabRelative(-1) },
+    { key = "l", mods = "ALT", action = act.MoveTabRelative(1) },
+    { key = "h", mods = "CMD|SHIFT", action = act.ActivatePaneDirection("Left") },
+    { key = "j", mods = "CMD|SHIFT", action = act.ActivatePaneDirection("Down") },
+    { key = "k", mods = "CMD|SHIFT", action = act.ActivatePaneDirection("Up") },
+    { key = "l", mods = "CMD|SHIFT", action = act.ActivatePaneDirection("Right") },
+    { key = "f", mods = "CMD|SHIFT", action = act.TogglePaneZoomState },
+    { key = ",", mods = "CMD|SHIFT", action = act.ReloadConfiguration },
+    { key = "Enter", mods = "CMD", action = act.ToggleFullScreen },
+  },
 }
+
+return config
