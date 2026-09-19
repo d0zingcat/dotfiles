@@ -10,8 +10,7 @@ local config = {
   -- fallback selected Apple SD Gothic Neo for some Han characters and missed
   -- others in the previous configuration.
   font = wezterm.font_with_fallback({
-    "JetBrains Mono",
-    "Maple Mono NF CN",
+    "JetBrains Maple Mono",
   }),
   font_size = 13,
   line_height = 1.15,
