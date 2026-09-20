@@ -194,7 +194,7 @@ function m() {
     sessions=$(tmux ls -F '#{session_name}' 2>/dev/null)
 
     local -a list=()
-    if ! echo "$sessions" | grep -qx "$default_session" 2>/dev/null; then
+    if ! printf '%s\n' "$sessions" | grep -qxF "$default_session" 2>/dev/null; then
         list+=("$new_marker")
     fi
     if [[ -n "$sessions" ]]; then
@@ -205,15 +205,29 @@ function m() {
 
     session=$(printf '%s\n' "${list[@]}" | fzf --ansi --bind=enter:replace-query+print-query)
 
-    # Strip [new] prefix if selected
+    # fzf --ansi 原样输出会保留颜色码，先去掉再去 [new] 前缀
+    # (直接 ${session#\[new\] } 匹配不到，因为开头是 ESC)
+    esc=$'\e'
+    session=${session//$esc\[1\;32m/}
+    session=${session//$esc\[0m/}
     session="${session#\[new\] }"
+    # 去掉首尾空白（print-query 手输时常见）
+    session="${session#"${session%%[![:space:]]*}"}"
+    session="${session%"${session##*[![:space:]]}"}"
 
     if [[ -z "$session" ]]; then
         return 0
     elif tmux has-session -t "$session" 2>/dev/null; then
         tmux attach -t "$session"
     else
-        tmux new -s "$session"
+        # 新建时统一清洗，避免 '.' ':' 等导致 target 解析歧义；
+        # 清洗后若已存在则直接 attach，保证新建/恢复都能匹配正确名字
+        local clean=${session//[^A-Za-z0-9_-]/_}
+        if tmux has-session -t "$clean" 2>/dev/null; then
+            tmux attach -t "$clean"
+        else
+            tmux new -s "$clean"
+        fi
     fi
 }
 
