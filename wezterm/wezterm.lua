@@ -96,6 +96,10 @@ local config = {
     { key = "f", mods = "CMD|SHIFT", action = act.TogglePaneZoomState },
     { key = ",", mods = "CMD|SHIFT", action = act.ReloadConfiguration },
     { key = "Enter", mods = "CMD", action = act.ToggleFullScreen },
+    -- AI CLI 换行 (cursor-agent 等)：Shift+Enter 发送 CSI-u 序列 ESC[13;2u，
+    -- cursor-agent 原生识别该序列为换行；无 tmux 时直达应用。
+    -- 注意：tmux 会拦截 Shift+Enter，tmux 里改用 Ctrl+J 或 `\`+Enter。
+    { key = "Enter", mods = "SHIFT", action = act.SendString("\x1b[13;2u") },
   },
 }
 

@@ -179,22 +179,45 @@ bindkey -M viins '^d' vi-delete-char
 
 # -- Functions --
 # menu: pick a tmux session to attach, or create a new one named after cwd
+# - 新目录: fzf 首行默认展示 [new] <规范化目录名>
+# - 目录 session 已存在: fzf 首行展示 [resume] <规范化目录名>
 function m() {
-    if [[ -n "$TMUX" ]]; then
-        exit 0
-    fi
     local session
     local default_session
     default_session="$(basename "$(pwd)")"
     # Sanitize: tmux treats '.' and ':' as special in target strings
     default_session="${default_session//[^A-Za-z0-9_-]/_}"
 
-    local new_marker=$'\e[1;32m[new]\e[0m '"$default_session"
     local sessions
     sessions=$(tmux ls -F '#{session_name}' 2>/dev/null)
 
+    # 精确名 -> session id (如 $0), 避免 '.' ':' 在 -t 解析时被当成 window/pane 分隔符
+    # legacy 如 cursor.rs 用名字 has/attach 会失败, 用 id 则稳定
+    _m_sid() {
+        local want="$1" line id name
+        while IFS=$'\t' read -r id name; do
+            if [[ "$name" == "$want" ]]; then
+                print -r -- "$id"
+                return 0
+            fi
+        done < <(tmux ls -F '#{session_id}	#{session_name}' 2>/dev/null)
+        return 1
+    }
+
+    # 目录 session 是否已存在: 决定首行 marker 是 [new] 还是 [resume]
+    local has_default=1
+    if printf '%s\n' "$sessions" | grep -qxF "$default_session" 2>/dev/null; then
+        has_default=0
+    fi
+
+    local new_marker=$'\e[1;32m[new]\e[0m '"$default_session"
+    local resume_marker=$'\e[1;33m[resume]\e[0m '"$default_session"
+
     local -a list=()
-    if ! printf '%s\n' "$sessions" | grep -qxF "$default_session" 2>/dev/null; then
+    # 首行默认展示: 新目录 aided [new] 规范化名, 已有则展示 [resume]
+    if (( has_default == 0 )); then
+        list+=("$resume_marker")
+    else
         list+=("$new_marker")
     fi
     if [[ -n "$sessions" ]]; then
@@ -205,26 +228,51 @@ function m() {
 
     session=$(printf '%s\n' "${list[@]}" | fzf --ansi --bind=enter:replace-query+print-query)
 
-    # fzf --ansi 原样输出会保留颜色码，先去掉再去 [new] 前缀
+    # fzf --ansi 原样输出会保留颜色码，先去掉再去 [new]/[resume] 前缀
     # (直接 ${session#\[new\] } 匹配不到，因为开头是 ESC)
-    esc=$'\e'
+    local esc=$'\e'
     session=${session//$esc\[1\;32m/}
+    session=${session//$esc\[1\;33m/}
     session=${session//$esc\[0m/}
     session="${session#\[new\] }"
+    session="${session#\[resume\] }"
     # 去掉首尾空白（print-query 手输时常见）
     session="${session#"${session%%[![:space:]]*}"}"
     session="${session%"${session##*[![:space:]]}"}"
 
     if [[ -z "$session" ]]; then
         return 0
-    elif tmux has-session -t "$session" 2>/dev/null; then
-        tmux attach -t "$session"
+    fi
+
+    # 已存在 (精确匹配): 按 id attach/switch, 兼容 legacy 带点名
+    if printf '%s\n' "$sessions" | grep -qxF "$session" 2>/dev/null; then
+        local sid
+        sid=$(_m_sid "$session") || sid="$session"
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$sid"
+        else
+            tmux attach -t "$sid"
+        fi
+        return 0
+    fi
+
+    # 新建时统一清洗，避免 '.' ':' 等导致 target 解析歧义；
+    # 清洗后若已存在则直接 attach，保证新建/恢复都能匹配正确名字
+    local clean=${session//[^A-Za-z0-9_-]/_}
+    if [[ -z "$clean" ]]; then
+        return 0
+    fi
+    if printf '%s\n' "$sessions" | grep -qxF "$clean" 2>/dev/null; then
+        local sid
+        sid=$(_m_sid "$clean") || sid="$clean"
+        if [[ -n "$TMUX" ]]; then
+            tmux switch-client -t "$sid"
+        else
+            tmux attach -t "$sid"
+        fi
     else
-        # 新建时统一清洗，避免 '.' ':' 等导致 target 解析歧义；
-        # 清洗后若已存在则直接 attach，保证新建/恢复都能匹配正确名字
-        local clean=${session//[^A-Za-z0-9_-]/_}
-        if tmux has-session -t "$clean" 2>/dev/null; then
-            tmux attach -t "$clean"
+        if [[ -n "$TMUX" ]]; then
+            tmux new-session -d -s "$clean" && tmux switch-client -t "$clean"
         else
             tmux new -s "$clean"
         fi
@@ -926,5 +974,3 @@ function zi() {
   local dir
   dir=$(zoxide query -l | fzf --preview 'ls -la {}') && z "$dir"
  }
-
-export CODEX_TEST=1
