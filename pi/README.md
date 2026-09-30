@@ -75,14 +75,17 @@ pi auth ...                             # or /login in a pi session -> agent/aut
 pi update --models                      # recreates agent/models-store.json
 
 source ~/.zshrc
-pi mcp list                         # expect: every server "connected"
+pi mcp list                                   # expect: every server "connected"
 bash ~/.dotfiles/scripts/pi-secrets-scan.sh
+bash ~/.dotfiles/scripts/pi-credential-audit.sh   # nothing leaked, nothing dropped
 ```
 
 ## Guard
 
+**Shape check** (fast; run before committing):
+
 ```bash
-scripts/pi-secrets-scan.sh              # scan every file under pi/ (tracked or not)
+scripts/pi-secrets-scan.sh              # scan every file physically under pi/
 scripts/pi-secrets-scan.sh <path>...    # scan specific files/dirs (pre-copy gate)
 scripts/pi-secrets-scan.sh --all        # scan every tracked file in the repo
 ```
@@ -91,3 +94,21 @@ Exit 0 clean, 1 findings. It rejects reserved credential filenames and credentia
 content (`sk-…`, `ya29.…`, `1//…`, `cfast_…`, literal `"apiKey": "…"`, private-key blocks).
 `${VAR}` references and `REPLACE_ME` placeholders pass. Mark a reviewed false positive with
 an `allowsecret` comment on the same line.
+
+**Exact-value audit** (~20s; walks all of history) answers the sharper question: "did any of
+the keys I actually use leak into this repo, and did anything get dropped while
+migrating?"
+
+```bash
+scripts/pi-credential-audit.sh
+```
+
+It harvests every credential value pi uses on this machine — `auth.json` keys and OAuth
+tokens, `mcp-auth.json`, `antigravity-accounts.json`, and `secrets.env` including values
+nested inside JSON header blobs — then searches each literal value in the working tree, the
+git index, and every commit in history. Values are never printed (labels and redacted
+excerpts only), and the temporary value list is a mode-600 `mktemp` file removed on exit.
+It then checks restore readiness: credential files are still real files rather than repo
+links and are mode 600, every `${VAR}` in `mcp.json` has a non-empty definition, and
+`pi auth check` passes for the configured startup provider/model. Exit 0 = nothing leaked,
+nothing lost.

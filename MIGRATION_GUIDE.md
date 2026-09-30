@@ -37,6 +37,7 @@
 | `CHECKLIST.md` | 检查清单 | 配置验证 |
 | `pi/` | Pi agent 配置 | 模型/主题/扩展/prompts + MCP `${VAR}` 模板（凭证不入库） |
 | `scripts/pi-secrets-scan.sh` | 凭证守卫 | 提交前扫描 pi/ 是否混入密钥 |
+| `scripts/pi-credential-audit.sh` | 价值审计 | 把真实密钥字面值扇描工作区/索引/全部历史，确认没有灌进去也没有弄丢 |
 | `QUICKSTART.md` | 快速开始 | 3-5 分钟配置 |
 | `README.md` | 完整文档 | 使用说明 |
 
