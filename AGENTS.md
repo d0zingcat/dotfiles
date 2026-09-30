@@ -26,3 +26,9 @@ Recent history favors short imperative subjects, often Conventional Commit style
 
 ## Security & Configuration Tips
 Do not commit secrets from `~/.ssh`, `~/.kube`, `.1password`, or local backup outputs. Treat `git/config` and `ssh/example` as templates only: `./setup.sh install` should copy them into place for local editing rather than symlinking machine-specific values back into the repository.
+
+Pi's agent directory follows the same rule, and it is riskier because its config entries are symlinked into this repo:
+
+- Never commit `pi/agent/auth.json`, `mcp-auth.json`, `antigravity-accounts.json`, `secrets.env`, `sessions/`, `models-store.json`, or `trust.json`. They stay real files in `~/.pi/agent`.
+- `pi/agent/mcp.json` is committed as a `${VAR}` template; real MCP credential values live in `~/.pi/agent/secrets.env` (mode 600), which `.zshrc` sources so pi can resolve them.
+- Gate commits with `scripts/pi-secrets-scan.sh` (no path scans `pi/`, `--all` sweeps the repo). It rejects reserved credential filenames and credential-shaped content, and masks its own findings.

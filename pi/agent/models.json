@@ -1,0 +1,27 @@
+{
+  "providers": {
+    "gemini": {
+      "name": "Google Gemini (AI Studio)",
+      "baseUrl": "https://generativelanguage.googleapis.com/v1beta",
+      "api": "google-generative-ai",
+      "models": [
+        {
+          "id": "gemini-3.6-flash",
+          "name": "Gemini 3.6 Flash",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 65536
+        },
+        {
+          "id": "gemini-3.5-flash",
+          "name": "Gemini 3.5 Flash",
+          "reasoning": true,
+          "input": ["text", "image"],
+          "contextWindow": 1048576,
+          "maxTokens": 65536
+        }
+      ]
+    }
+  }
+}

@@ -87,3 +87,18 @@ ssh_backup_*/
 .1password_config.txt
 .kube_contexts.txt
 .vscode_extensions.txt
+
+# === Pi agent config ===
+# pi/agent/mcp.json is a ${VAR} template and is committed on purpose: it holds no
+# credentials, and the real values live in ~/.pi/agent/secrets.env (outside this repo).
+# Everything below is credential material, cache, or session history. Never copy it in.
+pi/agent/auth.json
+pi/agent/mcp-auth.json
+pi/agent/secrets.json
+pi/agent/secrets.env
+pi/agent/antigravity-accounts.json
+pi/agent/models-store.json
+pi/agent/trust.json
+pi/agent/sessions/
+pi/agent/npm/
+pi/agent/*.pre-copy

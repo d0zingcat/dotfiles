@@ -1,0 +1,11 @@
+{
+  "lastChangelogVersion": "0.99.1",
+  "theme": "dark",
+  "packages": [
+    "npm:@narumitw/pi-plan-mode",
+    "npm:pi-antigravity"
+  ],
+  "defaultProvider": "qwen-token-plan",
+  "defaultModel": "qwen3.8-flash",
+  "defaultThinkingLevel": "medium"
+}

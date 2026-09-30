@@ -70,6 +70,10 @@ brew bundle install
 ├── wezterm/            # WezTerm 终端配置
 ├── alacritty/          # Alacritty 终端配置
 ├── ghostty/            # Ghostty 终端配置
+├── pi/                 # Pi agent 配置 (链接到 ~/.pi/agent，凭证不入库)
+│   ├── README.md       # 凭证边界与新机器步骤
+│   └── agent/          # settings/models/extensions/prompts + mcp ${VAR} 模板
+├── scripts/            # 辅助脚本 (pi-secrets-scan.sh)
 ├── starship.toml       # Starship 提示符
 └── tmux/               # Tmux 插件 (TPM)
 ```
@@ -205,6 +209,10 @@ git config --file ~/.gitconfig user.signingkey "your-ssh-key"
 - `.kube/` - Kubernetes 配置
 - `*.env` - 环境变量
 - `credentials.json`, `secrets.txt` - 凭据
+- `pi/agent/auth.json`, `mcp-auth.json`, `antigravity-accounts.json`, `secrets.env` - Pi provider key / OAuth token / MCP 凭证
+- `pi/agent/sessions/`, `models-store.json`, `trust.json`, `npm/` - 会话记录与本地缓存
+
+提交前可扫描：`./scripts/pi-secrets-scan.sh`（`--all` 扫描全仓）。Pi 细节见 [pi/README.md](./pi/README.md)。
 
 **需要在新机器上重新配置**。
 

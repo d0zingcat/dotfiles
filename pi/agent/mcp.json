@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "exa": {
+      "url": "https://mcp.exa.ai/mcp",
+      "exposure": "codemode"
+    },
+    "jina": {
+      "url": "https://mcp.jina.ai/v1",
+      "exposure": "codemode"
+    },
+    "dokploy-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@dokploy/mcp"
+      ],
+      "env": {
+        "DOKPLOY_URL": "${DOKPLOY_URL}",
+        "DOKPLOY_API_KEY": "${DOKPLOY_API_KEY}",
+        "DOKPLOY_CUSTOM_HEADERS": "${DOKPLOY_CF_ACCESS_HEADERS}"
+      },
+      "exposure": "codemode-deferred"
+    }
+  }
+}

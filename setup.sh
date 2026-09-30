@@ -51,6 +51,21 @@ CONFIG_FILES=(
     yazi
 )
 
+# Pi agent config: linked into ~/.pi/agent, not ~/.config. Only these entries are linked.
+# Credential files (auth.json, mcp-auth.json, antigravity-accounts.json, secrets.env) and
+# pi runtime state (sessions/, models-store.json, trust.json, npm/) stay out of the repo.
+# agent/mcp.json is committed as a ${VAR} template; see pi/README.md.
+PI_AGENT_DIR="$HOME_DIR/.pi/agent"
+PI_LINKS=(
+    settings.json
+    models.json
+    pi-plan-mode.json
+    mcp.json
+    extensions
+    agents
+    prompts
+)
+
 # Rustup components
 RUSTUP_COMPONENTS=(
     clippy
@@ -212,9 +227,11 @@ Examples:
     ./setup.sh full-recover      # Full setup on new machine
     ./setup.sh brew-backup       # Update Brewfile for this Mac only
     ./setup.sh brew-install      # Install packages from hostname Brewfile
-    ./setup.sh check             # Check what's installed
+    ./setup.sh check             # Check what's installed (incl. ~/.pi/agent links)
 
 For more information, see README.md
+Pi agent config lives in pi/ and is linked into ~/.pi/agent — see pi/README.md for the
+rule that keeps credentials (auth.json, mcp-auth.json, secrets.env) out of this repo.
 EOF
 }
 
@@ -276,6 +293,33 @@ function cmd_init() {
     echo "Now run: ./setup.sh install"
 }
 
+function link_pi_config() {
+    # Link pi agent config. Never overwrite an unlinked real file: move it aside first.
+    print_warning "Linking Pi agent config..."
+    mkdir -p "$PI_AGENT_DIR"
+    for i in "${PI_LINKS[@]}"; do
+        if [ ! -e "$WORKING_DIR/pi/agent/$i" ]; then
+            print_warning "Not found: pi/agent/$i"
+            continue
+        fi
+        if [ -e "$PI_AGENT_DIR/$i" ] && [ ! -L "$PI_AGENT_DIR/$i" ]; then
+            mv "$PI_AGENT_DIR/$i" "$PI_AGENT_DIR/$i.pre-copy"
+            print_warning "Moved existing $i to $i.pre-copy (repo copy wins; merge by hand)"
+        fi
+        ln -svfn "$WORKING_DIR/pi/agent/$i" "$PI_AGENT_DIR/$i"
+        print_success "Linked: .pi/agent/$i"
+    done
+
+    if [ ! -f "$PI_AGENT_DIR/secrets.env" ]; then
+        print_warning "Missing $PI_AGENT_DIR/secrets.env — pi MCP servers will fail to authorize"
+        echo "  cp $WORKING_DIR/pi/agent/secrets.env.example $PI_AGENT_DIR/secrets.env"
+        echo "  chmod 600 $PI_AGENT_DIR/secrets.env  # then fill in real values"
+    fi
+    if [ ! -f "$PI_AGENT_DIR/auth.json" ]; then
+        print_warning "Missing $PI_AGENT_DIR/auth.json — sign in with: pi /login"
+    fi
+}
+
 function cmd_install() {
     print_header "Installing Dotfiles Symlinks"
 
@@ -327,6 +371,8 @@ function cmd_install() {
             print_warning "Not found: $i"
         fi
     done
+
+    link_pi_config
 
     # Install git config from template by copying it into place.
     local git_config_template="$WORKING_DIR/git/config"
@@ -388,6 +434,8 @@ function cmd_install() {
     echo "  1. Configure git: git config --file ~/.gitconfig user.name 'Your Name'"
     echo "  2. Restart terminal or run: source ~/.zshrc"
     echo "  3. Run: ./setup.sh brew-install (to install packages)"
+    echo "  4. Pi: create ~/.pi/agent/secrets.env, sign in (pi /login), then pi install npm:<pkg>"
+    echo "     See ~/.dotfiles/pi/README.md"
 }
 
 function cmd_backup() {
@@ -788,6 +836,40 @@ function cmd_check() {
             missing=$((missing + 1))
         fi
     done
+
+    echo ""
+    echo "Pi Agent Config (~/.pi/agent):"
+    for i in "${PI_LINKS[@]}"; do
+        echo -n "  $i: "
+        if [ -L "$PI_AGENT_DIR/$i" ]; then
+            local pi_target=$(readlink "$PI_AGENT_DIR/$i")
+            if [[ "$pi_target" == *"$WORKING_DIR"* ]]; then
+                print_success "linked to dotfiles"
+            else
+                print_warning "linked elsewhere: $pi_target"
+            fi
+        elif [ -e "$PI_AGENT_DIR/$i" ]; then
+            print_warning "exists but not linked (run: ./setup.sh install)"
+        else
+            print_error "not found"
+            missing=$((missing + 1))
+        fi
+    done
+
+    echo -n "  secrets.env (never committed): "
+    [ -f "$PI_AGENT_DIR/secrets.env" ] && print_success "present" || print_warning "missing — MCP ${VAR} will not resolve"
+    echo -n "  auth.json (never committed): "
+    [ -f "$PI_AGENT_DIR/auth.json" ] && print_success "present" || print_warning "missing — run pi /login"
+
+    if [ -f "$WORKING_DIR/scripts/pi-secrets-scan.sh" ]; then
+        echo -n "  secret scan (pi/): "
+        if bash "$WORKING_DIR/scripts/pi-secrets-scan.sh" >/dev/null 2>&1; then
+            print_success "clean"
+        else
+            print_error "findings — run: ./scripts/pi-secrets-scan.sh"
+            missing=$((missing + 1))
+        fi
+    fi
 
     # Check git config
     echo ""

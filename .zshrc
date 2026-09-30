@@ -974,3 +974,10 @@ function zi() {
   local dir
   dir=$(zoxide query -l | fzf --preview 'ls -la {}') && z "$dir"
  }
+
+# ==== Pi agent config (dotfiles-managed; see ~/.dotfiles/pi/README.md)
+# MCP ${VAR} interpolation in ~/.pi/agent/mcp.json resolves against this shell's
+# environment, so the secret file has to be sourced before pi starts.
+if [[ -f "$HOME/.pi/agent/secrets.env" ]]; then
+    source "$HOME/.pi/agent/secrets.env"
+fi
