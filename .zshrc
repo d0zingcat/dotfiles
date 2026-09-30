@@ -965,7 +965,7 @@ function scratch() {
 function copilot_local {
     export COPILOT_PROVIDER_TYPE=anthropic
     export COPILOT_PROVIDER_BASE_URL=http://localhost:8990
-    export COPILOT_PROVIDER_API_KEY=sk-kiro-rs-qazWSXedcRFV123456
+    export COPILOT_PROVIDER_API_KEY=sk-kiro-rs-qazWSXedcRFV123456  # allowsecret: shared token for the loopback-only kiro-rs proxy at localhost:8990, also present in ~/.config/opencode/opencode.json
     export COPILOT_MODEL=claude-opus-4.6
     copilot
 }
