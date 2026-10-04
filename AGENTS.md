@@ -29,7 +29,7 @@ Do not commit secrets from `~/.ssh`, `~/.kube`, `.1password`, or local backup ou
 
 Pi's agent directory follows the same rule, and it is riskier because its config entries are symlinked into this repo:
 
-- Never edit pi's rule or config files in place — they are live context through the `~/.pi/agent` symlinks. Draft changes in a git worktree under `.worktree/` (gitignored, still inside the repo so upward context-file discovery works), merge to `main` to activate, link new entries with `ln -svfn ~/.dotfiles/pi/agent/<f> ~/.pi/agent/<f>`, and verify with `./setup.sh check`. Avoid `./setup.sh install` for rule-only changes: it relinks everything and re-copies `git/config` over `~/.gitconfig`. See [pi/README.md](/Users/d0zingcat/.dotfiles/pi/README.md) and `pi/agent/AGENTS.md`.
+- Never edit pi's rule or config files in place: the `~/.pi/agent` symlinks make that a live change to every running pi session and to this checkout at once. Iterate them in a `.worktree/` branch and merge to `main` to activate — recipe and caveats in [pi/README.md](/Users/d0zingcat/.dotfiles/pi/README.md).
 - Never commit `pi/agent/auth.json`, `mcp-auth.json`, `antigravity-accounts.json`, `secrets.env`, `sessions/`, `models-store.json`, or `trust.json`. They stay real files in `~/.pi/agent`.
 - `pi/agent/mcp.json` is committed as a `${VAR}` template; real MCP credential values live in `~/.pi/agent/secrets.env` (mode 600), which `.zshrc` sources so pi can resolve them.
 - Gate commits with `scripts/pi-secrets-scan.sh` (no path scans `pi/`, `--all` sweeps the repo). It rejects reserved credential filenames and credential-shaped content, and masks its own findings.
