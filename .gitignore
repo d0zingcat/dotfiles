@@ -88,6 +88,12 @@ ssh_backup_*/
 .kube_contexts.txt
 .vscode_extensions.txt
 
+# === Pi rule iteration worktrees ===
+# Rule/config changes are drafted in `git worktree add .worktree/<topic>` inside the repo
+# (so pi's upward context-file discovery still finds this repo's AGENTS.md) and merged to
+# main to go live. The worktree checkout itself is never tracked.
+.worktree/
+
 # === Pi agent config ===
 # pi/agent/mcp.json is a ${VAR} template and is committed on purpose: it holds no
 # credentials, and the real values live in ~/.pi/agent/secrets.env (outside this repo).

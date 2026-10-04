@@ -55,8 +55,11 @@ CONFIG_FILES=(
 # Credential files (auth.json, mcp-auth.json, antigravity-accounts.json, secrets.env) and
 # pi runtime state (sessions/, models-store.json, trust.json, npm/) stay out of the repo.
 # agent/mcp.json is committed as a ${VAR} template; see pi/README.md.
+# agent/AGENTS.md is the user-level rule file: it is live context for every pi session, so
+# iterate it in a git worktree under .worktree/ and merge to main — never edit it in place.
 PI_AGENT_DIR="$HOME_DIR/.pi/agent"
 PI_LINKS=(
+    AGENTS.md
     settings.json
     models.json
     pi-plan-mode.json

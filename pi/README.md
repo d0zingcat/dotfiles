@@ -7,6 +7,7 @@ it at runtime. This directory tracks only the config half.
 
 | Path | Why it is safe |
 |---|---|
+| `agent/AGENTS.md` | user-level pi rules (context file loaded in every project) — prose only, no credentials |
 | `agent/settings.json` | model defaults, theme, package list |
 | `agent/models.json` | custom provider + model overrides; keys are `${VAR}` or absent |
 | `agent/pi-plan-mode.json` | plan-mode thinking level |
@@ -17,6 +18,34 @@ it at runtime. This directory tracks only the config half.
 Symlinks mean an edit in `~/.pi/agent` is an edit in the repo working tree: review with
 `git diff pi` and commit. pi rewrites `settings.json` on `/settings`, `/model` Ctrl+S and
 `pi install`, so expect incidental churn there (e.g. `lastChangelogVersion`).
+
+## Iterating on rule files: use a worktree
+
+`agent/AGENTS.md` and the repo-root `AGENTS.md` are live context: because of the symlinks,
+an edit in the `main` checkout changes what every running pi session is told to do,
+immediately and unreviewed. So rule text is never edited in place. Draft it in a worktree
+and let the merge be the activation step:
+
+```bash
+git -C ~/.dotfiles worktree add .worktree/pi-rules -b chore/pi-rules-<topic>
+cd ~/.dotfiles/.worktree/pi-rules
+# edit pi/agent/AGENTS.md (or agents/, prompts/, extensions/) here
+git add -A && git commit -m "chore(pi): <summary>"
+cd ~/.dotfiles && git merge --ff-only chore/pi-rules-<topic>
+# a new entry also needs its link (idempotent, one file only):
+ln -svfn ~/.dotfiles/pi/agent/AGENTS.md ~/.pi/agent/AGENTS.md
+./setup.sh check                                   # read-only: verifies every PI_LINKS entry
+git worktree remove .worktree/pi-rules && git branch -d chore/pi-rules-<topic>
+```
+
+`.worktree/` is gitignored and sits inside the repo on purpose, so pi still discovers the
+repo-root `AGENTS.md` by walking up from the worktree. Already-running sessions keep the old
+text until `/reload` or a restart. `./setup.sh check` verifies every `PI_LINKS` entry, so a
+missing rule file shows up as a failure instead of silently running without it.
+
+Do not reach for `./setup.sh install` to activate a rule change: it relinks every managed
+dotfile and re-copies `git/config` over `~/.gitconfig`, and running it from inside a worktree
+would repoint `$HOME` at the worktree because `$WORKING_DIR` is the script's own directory.
 
 ## Never committed
 
