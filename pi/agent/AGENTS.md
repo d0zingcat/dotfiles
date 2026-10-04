@@ -3,7 +3,51 @@
 These rules apply in every working directory. Project `AGENTS.md` files still win for
 project-specific work.
 
+## Development happens in a git worktree under `<repo>/.worktree/`
+
+When a task changes tracked files in a git repository, create a worktree inside that repo and do
+the work there instead of in the checkout you were handed. Read-only work (explaining code,
+reviewing, querying data) needs no worktree; neither does a directory that is not a git repo.
+
+```bash
+cd <repo>
+git worktree add .worktree/<topic> -b <type>/<topic>
+cd .worktree/<topic>            # bootstrap here: uv sync / pnpm install / submodule init
+# develop, test and commit on the branch
+cd <repo>
+git merge --ff-only <type>/<topic>   # or push + PR, whatever the project requires
+git worktree remove .worktree/<topic> && git branch -d <type>/<topic>
+git worktree list                    # should end with only the main checkout
+```
+
+Why: the main checkout stays clean and shippable while you iterate, a half-finished change can
+never be picked up by a build, deploy, or another parallel session reading from it, and each idea
+gets its own discardable directory instead of a stash dance.
+
+Rules of the road:
+
+- `.worktree/` goes *inside* the repo, never beside it, so pi still finds the project's
+  `AGENTS.md`, `.env`, direnvrc, lockfiles and tool paths by walking upwards.
+- Make sure git ignores it before starting: `.worktree/` in `.gitignore`, or — when you must not
+  touch tracked shared files — in `.git/info/exclude`. Confirm with `git status --porcelain`.
+- A worktree is a fresh checkout, not a copy: dependencies are yours to install, and anything
+  read from outside git (`.env`, database URLs, DuckDB/Parquet under `data/`, model artifacts)
+  must be located explicitly. Prefer a uniquely named scratch database over sharing one, and never
+  point a worktree's migrations at a shared or production database.
+- The session's cwd does not move by itself: run commands from inside the worktree (or `git -C`),
+  and state which path you worked in.
+- One task, one worktree, one branch: with parallel agents, keep topic names 1:1 across branch,
+  directory and database names so runs cannot collide.
+- Project rules win: worktree + that project's branch/PR flow, never committing or merging
+  straight onto a protected default branch. If a project prescribes something different, follow
+  the project and say so.
+- Land it, then clean up. Stale worktrees make `git worktree list`, `git branch -a` and disk
+  usage misreport the state of the repo.
+
 ## Never edit Pi's rule or config files in place — iterate in a git worktree
+
+This is the strict case of the rule above: `~/.dotfiles` is an ordinary repo, but its rule files
+are live context, so an in-place edit there is never merely a local edit.
 
 `~/.pi/agent/*` is a set of symlinks into the `~/.dotfiles` repo (`pi/agent/...`). Writing
 to a live path therefore writes straight into the repo's `main` checkout and takes effect
