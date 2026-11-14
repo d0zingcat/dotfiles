@@ -83,6 +83,9 @@ if [ -f "$HOME/.antigen/antigen.zsh" ]; then
     # antigen bundle darvid/zsh-poetry
     antigen bundle Aloxaf/fzf-tab
     antigen bundle vi-mode
+    # Antigen 只加载 OMZ 的 lib 与插件而不执行 oh-my-zsh.sh，需提前创建 completions 缓存目录，
+    # 否则 kubectl 等插件的 =( ... ) 进程替换在 /bin/zsh 5.9 下会失败并导致子进程崩溃
+    mkdir -p "${ZSH_CACHE_DIR:-$HOME/.antigen/bundles/robbyrussell/oh-my-zsh/cache}/completions"
     antigen apply
 else
     mkdir $HOME/.antigen
