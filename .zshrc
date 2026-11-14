@@ -33,6 +33,7 @@ export PATH="$PATH:$JAVA_HOME/bin"
 export LC_ALL=en_US.UTF-8
 export EDITOR=vim
 export LANG=en_US.UTF-8
+export COLORTERM=truecolor
 export MANPAGER="sh -c \"col -b | vim -c 'set ft=man ts=8 nomod nolist nonu' \
     -c 'nnoremap i <nop>' \
     -c 'nnoremap <Space> <C-f>' \
