@@ -35,9 +35,6 @@
 | `setup.sh` | 安装脚本 | 一键配置 |
 | `ssh/example` | SSH 配置模板 | 初始化 `~/.ssh/config` |
 | `CHECKLIST.md` | 检查清单 | 配置验证 |
-| `pi/` | Pi agent 配置 | 模型/主题/扩展/prompts + MCP `${VAR}` 模板（凭证不入库） |
-| `scripts/pi-secrets-scan.sh` | 凭证守卫 | 提交前扫描 pi/ 是否混入密钥 |
-| `scripts/pi-credential-audit.sh` | 价值审计 | 把真实密钥字面值扇描工作区/索引/全部历史，确认没有灌进去也没有弄丢 |
 | `QUICKSTART.md` | 快速开始 | 3-5 分钟配置 |
 | `README.md` | 完整文档 | 使用说明 |
 
@@ -52,12 +49,6 @@
 *.env              # 环境变量
 credentials.json   # 凭据文件
 secrets.txt        # 密钥文件
-pi/agent/auth.json                    # Pi provider API key / OAuth token
-pi/agent/mcp-auth.json                # MCP OAuth token
-pi/agent/antigravity-accounts.json    # Antigravity 账号 token
-pi/agent/secrets.env                  # MCP ${VAR} 的真实值
-pi/agent/sessions/                    # 会话记录
-pi/agent/models-store.json            # 模型目录缓存
 ```
 
 ---
@@ -78,8 +69,6 @@ pi/agent/models-store.json            # 模型目录缓存
 - [ ] 1Password SSH Agent
 - [ ] Kubeconfig (工作集群配置)
 - [ ] SSH config 中的自定义主机条目（如需额外调整）
-- [ ] Pi 凭证：`pi /login`（写入 `~/.pi/agent/auth.json`）
-- [ ] Pi MCP 凭证：`cp ~/.dotfiles/pi/agent/secrets.env.example ~/.pi/agent/secrets.env` 后填值并 `chmod 600`，再 `pi mcp list` 验证（详见 `pi/README.md`）
 
 ### 需要单独备份的
 
